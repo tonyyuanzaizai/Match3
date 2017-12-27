@@ -58,7 +58,7 @@ public DNButton extends GameObject {
             var n = this.localToGlobal(0, 0);
             return n.x /= Constants.SCREEN_SCALE, n.y /= Constants.SCREEN_SCALE, e > n.x - this.picWidth / 2 && e < n.x + this.picWidth / 2 && t > n.y - this.picHeight / 2 && t < n.y + this.picHeight / 2
         }, 
-        private wasActionThisFrame = !1;//静态全局变量
+        public static wasActionThisFrame = !1;//静态全局变量
 }
 
 public DNTextField extends createjs.Container {

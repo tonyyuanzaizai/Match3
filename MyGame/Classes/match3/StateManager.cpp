@@ -1,7 +1,6 @@
 //TODO lihua
 public class StateManager {
-        function StateManager(t) {
-            var n = this;
+        public StateManager(t) {
             this.statesConstainer = new createjs.Container, 
             this.isMouseDown = !1; 
             this.timeDevider = 1;
@@ -16,39 +15,42 @@ public class StateManager {
             
             createjs.Ticker.setFPS(60), 
             createjs.Ticker.addEventListener("tick", function(e) {
-                return n.update(e)
+                return StateManager.this.update(e)
             }), 
             
             var r = new AssetsManager(t);
             
             this.stage.addChild(r), 
             r.addEventListener(Constants.LOAD_COMPLETE, function(e) {
-                return n.allAssetsLoaded(e)
-            }), 
-            r.startDownLoad(), 
+                return StateManager.this.allAssetsLoaded(e)
+            });
+            r.startDownLoad();
+            
             this.stage.addChild(this.statesConstainer), 
             Constants.PIXEL_RATIO = window.devicePixelRatio ? window.devicePixelRatio : 1; 
             Constants.g_isPC ? (window.onresize = function(e) {
-                return n.onResize(e)
+                return StateManager.this.onResize(e)
             }, this.onResize(null)) : (viewporter.ACTIVE ? (window.addEventListener("viewportready", function() {
-                return n.onOrientationChanged()
+                return StateManager.this.onOrientationChanged()
             }), window.addEventListener("viewportchange", function() {
-                return n.onOrientationChanged()
+                return StateManager.this.onOrientationChanged()
             })) : window.addEventListener("orientationchange", function() {
-                return n.onOrientationChanged()
+                return StateManager.this.onOrientationChanged()
             }), this.onOrientationChanged())
         }
-        e.prototype.isLandscape = function() {
+        
+        public isLandscape = function() {
             return Constants.g_isPC ? !1 : viewporter.isLandscape()
-        }, 
-        e.prototype.allAssetsLoaded = function(t) {
-            var n = this;
-            t.target.removeEventListener(Constants.LOAD_COMPLETE, this.allAssetsLoaded), this.stage.addEventListener(Constants.MOUSE_MOVE, function(e) {
-                return n.handleMouse(e)
+        } 
+        
+        public allAssetsLoaded = function(t) {
+            t.target.removeEventListener(Constants.LOAD_COMPLETE, this.allAssetsLoaded) 
+            this.stage.addEventListener(Constants.MOUSE_MOVE, function(e) {
+                return StateManager.this.handleMouse(e)
             }), this.stage.addEventListener(Constants.MOUSE_DOWN, function(e) {
-                return n.handleMouse(e)
+                return StateManager.this.handleMouse(e)
             }), this.stage.addEventListener(Constants.MOUSE_UP, function(e) {
-                return n.handleMouse(e)
+                return StateManager.this.handleMouse(e)
             }), StringManager.getInstance().loadStrings();
             try {
                 var r = SG.lang;
@@ -67,16 +69,17 @@ public class StateManager {
                 console.log("SG_Hooks error")
             }
             window.onpagehide && (window.onpagehide = function(e) {
-                return n.onLostFocus(e)
+                return StateManager.this.onLostFocus(e)
             }), window.onblur && (window.onblur = function(e) {
-                return n.onLostFocus(e)
+                return StateManager.this.onLostFocus(e)
             }), window.onpageshow && (window.onpageshow = function(e) {
-                return n.onFocus(e)
+                return StateManager.this.onFocus(e)
             }), window.onfocus && (window.onfocus = function(e) {
-                return n.onFocus(e)
+                return StateManager.this.onFocus(e)
             }), AssetsManager.g_instance.parent && AssetsManager.g_instance.parent.removeChild(AssetsManager.g_instance), GameData.getInstance().load(), this.pushState(new MainMenuState), this.isLandscape() && this.pushState(new PortraitLockState)
-        }, 
-        e.prototype.update = function(e) {
+        }
+        
+        public update = function(e) {
             try {
                 if (this.states.length != 0) {
                     var t = this.states[this.states.length - 1];
@@ -91,27 +94,33 @@ public class StateManager {
             try {
                 this.stage.update(e)
             } catch (i) {}
-        }, 
-        e.prototype.changeState = function(e) {
+        }
+        
+        public changeState = function(e) {
             while (this.states.length != 0) this.popState();
             this.pushState(e)
-        }, 
-        e.prototype.pushState = function(e) {
+        }
+        
+        public pushState = function(e) {
             this.states.push(e), this.statesConstainer.addChild(e)
-        }, 
-        e.prototype.popState = function() {
+        } 
+
+        public popState = function() {
             this.states.length != 0 && (this.states[this.states.length - 1].cleanup(), 
             this.statesConstainer.removeChild(this.states[this.states.length - 1]), 
             this.states.pop(), 
             this.states.length != 0 && this.states[this.states.length - 1].resume())
-        }, 
-        e.getInnerWidth = function() {
+        }
+        
+        public static getInnerWidth = function() {
             return Constants.g_isPC ? window.innerWidth : window.innerWidth
-        }, 
-        e.getInnerHeight = function() {
+        }
+        
+        public static getInnerHeight = function() {
             return Constants.g_isPC ? window.innerHeight : window.innerHeight
-        }, 
-        e.prototype.onResize = function(t) {
+        }
+        
+        public onResize = function(t) {
             Constants.g_wasSetSize || (Constants.W = e.getInnerWidth(), Constants.H = e.getInnerHeight()), Constants.SCREEN_SCALE = Constants.H / Constants.ASSETS_HEIGHT *
                 Constants.PIXEL_RATIO, Constants.SCREEN_HEIGHT = Constants.H / Constants.SCREEN_SCALE * Constants.PIXEL_RATIO, 
             this.canvas.width = Constants.ASSETS_WIDTH * Constants.SCREEN_SCALE, 
@@ -120,8 +129,9 @@ public class StateManager {
             this.canvas.style.height = this.canvas.height + "px", 
             this.canvas.style.marginLeft = (Constants.W - this.canvas.width) / 2 + "px", 
             this.statesConstainer.scaleX = this.statesConstainer.scaleY = Constants.SCREEN_SCALE
-        }, 
-        e.prototype.onOrientationChanged = function() {
+        }
+        
+        public onOrientationChanged = function() {
             Constants.g_wasSetSize || (Constants.W = e.getInnerWidth(), Constants.H = e.getInnerHeight());
             var t = this.isLandscape(),
             n = Constants.W,
@@ -133,19 +143,19 @@ public class StateManager {
             this.canvas.style.height = r + "px", t ? (Constants.SCREEN_SCALE = r / Constants.ASSETS_HEIGHT * Constants.PIXEL_RATIO, Constants.SCREEN_HEIGHT = r) : (Constants.SCREEN_SCALE = n / Constants.ASSETS_WIDTH * Constants.PIXEL_RATIO, Constants.SCREEN_HEIGHT = r / Constants.SCREEN_SCALE * Constants.PIXEL_RATIO), this.statesConstainer.scaleX = this.statesConstainer.scaleY = Constants.SCREEN_SCALE, this.states.length != 0 && this.states[this.states.length - 1].onOrientationChanged(t), AssetsManager.g_instance.parent && AssetsManager.g_instance.onOrientationChanged(t)
         }
         
-        e.prototype.onLostFocus = function(e) {
+        public onLostFocus = function(e) {
             SoundManager.g_instance.onLostFocus()
         }
         
-        e.prototype.onFocus = function(e) {
+        public onFocus = function(e) {
             SoundManager.g_instance.onFocus()
         }
         
-        e.prototype.isMouseDownNow = function() {
+        public isMouseDownNow = function() {
             return this.isMouseDown
         }
         
-        e.prototype.handleMouse = function(e) {
+        public handleMouse = function(e) {
             e.preventDefault();
             if (this.states.length == 0) return;
             var t = this.states[this.states.length - 1];
@@ -164,4 +174,4 @@ public class StateManager {
             }
             DNButton.wasActionThisFrame = !1
         }
-    }
+}

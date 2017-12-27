@@ -78,37 +78,46 @@ public class SelectLevelState extends GameState {
             this.addChild(f), 
             this.checkConstrains()
         }
-        t.prototype.onExitTouch = function() {
+        public onExitTouch = function() {
             StateManager.g_instance.pushState(new ShadeInState(new MainMenuState))
-        }, 
-        t.prototype.onLevelTouch = function(e) {
+        }
+        
+        public onLevelTouch = function(e) {
             StateManager.g_instance.pushState(new ShadeInState(new PlayState(e, !0)))
-        }, 
-        t.prototype.onMouseDown = function(t, n) {
+        } 
+
+        public onMouseDown = function(t, n) {
             e.prototype.onMouseDown.call(this, t, n), this.touchPointY = this.layer.y - n, this.slidePositions.length = 0, this.slidePositions.push({
                 liveTime: this.liveTime,
                 y: n
             })
-        }, 
-        t.prototype.update = function(t) {
-            e.prototype.update.call(this, t), StateManager.g_instance.isMouseDownNow() || this.ySpeed != 0 && (this.layer.y += this.ySpeed * t, this.ySpeed > 0 ? (this.ySpeed -= t * this.yAcc, this.ySpeed < 0 && (this.ySpeed = 0)) : (this.ySpeed += t * this.yAcc, this.ySpeed > 0 && (this.ySpeed = 0))), this.checkConstrains()
-        }, 
-        t.prototype.onMouseMove = function(t, n) {
+        }
+        
+        public update = function(t) {
+            e.prototype.update.call(this, t), 
+            StateManager.g_instance.isMouseDownNow() || this.ySpeed != 0 && (this.layer.y += this.ySpeed * t, this.ySpeed > 0 ? (this.ySpeed -= t * this.yAcc, this.ySpeed < 0 && (this.ySpeed = 0)) : (this.ySpeed += t * this.yAcc, this.ySpeed > 0 && (this.ySpeed = 0))), 
+            this.checkConstrains()
+        }
+        
+        public onMouseMove = function(t, n) {
             e.prototype.onMouseMove.call(this, t, n), this.layer.y = n + this.touchPointY, this.checkConstrains(), this.slidePositions.push({
                 liveTime: this.liveTime,
                 y: n
             }), this.slidePositions.length > 100 && (this.calcSpeedCache = this.calcYSpeed(), this.slidePositions.length = 0)
-        }, 
-        t.prototype.checkConstrains = function() {
+        }
+        
+        public checkConstrains = function() {
             this.layer.y > 0 && (this.layer.y = 0, this.ySpeed = 0), Constants.g_isPC ? this.layer.y < Constants.ASSETS_HEIGHT - this.mapH && (this.layer.y = Constants.ASSETS_HEIGHT - this.mapH, this.ySpeed = 0) : this.layer.y < Constants.SCREEN_HEIGHT - this.mapH && (this.layer.y = Constants.SCREEN_HEIGHT - this.mapH, this.ySpeed = 0)
-        }, 
-        t.prototype.onMouseUp = function(t, n) {
+        }
+        
+        public onMouseUp = function(t, n) {
             e.prototype.onMouseUp.call(this, t, n), this.slidePositions.push({
                 liveTime: this.liveTime,
                 y: n
             }), this.ySpeed = this.calcYSpeed()
-        }, 
-        t.prototype.calcYSpeed = function() {
+        }
+        
+        public calcYSpeed = function() {
             if (this.slidePositions.length < 2) return this.calcSpeedCache;
             var e = .2,
                 t;
@@ -116,5 +125,5 @@ public class SelectLevelState extends GameState {
                 if (this.liveTime - this.slidePositions[t].liveTime >= e) break;
             var n = this.liveTime - this.slidePositions[t].liveTime;
             return n < 1e-5 ? 0 : (this.slidePositions[this.slidePositions.length - 1].y - this.slidePositions[t].y) / n
-        }, t
+        }
 }

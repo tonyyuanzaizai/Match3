@@ -1,5 +1,5 @@
 public class SoundManager {
-        function SoundManager() {
+        public SoundManager() {
             this.soundEnabled = !0, 
             this.initiliazed = !1, 
             this.musicInstance = null, 
@@ -7,7 +7,7 @@ public class SoundManager {
             this.wasMusicPlay = !1
         }
 
-        e.prototype.onLostFocus = function() {
+        public onLostFocus = function() {
             if (this.focus) {
                 this.focus = !1;
                 if (this.soundEnabled) {
@@ -17,43 +17,48 @@ public class SoundManager {
                     this.wasMusicPlay = !1
                 }
             }
-        }, 
-        e.prototype.onFocus = function() {
+        }
+        
+        public onFocus = function() {
             this.focus || (this.focus = !0)
-        }, 
-        e.prototype.init = function() {
+        }
+        
+        public init = function() {
             if (!this.initiliazed) {
-                try {
-                    if (!createjs.Sound.initializeDefaultPlugins()) return
-                } catch (e) {}
                 this.initiliazed = !0
             }
-        }, 
-        e.prototype.isSoundEnabled = function() {
+        }
+        
+        public isSoundEnabled = function() {
             return this.soundEnabled
-        }, 
-        e.prototype.setSoundEnabled = function(e) {
+        }
+        
+        public setSoundEnabled = function(e) {
             this.soundEnabled = e;
             if (!e) {
-                if (this.musicInstance) try {
-                    this.musicInstance.stop()
-                } catch (t) {}
+                if (this.musicInstance) {
+                    try {
+                        this.musicInstance.stop()
+                    } catch (t) {}
+                }
                 this.wasMusicPlay = !1
             }
-        }, 
-        e.prototype.play = function(e) {
+        }
+        
+        public play = function(e) {
             try {
                 if (this.initiliazed && this.soundEnabled) try {
                     return createjs.Sound.play(e, createjs.Sound.INTERRUPT_NONE, 0, 0, 0, 1)
                 } catch (t) {}
             } catch (t) {}
             return null
-        }, 
-        e.prototype.playMusic = function() {
+        }
+        
+        public playMusic = function() {
             if (this.initiliazed && this.soundEnabled && !this.wasMusicPlay) {
                 this.wasMusicPlay = !0;
                 try {
-                    this.musicInstance = createjs.Sound.play(e.SOUND_MUSIC, createjs.Sound.INTERRUPT_NONE, 0, 0, -1, 1);
+                    this.musicInstance = createjs.Sound.play(SOUND_MUSIC, createjs.Sound.INTERRUPT_NONE, 0, 0, -1, 1);
                     if (this.musicInstance.playState == "playFailed") return this.wasMusicPlay = !1, null
                 } catch (t) {
                     return null
@@ -61,23 +66,25 @@ public class SoundManager {
                 return this.musicInstance
             }
             return null
-        }, 
-        e.g_instance = new e, 
-        e.SOUND_MUSIC = "music", 
-        e.SOUND_CLICK = "click", 
-        e.SOUND_MATCH_1 = "match_1", 
-        e.SOUND_MATCH_2 = "match_2", 
-        e.SOUND_MATCH_3 = "match_3", 
-        e.SOUND_MATCH_4 = "match_4", 
-        e.SOUND_MATCH_5 = "match_5", 
-        e.SOUND_DROP_1 = "drop_1", 
-        e.SOUND_DROP_2 = "drop_2", 
-        e.SOUND_DROP_3 = "drop_3", 
-        e.SOUND_LINE = "line", 
-        e.SOUND_KILL_COLOR = "kill_color", 
-        e.SOUND_LOSE = "lose", 
-        e.SOUND_BOOM = "boom", 
-        e.SOUND_AWESOME = "awesome", 
-        e.SOUND_EXCHANGE = "exchange", 
-        e.SOUND_WIN = "win"
+        }
+        
+        //SoundManager.g_instance
+        public static g_instance = new SoundManager(); 
+        public String SOUND_MUSIC = "music", 
+        public String SOUND_CLICK = "click", 
+        public String SOUND_MATCH_1 = "match_1", 
+        public String SOUND_MATCH_2 = "match_2", 
+        public String SOUND_MATCH_3 = "match_3", 
+        public String SOUND_MATCH_4 = "match_4", 
+        public String SOUND_MATCH_5 = "match_5", 
+        public String SOUND_DROP_1 = "drop_1", 
+        public String SOUND_DROP_2 = "drop_2", 
+        public String SOUND_DROP_3 = "drop_3", 
+        public String SOUND_LINE = "line", 
+        public String SOUND_KILL_COLOR = "kill_color", 
+        public String SOUND_LOSE = "lose", 
+        public String SOUND_BOOM = "boom", 
+        public String SOUND_AWESOME = "awesome", 
+        public String SOUND_EXCHANGE = "exchange", 
+        public String SOUND_WIN = "win"
 }

@@ -35,10 +35,11 @@ function init() {
     Constants.g_isPC = !Utils.IsMobileBrowser();
     Constants.W = StateManager.getInnerWidth();
     Constants.H = StateManager.getInnerHeight();
-    new StateManager(e);
     
     var viewporter = new Viewporter(); 
     viewporter.prepareVisualViewport()
+    
+    new StateManager(e);
 }
 
 init();

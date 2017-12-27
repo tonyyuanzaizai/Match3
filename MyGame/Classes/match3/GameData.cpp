@@ -1,5 +1,5 @@
-    //TODO lihua
-    public class GameData {
+//TODO lihua
+public class GameData {
         public GameData() {
             this.levelsCompleted = 0;
             this.totalScore = 0;
@@ -861,33 +861,42 @@
                 chip_goal_count: 0
             }]
         }
-         
-        e.getInstance = function() {
-            return this.instance == null && (this.instance = new e), this.instance
-        }, 
-        e.prototype.save = function() {
+        
+        private static instance;
+        public static getInstance = function() {
+            return this.instance == null && (this.instance = new GameData), this.instance
+        }
+        
+        // 存档 level
+        public save = function() {
             try {
                 window.localStorage.setItem("levelsCompleted", this.levelsCompleted.toString()), window.localStorage.setItem("totalScore", this.totalScore.toString())
             } catch (e) {}
-        }, 
-        e.prototype.load = function() {
+        }
+        //恢复档位 level
+        public load = function() {
             try {
                 this.levelsCompleted = +window.localStorage.getItem("levelsCompleted") || 0, this.totalScore = +window.localStorage.getItem("totalScore") || 0
             } catch (e) {}
-        }, 
-        e.prototype.onWinLevel = function(e, t) {
+        } 
+        
+        public onWinLevel = function(e, t) {
             this.totalScore += t, e == this.levelsCompleted && (this.levelsCompleted = e + 1, this.levelsCompleted > this.getTotalLevels() && (this.levelsCompleted = this.getTotalLevels())), this.save()
-        }, 
-        e.prototype.getTotalScore = function() {
+        }
+        
+        public getTotalScore = function() {
             return this.totalScore
-        }, 
-        e.prototype.levelsAvailable = function() {
+        }
+        
+        public levelsAvailable = function() {
             return Constants.g_DEBUG ? this.getTotalLevels() : this.levelsCompleted + 1
-        }, 
-        e.prototype.getLevelDef = function(e) {
+        }
+        
+        public getLevelDef = function(e) {
             return this.levels[e]
-        }, 
-        e.prototype.getTotalLevels = function() {
+        }
+        
+        public getTotalLevels = function() {
             return this.levels.length
         }
-    }
+}

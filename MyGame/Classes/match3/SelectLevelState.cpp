@@ -1,5 +1,5 @@
 public class SelectLevelButton extends DNButton {
-        function SelectLevelButton(t, n, r) {
+        public SelectLevelButton(t, n, r) {
             e.call(this, t, n), 
             this.locked = !1, 
             this.levelNum = r;
@@ -19,27 +19,30 @@ public class SelectLevelButton extends DNButton {
             }
         }
 
-        t.prototype.onMouseDown = function(t, n) {
+        public onMouseDown(t, n) {
             if (this.locked) return;
-            e.prototype.onMouseDown.call(this, t, n), this.touchY = n
+            super.onMouseDown.call(t, n);
+            this.touchY = n;
         }
         
-        t.prototype.onMouseUp = function(t, n) {
+        public onMouseUp(t, n) {
             if (Math.abs(n - this.touchY) > 30) {
                 this.deselect();
-                return
+                return;
             }
-            e.prototype.onMouseUp.call(this, t, n)
+            super.onMouseUp(t, n)
         } 
 
-        t.prototype.runFunc = function() {
+        //@override
+        public runFunc() {
+            //onLevelTouch(this.levelNum)
             StateManager.g_instance.pushState(new ShadeInState(new PlayState(this.levelNum, !0)))
         }
 }
     
     
 public class SelectLevelState extends GameState {
-        function SelectLevelState() {
+        public SelectLevelState() {
             var t = this;
             e.call(this), 
             this.touchPointY = 0, 
@@ -78,46 +81,47 @@ public class SelectLevelState extends GameState {
             this.addChild(f), 
             this.checkConstrains()
         }
-        public onExitTouch = function() {
+        
+        public onExitTouch() {
             StateManager.g_instance.pushState(new ShadeInState(new MainMenuState))
         }
         
-        public onLevelTouch = function(e) {
+        public onLevelTouch(e) {
             StateManager.g_instance.pushState(new ShadeInState(new PlayState(e, !0)))
         } 
 
-        public onMouseDown = function(t, n) {
+        public onMouseDown(t, n) {
             e.prototype.onMouseDown.call(this, t, n), this.touchPointY = this.layer.y - n, this.slidePositions.length = 0, this.slidePositions.push({
                 liveTime: this.liveTime,
                 y: n
             })
         }
         
-        public update = function(t) {
+        public update(t) {
             e.prototype.update.call(this, t), 
             StateManager.g_instance.isMouseDownNow() || this.ySpeed != 0 && (this.layer.y += this.ySpeed * t, this.ySpeed > 0 ? (this.ySpeed -= t * this.yAcc, this.ySpeed < 0 && (this.ySpeed = 0)) : (this.ySpeed += t * this.yAcc, this.ySpeed > 0 && (this.ySpeed = 0))), 
             this.checkConstrains()
         }
         
-        public onMouseMove = function(t, n) {
+        public onMouseMove(t, n) {
             e.prototype.onMouseMove.call(this, t, n), this.layer.y = n + this.touchPointY, this.checkConstrains(), this.slidePositions.push({
                 liveTime: this.liveTime,
                 y: n
             }), this.slidePositions.length > 100 && (this.calcSpeedCache = this.calcYSpeed(), this.slidePositions.length = 0)
         }
         
-        public checkConstrains = function() {
+        public checkConstrains() {
             this.layer.y > 0 && (this.layer.y = 0, this.ySpeed = 0), Constants.g_isPC ? this.layer.y < Constants.ASSETS_HEIGHT - this.mapH && (this.layer.y = Constants.ASSETS_HEIGHT - this.mapH, this.ySpeed = 0) : this.layer.y < Constants.SCREEN_HEIGHT - this.mapH && (this.layer.y = Constants.SCREEN_HEIGHT - this.mapH, this.ySpeed = 0)
         }
         
-        public onMouseUp = function(t, n) {
+        public onMouseUp(t, n) {
             e.prototype.onMouseUp.call(this, t, n), this.slidePositions.push({
                 liveTime: this.liveTime,
                 y: n
             }), this.ySpeed = this.calcYSpeed()
         }
         
-        public calcYSpeed = function() {
+        public calcYSpeed() {
             if (this.slidePositions.length < 2) return this.calcSpeedCache;
             var e = .2,
                 t;

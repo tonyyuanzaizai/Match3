@@ -1,4 +1,5 @@
 // TODO lihua
+// 背景+开始游戏按钮--跳转关卡选择
 public class MainMenuState extends GameState {
         public MainMenuState() {
             this.someThing = true; 
@@ -6,7 +7,9 @@ public class MainMenuState extends GameState {
             
             var n = new createjs.Container;
             this.addChild(n), 
-            n.x = Constants.ASSETS_WIDTH / 2, n.y = 690, n.scaleX = n.scaleY = 1.35;
+            n.x = Constants.ASSETS_WIDTH / 2, 
+            n.y = 690, 
+            n.scaleX = n.scaleY = 1.35;
             
             var r = new DNButton(Constants.IMAGE_BUTTON_PLAY, function() {
                 console.log("start button pressed"), 
@@ -47,29 +50,11 @@ public class MainMenuState extends GameState {
         }
         
         public configureYAlign() {
-            if (Constants.SCREEN_HEIGHT > Constants.ASSETS_HEIGHT) {
-                this.y = (Constants.SCREEN_HEIGHT - Constants.ASSETS_HEIGHT) / 2;
-                
-                var e = new createjs.Shape;
-                e.graphics.beginFill("#ffffff");
-                e.graphics.drawRect(0, Constants.ASSETS_HEIGHT, Constants.ASSETS_WIDTH, Constants.SCREEN_HEIGHT - Constants.ASSETS_HEIGHT + 1);
-                e.graphics.endFill();
-                this.addChild(e);
-                
-                var t = new createjs.Shape;
-                t.graphics.beginFill("#ffffff");
-                t.graphics.drawRect(0, Constants.ASSETS_HEIGHT - Constants.SCREEN_HEIGHT, Constants.ASSETS_WIDTH, Constants.SCREEN_HEIGHT - Constants.ASSETS_HEIGHT);
-                t.graphics.endFill();
-                this.addChild(t);
-            }
+            //场景修饰
         }
 
         public onOrientationChanged(t) {
-            e.prototype.onOrientationChanged.call(this, t), t || this.configureYAlign()
-        }
-
-        public init() {
-            e.prototype.init.call(this)
+            //
         }
         
         public runJelly() {
@@ -77,7 +62,7 @@ public class MainMenuState extends GameState {
         }
         
         public update(t) {
-            e.prototype.update.call(this, t)
+            //
         }
         
         /**
@@ -96,7 +81,7 @@ public class MainMenuState extends GameState {
         **/
         
         public onMouseDown(t, n) {
-            e.prototype.onMouseDown.call(this, t, n)
+            //
         }
         
         public onCreditsTouch() {

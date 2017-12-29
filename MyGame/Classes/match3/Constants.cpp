@@ -1,69 +1,79 @@
 //常量 TODO lihua
-public class Constants {
+#ifndef __Match3_Constants_H__
+#define __Match3_Constants_H__
 
-    public int W = -1;
-    public int H = -1;
-    public int g_wasSetSize = !1;
-    public int g_DEBUG = !1;
-    public int LOAD_COMPLETE = "LOAD_COMPLETE";
-    public int MOUSE_DOWN = "stagemousedown";
-    public int MOUSE_UP = "stagemouseup";
-    public int MOUSE_MOVE = "stagemousemove";
-    public int CELL_SIZE = 85;
-    public int FIELD_OFFSET_X = 9;
-    public int FIELD_OFFSET_Y = 250;
-    public int EXCHANGE_TIME = .22;
-    public int MATCH_TIME = .25;
-    public int GRAVITY_ACC = 2500;
-    public int ASSETS_WIDTH = 700;
-    public int ASSETS_HEIGHT = 900;
-    public int PIXEL_RATIO = 1;
-    public int SCREEN_HEIGHT = 900;
-    public int SCREEN_SCALE = 1;
-    public int DPI = -1;
-    public int g_isPC = !0;
-    public int DEBUG_MODE = !1;
-    public int COLOR_PINK = "#ffE5E5";
-    public int COLOR_BLUE = "#619CC4";
-    public int IMAGE_BUTTON_CLOSE = "button_close";
-    public int IMAGE_BUTTON_SOUND_ON = "button_sound_on";
-    public int IMAGE_BUTTON_SOUND_OFF = "button_sound_off";
-    public int IMAGE_BUTTON_EXIT = "button_exit";
-    public int IMAGE_BUTTON_PAUSE = "button_pause";
-    public int IMAGE_BUTTON_RESTART = "button_restart";
-    public int IMAGE_BUTTON_PLAY = "button_play";
-    public int IMAGE_AWESOME = "awesome";
-    public int IMAGE_SUPERB = "superb";
-    public int IMAGE_SHINING = "shining";
-    public int IMAGE_DROP = "drop";
-    public int IMAGE_BACK = "back";
-    public int IMAGE_DONUT = "donut";
-    public int IMAGE_ARROW_BONUS_VERT = "arrow_bonus_vert";
-    public int IMAGE_ARROW_BONUS_HOR = "arrow_bonus_hor";
-    public int IMAGE_BOMB = "bomb_bonus";
-    public int IMAGE_MESSAGE_WINDOW = "message_window";
-    public int IMAGE_HINT_ARROW = "hint_arrow";
-    public int IMAGE_GAMEOVER_CAPTION = "gameover_caption";
-    public int IMAGE_TITLE_MAIN_MENU_BACK = "main_menu_back";
-    public int IMAGE_SICKLE = "sickle";
-    public int IMAGE_ROTATE = "rotate";
-    public int IMAGE_BIG_SHINING = "big_shining";
-    public int IMAGE_POINTS_CONTROL_BIG = "point_control_big";
-    public int IMAGE_POINTS_CONTROL_SMALL = "point_control_small";
-    public int IMAGE_LEVEL_BUTTON = "level_button";
-    public int IMAGE_DIRT = "dirt";
-    public int IMAGE_GUI = "gui";
-    public int IMAGE_LOCK = "lock";
-    public int IMAGE_OUT_OF_MOVES = "out_of_moves";
-    public int IMAGE_WIN_CAPTION = "win_caption";
-    public int IMAGE_STONE_HEART = "stone_heart";
-    public int IMAGE_TASK_PANEL = "task_panel";
-    public int IMAGE_HEART_PARTICLE = "heart_particle";
-    public int IMAGE_WIN_STRINGS = "win_strings";
-    public int IMAGE_GLOBAL_MAP = "global_map";
-    public int IMAGE_CELL = "cell";
-    public int IMAGE_BORDER_SIDE = "border_side";
-    public int IMAGE_BORDER_CORNER = "border_corner";
-    public int IMAGE_SELECT_LEVEL_BACK = "select_level_back";
-    public int IMAGE_BUTTON_MORE_GAMES = "button_more_games";
+#include "cocos2d.h"
+
+class Constants
+{
+
+public:
+    static int W;
+    static int H;
+    virtual bool init();
+    /**
+    static int g_DEBUG = false;
+    static int LOAD_COMPLETE = "LOAD_COMPLETE";
+    static int MOUSE_DOWN = "stagemousedown";
+    static int MOUSE_UP = "stagemouseup";
+    static int MOUSE_MOVE = "stagemousemove";
+    static int CELL_SIZE = 85;
+    static int FIELD_OFFSET_X = 9;
+    static int FIELD_OFFSET_Y = 250;
+    static int EXCHANGE_TIME = .22;
+    static int MATCH_TIME = .25;
+    static int GRAVITY_ACC = 2500;
+    static int ASSETS_WIDTH = 700;
+    static int ASSETS_HEIGHT = 900;
+    static int PIXEL_RATIO = 1;
+    static int SCREEN_HEIGHT = 900;
+    static int SCREEN_SCALE = 1;
+    static int DPI = -1;
+    static int DEBUG_MODE = !1;
+    static int COLOR_PINK = "#ffE5E5";
+    static int COLOR_BLUE = "#619CC4";
+    static int IMAGE_BUTTON_CLOSE = "button_close";
+    static int IMAGE_BUTTON_SOUND_ON = "button_sound_on";
+    static int IMAGE_BUTTON_SOUND_OFF = "button_sound_off";
+    static int IMAGE_BUTTON_EXIT = "button_exit";
+    static int IMAGE_BUTTON_PAUSE = "button_pause";
+    static int IMAGE_BUTTON_RESTART = "button_restart";
+    static int IMAGE_BUTTON_PLAY = "button_play";
+    static int IMAGE_AWESOME = "awesome";
+    static int IMAGE_SUPERB = "superb";
+    static int IMAGE_SHINING = "shining";
+    static int IMAGE_DROP = "drop";
+    static int IMAGE_BACK = "back";
+    static int IMAGE_DONUT = "donut";
+    static int IMAGE_ARROW_BONUS_VERT = "arrow_bonus_vert";
+    static int IMAGE_ARROW_BONUS_HOR = "arrow_bonus_hor";
+    static int IMAGE_BOMB = "bomb_bonus";
+    static int IMAGE_MESSAGE_WINDOW = "message_window";
+    static int IMAGE_HINT_ARROW = "hint_arrow";
+    static int IMAGE_GAMEOVER_CAPTION = "gameover_caption";
+    static int IMAGE_TITLE_MAIN_MENU_BACK = "main_menu_back";
+    static int IMAGE_SICKLE = "sickle";
+    static int IMAGE_ROTATE = "rotate";
+    static int IMAGE_BIG_SHINING = "big_shining";
+    static int IMAGE_POINTS_CONTROL_BIG = "point_control_big";
+    static int IMAGE_POINTS_CONTROL_SMALL = "point_control_small";
+    static int IMAGE_LEVEL_BUTTON = "level_button";
+    static int IMAGE_DIRT = "dirt";
+    static int IMAGE_GUI = "gui";
+    static int IMAGE_LOCK = "lock";
+    static int IMAGE_OUT_OF_MOVES = "out_of_moves";
+    static int IMAGE_WIN_CAPTION = "win_caption";
+    static int IMAGE_STONE_HEART = "stone_heart";
+    static int IMAGE_TASK_PANEL = "task_panel";
+    static int IMAGE_HEART_PARTICLE = "heart_particle";
+    static int IMAGE_WIN_STRINGS = "win_strings";
+    static int IMAGE_GLOBAL_MAP = "global_map";
+    static int IMAGE_CELL = "cell";
+    static int IMAGE_BORDER_SIDE = "border_side";
+    static int IMAGE_BORDER_CORNER = "border_corner";
+    static int IMAGE_SELECT_LEVEL_BACK = "select_level_back";
+    static int IMAGE_BUTTON_MORE_GAMES = "button_more_games";
+    **/
 }
+
+#endif // __Match3_Constants_H__

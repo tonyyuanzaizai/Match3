@@ -1,8 +1,36 @@
+//PlayState.h
+#ifndef __PlayState_SCENE_H__
+#define __PlayState_SCENE_H__
+
+#include "cocos2d.h"
+
+class PlayState : public GameState
+{
+public:
+    // there's no 'id' in cpp, so we recommend returning the class instance pointer
+    static cocos2d::Scene* createScene();
+
+    // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
+    virtual bool init();
+    
+    // a selector callback
+    void menuCloseCallback(cocos2d::Ref* pSender);
+    
+    // implement the "static create()" method manually
+    CREATE_FUNC(PlayState);
+};
+
+#endif // __PlayState_SCENE_H__
+
+
+
+
+
 // TODO lihua
+//PlayState.cpp
+// 三消界面
 public class PlayState extends GameState{
         public PlayState(n, r) {
-            var i = this;
-            e.call(this), 
             this.INPUT_STATE_WAIT_SELECTION = "INPUT_STATE_WAIT_SELECTION", 
             this.INPUT_STATE_LOCK = "INPUT_STATE_LOCK", 
             this.INPUT_STATE_WAIT_SPAWN = "INPUT_STATE_WAIT_SPAWN", 
@@ -210,29 +238,29 @@ public class PlayState extends GameState{
             }
         }
 
-        t.prototype.onPauseClick = function() {
+        void PlayState::onPauseClick() {
             //StateManager.g_instance.pushState(new PauseState)//暂停按钮
         }, 
-        t.prototype.createChip = function(e, t, n) {
+        void PlayState::createChip(e, t, n) {
             var r = Utils.RandomRangeInt(1, this.chipTypesCount),
             i = new Chip(r, e, t, this.getYPosByYIndex(t), n);
             i.setIncexes(e, t), 
             this.addGameObjectAtPos(i, this.backChipsLayer, this.getXPosByXIndex(e), -Constants.CELL_SIZE), 
             this.field[e][t] = i
         }, 
-        t.prototype.createChipWithColorID = function(e, t, n, r) {
+        void PlayState::createChipWithColorID(e, t, n, r) {
             var i = new Chip(r, e, t, this.getYPosByYIndex(t), n);
             i.setIncexes(e, t), 
             this.addGameObjectAtPos(i, this.backChipsLayer, this.getXPosByXIndex(e), -Constants.CELL_SIZE), 
             this.field[e][t] = i
         }, 
-        t.prototype.getXPosByXIndex = function(e) {
+        void PlayState::getXPosByXIndex(e) {
             return e * Constants.CELL_SIZE + Constants.CELL_SIZE / 2 + Constants.FIELD_OFFSET_X
         }, 
-        t.prototype.getYPosByYIndex = function(e) {
+        void PlayState::getYPosByYIndex(e) {
             return e * Constants.CELL_SIZE + Constants.CELL_SIZE / 2 + Constants.FIELD_OFFSET_Y
         }, 
-        t.prototype.update = function(n) {
+        void PlayState::update(n) {
             e.prototype.update.call(this, n);
             if (this.waitWin) {
                 this.waitWinTime += n;
@@ -284,13 +312,13 @@ public class PlayState extends GameState{
                 this.scoreLabel.setText(s)
             }
         }, 
-        t.prototype.allChipsNormal = function() {
+        void PlayState::allChipsNormal() {
             for (var e = 0; e < this.fieldWidth; e++)
                 for (var t = 0; t < this.fieldHeight; t++)
                     if (this.field[e][t] != null && !this.field[e][t].isNormal()) return !1;
             return !0
         }, 
-        t.prototype.canExchange = function(e, t) {
+        void PlayState::canExchange(e, t) {
             try {
                 if (e == t) return !1;
                 if (e.isHole() || t.isHole()) return !1;
@@ -301,7 +329,7 @@ public class PlayState extends GameState{
             }
             return Math.abs(n) == 1 && r == 0 || Math.abs(r) == 1 && n == 0
         }, 
-        t.prototype.exchangeChips = function(e, t) {
+        void PlayState::exchangeChips(e, t) {
             var n = this;
             try {
                 var r = e.x,
@@ -327,11 +355,11 @@ public class PlayState extends GameState{
                 }, Constants.EXCHANGE_TIME * 1e3, createjs.Ease.linear), this.selectedChip = null, this.setInpunState(this.INPUT_STATE_LOCK)
             } catch (c) {}
         }, 
-        t.prototype.addConverToBonusEffect = function(e) {
+        void PlayState::addConverToBonusEffect(e) {
             var t = new ConvertToBonusEffect(e);
             this.addGameObjectAtPos(t, this.underChipsLayer, e.x, e.y - Constants.CELL_SIZE / 2)
         }, 
-        t.prototype.matchMatches = function(e) {
+        void PlayState::matchMatches(e) {
             try {
                 if (e.length != 0) {
                     switch (this.matchInARow) {
@@ -385,7 +413,7 @@ public class PlayState extends GameState{
                 console.log(o, "playstate::matchmatches")
             }
         }, 
-        t.prototype.matchBonus = function(e, t) {
+        void PlayState::matchBonus(e, t) {
             try {
                 if (e.getBonusType() == Chip.BONUS_4) {
                     SoundManager.g_instance.play(SoundManager.SOUND_LINE);
@@ -415,7 +443,7 @@ public class PlayState extends GameState{
                 e.getBonusType() == Chip.BONUS_BOMB && (this.boom(e), e.match(Chip.MATCH_REASON_I_AM_BONUS), t.match(Chip.MATCH_REASON_EXCHANGE_WIHT_BONUS)), this.setInpunState(this.INPUT_STATE_MATCHING)
             } catch (c) {}
         }, 
-        t.prototype.boom = function(e) {
+        void PlayState::boom(e) {
             try {
                 SoundManager.g_instance.play(SoundManager.SOUND_BOOM);
                 var t = e.getIndexX(),
@@ -427,10 +455,10 @@ public class PlayState extends GameState{
                 this.addGameObjectAtPos(o, this, e.x, e.y)
             } catch (u) {}
         },
-        t.prototype.validCoords = function(e, t) {
+        void PlayState::validCoords(e, t) {
             return e >= 0 && e < this.fieldWidth && t >= 0 && t < this.fieldHeight
         }, 
-        t.prototype.onExchangeEnded = function() {
+        void PlayState::onExchangeEnded() {
             try {
                 var e = this.swapChip1 != null || this.swapChip2 != null,
                     t = !1;
@@ -441,10 +469,10 @@ public class PlayState extends GameState{
                 console.log(r, "playstate::exchangeended")
             }
         }, 
-        t.prototype.decreseMoves = function() {
+        void PlayState::decreseMoves() {
             this.moves--, this.moves < 0 && (this.moves = 0), this.movesLabel.setText(this.moves.toString())
         }, 
-        t.prototype.findMatches = function() {
+        void PlayState::findMatches() {
             try {
                 var e = Array();
                 for (var t = 0; t < this.fieldHeight; t++) {
@@ -478,10 +506,10 @@ public class PlayState extends GameState{
             } catch (u) {}
             return e
         }, 
-        t.prototype.onMouseUp = function(t, n) {
+        void PlayState::onMouseUp(t, n) {
             e.prototype.onMouseUp.call(this, t, n), this.selectedChip = null
         }, 
-        t.prototype.onMouseDown = function(t, n) {
+        void PlayState::onMouseDown(t, n) {
             e.prototype.onMouseDown.call(this, t, n), n -= this.y;
             if (this.inputState != this.INPUT_STATE_WAIT_SELECTION) return;
             var r = this.checkChipSelection(t, n);
@@ -489,12 +517,13 @@ public class PlayState extends GameState{
                 if (r == this.selectedChip) return;
                 this.selectedChip ? this.canExchange(this.selectedChip, r) ? (this.lastMovedChip = this.selectedChip, this.exchangeChips(this.selectedChip, r), SoundManager.g_instance.play(SoundManager.SOUND_EXCHANGE)) : (this.selectedChip.deselect(), this.selectedChip = r, this.selectedChip.select()) : (this.selectedChip = r, this.selectedChip.select())
             }
-        }, t.prototype.onMouseMove = function(t, n) {
+        }
+        void PlayState::onMouseMove(t, n) {
             e.prototype.onMouseMove.call(this, t, n);
             if (this.inputState != this.INPUT_STATE_WAIT_SELECTION) return;
             this.onMouseDown(t, n)
-        }, 
-        t.prototype.shiftChips = function() {
+        }
+        void PlayState::shiftChips() {
             this.matchInARow++;
             var e = !1;
             for (var t = 0; t < this.fieldWidth; t++)
@@ -512,7 +541,7 @@ public class PlayState extends GameState{
                 }
             e ? this.setInpunState(this.INPUT_STATE_SHIFT) : this.spawnNewChips()
         }, 
-        t.prototype.spawnNewChips = function() {
+        void PlayState::spawnNewChips() {
             var e = 0;
             for (var t = 0; t < this.fieldWidth; t++) {
                 var n = -1;
@@ -523,14 +552,14 @@ public class PlayState extends GameState{
             }
             e > 0 ? this.setInpunState(this.INPUT_STATE_WAIT_SPAWN) : this.setInpunState(this.INPUT_STATE_WAIT_SELECTION)
         }, 
-        t.prototype.spawnDefinedChips = function(e) {
+        void PlayState::spawnDefinedChips(e) {
             for (var t = 0; t < this.fieldWidth; t++)
                 for (var n = 0; n < this.fieldHeight; n++) {
                     this.createChipWithColorID(t, n, (7 - n) * .13 + t * .11, e[n][t]);
                 }
             this.setInpunState(this.INPUT_STATE_WAIT_SPAWN)
         }, 
-        t.prototype.checkChipSelection = function(e, t) {
+        void PlayState::checkChipSelection(e, t) {
             for (var n = 0; n < this.fieldWidth; n++)
                 for (var r = 0; r < this.fieldHeight; r++) {
                     var i = this.field[n][r];
@@ -538,7 +567,7 @@ public class PlayState extends GameState{
                 }
             return null
         }, 
-        t.prototype.setInpunState = function(e) {
+        void PlayState::setInpunState(e) {
             try {
                 this.inputState = e, this.inputStateTime = 0;
                 if (this.inputState == this.INPUT_STATE_WAIT_SELECTION) {
@@ -565,17 +594,17 @@ public class PlayState extends GameState{
                 this.inputState = this.INPUT_STATE_WAIT_SELECTION
             }
         }, 
-        t.prototype.takeStockMatch = function(e) {
+        void PlayState::takeStockMatch(e) {
             var n = e.getIndexX(),
                 r = e.getIndexY();
             this.field[n][r] == e && this.goal == t.GOAL_COUNT && e.getColorID() == this.goalChipID && (this.chipGoalCount--, this.chipGoalCount <= 0 && (this.chipGoalCount = 0, this.win()), this.goalLabel.setText(this.chipGoalCount.toString()))
         }, 
-        t.prototype.clearCell = function(e) {
+        void PlayState::clearCell(e) {
             var n = e.getIndexX(),
                 r = e.getIndexY();
             this.field[n][r] == e && (this.goal == t.GOAL_COUNT && e.getColorID() == this.goalChipID && (this.chipGoalCount--, this.chipGoalCount <= 0 && (this.chipGoalCount = 0, this.win()), this.goalLabel.setText(this.chipGoalCount.toString())), (e.getMatchReason() == Chip.MATCH_REASON_BONUS_EFFECT_5 || e.getMatchReason() == Chip.MATCH_REASON_BONUS_EFFECT_4_HOR || e.getMatchReason() == Chip.MATCH_REASON_BONUS_EFFECT_4_VERT) && this.runParticleEffect(e.x, e.y - Constants.CELL_SIZE / 2), this.field[n][r] = null), this.tryClearDirt(n, r), e.isStoneHeart() || this.tryClearStoneHeart(n, r)
         }, 
-        t.prototype.tryClearDirt = function(e, n) {
+        void PlayState::tryClearDirt(e, n) {
             var r = this.fieldDirt[e][n];
             r && (createjs.Tween.get(r, {
                 loop: !1
@@ -583,23 +612,23 @@ public class PlayState extends GameState{
                 alpha: 0
             }, 250, createjs.Ease.linear), this.fieldDirt[e][n] = null, --this.dirtCount == 0 && this.win()), this.goal == t.GOAL_DIRT && this.goalLabel.setText(this.dirtCount.toString())
         }, 
-        t.prototype.tryClearStoneHeart = function(e, t) {
+        void PlayState::tryClearStoneHeart(e, t) {
             try {
                 var n;
                 n = this.getChipAt(e + 1, t), n && n.isStoneHeart() && n.fallDown(), n = this.getChipAt(e - 1, t), n && n.isStoneHeart() && n.fallDown(), n = this.getChipAt(e, t + 1), n && n.isStoneHeart() && n.fallDown(), n = this.getChipAt(e, t - 1), n && n.isStoneHeart() && n.fallDown()
             } catch (r) {}
         }, 
-        t.prototype.finishLevel = function() {
+        void PlayState::finishLevel() {
             for (var e = 0; e < this.fieldWidth; e++)
                 for (var t = 0; t < this.fieldHeight; t++) this.field[e][t] != null && this.field[e][t].isNormal() && this.field[e][t].fallDown()
         }, 
-        t.prototype.lose = function() {
+        void PlayState::lose() {
             this.waitLose || (this.waitLose = !0, this.addGameObjectAt(new TimeIsUpEffect(Constants.IMAGE_OUT_OF_MOVES), this), SoundManager.g_instance.play(SoundManager.SOUND_LOSE))
         }, 
-        t.prototype.win = function() {
+        void PlayState::win() {
             this.waitWin || (this.waitWin = !0, SoundManager.g_instance.play(SoundManager.SOUND_WIN))
         }, 
-        t.prototype.addPointsAt = function(e, t) {
+        void PlayState::addPointsAt(e, t) {
             if (e.getBonusType() == null) {
                 var n = 40;
                 switch (t) {
@@ -628,7 +657,7 @@ public class PlayState extends GameState{
                 this.tryShowAwesome(i, s), this.tryShowSuperb(i, s), this.addGameObjectAtPos(r, this, i, s)
             }
         }, 
-        t.prototype.tryShowSuperb = function(e, t) {
+        void PlayState::tryShowSuperb(e, t) {
             if (this.matchInARow >= 3 && this.superbEffectTime != this.liveTime) {
                 this.superbEffectTime = this.liveTime;
                 var n = new SuperbEffect;
@@ -636,7 +665,7 @@ public class PlayState extends GameState{
             }
             return !1
         }, 
-        t.prototype.tryShowAwesome = function(e, t) {
+        void PlayState::tryShowAwesome(e, t) {
             if (this.matchInARow == 2 && this.awesomeEffectTime != this.liveTime) {
                 this.awesomeEffectTime = this.liveTime;
                 var n = new ShowAwesomeEffect;
@@ -644,7 +673,7 @@ public class PlayState extends GameState{
             }
             return !1
         }, 
-        t.prototype.findMoves = function() {
+        void PlayState::findMoves() {
             try {
                 var e = [
                         [2, -1],
@@ -697,7 +726,7 @@ public class PlayState extends GameState{
             }
             return !1
         }, 
-        t.prototype.findPattern = function(e, t, n, r, i, s) {
+        void PlayState::findPattern(e, t, n, r, i, s) {
             if (n <= 0) return !1;
             if (i < 0 || i >= this.fieldWidth || s < 0 || s >= this.fieldHeight) return !1;
             if (this.field[i][s] && this.field[i][s].isHole()) return !1;
@@ -708,16 +737,16 @@ public class PlayState extends GameState{
             }
             return !1
         }, 
-        t.prototype.setHintIndeces = function(e, t, n, r) {
+        void PlayState::setHintIndeces(e, t, n, r) {
             this.findedMatchPos1 = new createjs.Point(e, t), this.findedMatchPos2 = new createjs.Point(n, r)
         }, 
-        t.prototype.getChipAt = function(e, t) {
+        void PlayState::getChipAt(e, t) {
             return e < 0 || t < 0 || e >= this.fieldWidth || t >= this.fieldHeight || !this.field[e][t] || this.field[e][t].isHole() ? null : this.field[e][t]
         }, 
-        t.prototype.getColorAt = function(e, t) {
+        void PlayState::getColorAt(e, t) {
             return e < 0 || t < 0 || e >= this.fieldWidth || t >= this.fieldHeight || !this.field[e][t] == null ? -1 : this.field[e][t].getColorID()
         }, 
-        t.prototype.onShiftEnded = function() {
+        void PlayState::onShiftEnded() {
             if (this.liveTime != this.lastDropSoundTime) {
                 this.lastDropSoundTime = this.liveTime;
                 var e = Utils.RandomRangeInt(0, 2);
@@ -735,8 +764,7 @@ public class PlayState extends GameState{
                 }
             }
         }, 
-        t.prototype.configureYAlign = function() {
-            if (Constants.g_isPC) return;
+        void PlayState::configureYAlign() {
             if (Constants.SCREEN_HEIGHT < Constants.ASSETS_HEIGHT) this.y = Constants.SCREEN_HEIGHT - Constants.ASSETS_HEIGHT;
             else if (Constants.SCREEN_HEIGHT > Constants.ASSETS_HEIGHT) {
                 this.y = (Constants.SCREEN_HEIGHT - Constants.ASSETS_HEIGHT) / 2;
@@ -746,7 +774,7 @@ public class PlayState extends GameState{
                 t.graphics.beginFill("#b5389c"), t.graphics.drawRect(0, Constants.ASSETS_HEIGHT - Constants.SCREEN_HEIGHT, Constants.ASSETS_WIDTH, Constants.SCREEN_HEIGHT - Constants.ASSETS_HEIGHT), t.graphics.endFill(), this.addChild(t)
             }
         }, 
-        t.prototype.runParticleEffect = function(e, t) {
+        void PlayState::runParticleEffect(e, t) {
             var n = 80,
                 r = Utils.RandomRangeInt(3, 4);
             for (var i = 0; i < r; i++) {
@@ -758,6 +786,5 @@ public class PlayState extends GameState{
         t.g_curLevel = -1, 
         t.GOAL_DIRT = "GOAL_DIRT", 
         t.GOAL_COUNT = "GOAL_COUNT"
-        
 }   
     

@@ -1,11 +1,12 @@
 #include "AppDelegate.h"
-#include "HelloWorldScene.h"
+#include "MainMenuState.h"
+#include "Constants.h"
 
 USING_NS_CC;
 
 static cocos2d::Size designResolutionSize = cocos2d::Size(480, 320);
 static cocos2d::Size smallResolutionSize = cocos2d::Size(480, 320);
-static cocos2d::Size mediumResolutionSize = cocos2d::Size(1024, 768);
+static cocos2d::Size mediumResolutionSize = cocos2d::Size(1024,768);
 static cocos2d::Size largeResolutionSize = cocos2d::Size(2048, 1536);
 
 AppDelegate::AppDelegate() {
@@ -52,6 +53,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // Set the design resolution
     glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::NO_BORDER);
     Size frameSize = glview->getFrameSize();
+    CCLOG("applicationDidFinishLaunching: %f, %f", frameSize.width, frameSize.height);
     // if the frame's height is larger than the height of medium size.
     if (frameSize.height > mediumResolutionSize.height)
     {        
@@ -71,7 +73,18 @@ bool AppDelegate::applicationDidFinishLaunching() {
     register_all_packages();
 
     // create a scene. it's an autorelease object
-    auto scene = HelloWorld::createScene();
+    //auto scene = HelloWorldScene::createScene();
+    
+    // 'scene' is an autorelease object
+    auto scene = Scene::create();
+    
+    // init params
+    
+    // 'layer' is an autorelease object
+    //viewporter MainMenuState
+    auto layer = MainMenuState::create();
+    // add layer as a child to scene
+    scene->addChild(layer);
 
     // run
     director->runWithScene(scene);

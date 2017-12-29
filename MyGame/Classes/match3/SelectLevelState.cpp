@@ -39,12 +39,10 @@ public class SelectLevelButton extends DNButton {
             StateManager.g_instance.pushState(new ShadeInState(new PlayState(this.levelNum, !0)))
         }
 }
-    
-    
+
+// 关卡选择按钮，和背景滑动
 public class SelectLevelState extends GameState {
         public SelectLevelState() {
-            var t = this;
-            e.call(this), 
             this.touchPointY = 0, 
             this.layer = new createjs.Container, 
             this.tween = null, 
@@ -91,7 +89,10 @@ public class SelectLevelState extends GameState {
         } 
 
         public onMouseDown(t, n) {
-            e.prototype.onMouseDown.call(this, t, n), this.touchPointY = this.layer.y - n, this.slidePositions.length = 0, this.slidePositions.push({
+            e.prototype.onMouseDown.call(this, t, n), 
+            this.touchPointY = this.layer.y - n, 
+            this.slidePositions.length = 0, 
+            this.slidePositions.push({
                 liveTime: this.liveTime,
                 y: n
             })
@@ -104,21 +105,28 @@ public class SelectLevelState extends GameState {
         }
         
         public onMouseMove(t, n) {
-            e.prototype.onMouseMove.call(this, t, n), this.layer.y = n + this.touchPointY, this.checkConstrains(), this.slidePositions.push({
+            e.prototype.onMouseMove.call(this, t, n), 
+            this.layer.y = n + this.touchPointY, 
+            this.checkConstrains(), 
+            this.slidePositions.push({
                 liveTime: this.liveTime,
                 y: n
-            }), this.slidePositions.length > 100 && (this.calcSpeedCache = this.calcYSpeed(), this.slidePositions.length = 0)
+            }), 
+            this.slidePositions.length > 100 && (this.calcSpeedCache = this.calcYSpeed(), this.slidePositions.length = 0)
         }
         
         public checkConstrains() {
-            this.layer.y > 0 && (this.layer.y = 0, this.ySpeed = 0), Constants.g_isPC ? this.layer.y < Constants.ASSETS_HEIGHT - this.mapH && (this.layer.y = Constants.ASSETS_HEIGHT - this.mapH, this.ySpeed = 0) : this.layer.y < Constants.SCREEN_HEIGHT - this.mapH && (this.layer.y = Constants.SCREEN_HEIGHT - this.mapH, this.ySpeed = 0)
+            this.layer.y > 0 && (this.layer.y = 0, this.ySpeed = 0);
+            this.layer.y < Constants.SCREEN_HEIGHT - this.mapH && (this.layer.y = Constants.SCREEN_HEIGHT - this.mapH, this.ySpeed = 0)
         }
         
         public onMouseUp(t, n) {
-            e.prototype.onMouseUp.call(this, t, n), this.slidePositions.push({
+            e.prototype.onMouseUp.call(this, t, n), 
+            this.slidePositions.push({
                 liveTime: this.liveTime,
                 y: n
-            }), this.ySpeed = this.calcYSpeed()
+            }), 
+            this.ySpeed = this.calcYSpeed()
         }
         
         public calcYSpeed() {

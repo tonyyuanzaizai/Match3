@@ -32,7 +32,6 @@ function init() {
         console.log("Loading " + r[i]);
     }
     
-    Constants.g_isPC = !Utils.IsMobileBrowser();
     Constants.W = StateManager.getInnerWidth();
     Constants.H = StateManager.getInnerHeight();
     

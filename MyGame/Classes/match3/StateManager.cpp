@@ -59,13 +59,7 @@ public class StateManager {
                 SG_Hooks.setOrientationHandler(function(t) {
                     e.g_instance.onOrientationChanged()
                 }), 
-                SG_Hooks.setResizeHandler(function(t, n) {
-                    t && n && (Constants.g_wasSetSize = !0, 
-                    Constants.W = t, 
-                    Constants.H = n, 
-                    Constants.g_isPC ? e.g_instance.onResize(null) : e.g_instance.onOrientationChanged())
-                })
-            } catch (i) {
+             } catch (i) {
                 console.log("SG_Hooks error")
             }
             
@@ -124,11 +118,11 @@ public class StateManager {
         }
         
         public static getInnerWidth() {
-            return Constants.g_isPC ? window.innerWidth : window.innerWidth
+            return window.innerWidth
         }
         
         public static getInnerHeight() {
-            return Constants.g_isPC ? window.innerHeight : window.innerHeight
+            return window.innerHeight
         }
         
         //for PC
@@ -137,7 +131,7 @@ public class StateManager {
         }
         
         public onOrientationChanged() {
-            Constants.g_wasSetSize || (Constants.W = e.getInnerWidth(), Constants.H = e.getInnerHeight());
+            (Constants.W = e.getInnerWidth(), Constants.H = e.getInnerHeight());
             var t = this.isLandscape(),
             n = Constants.W,
             r = Constants.H;

@@ -22,10 +22,34 @@ bool SelectLevelState::init()
     CCLOG("HelloWorld::init: %f, %f, %f, %f, %f", g_width, g_height, origin.x, origin.y, visibleSize.width);
     /////////////////////////////
     // 2. add level button
+    //MenuItem *levelItem
+    /**
     auto levelItem = MenuItemImage::create(
                                            "assets/art/button_play.png",
                                            "assets/art/button_play.png",
                                            CC_CALLBACK_1(SelectLevelState::onLevelTouch, this));
+    **/
+    // SelectLevelButton
+    auto normalSprite = Sprite::create("assets/art/level_button.png");
+    Sprite *ssP = Sprite::create("assets/art/sel_1.png");
+    ssP->setPosition(Vec2(normalSprite->getContentSize().width/2, normalSprite->getContentSize().height/2));
+    normalSprite->addChild(ssP);//sel_1.png
+    
+    auto selectedSprite = Sprite::create("assets/art/level_button.png");
+    ssP = Sprite::create("assets/art/sel_1.png");
+    ssP->setPosition(Vec2(normalSprite->getContentSize().width/2, normalSprite->getContentSize().height/2));
+    selectedSprite->addChild(ssP);//sel_1.png
+    
+    auto disabledSprite = Sprite::create("assets/art/level_button.png");
+    ssP = Sprite::create("assets/art/lock.png");
+    ssP->setPosition(Vec2(normalSprite->getContentSize().width/2, normalSprite->getContentSize().height/2));
+    disabledSprite->addChild(ssP);
+
+    auto levelItem = MenuItemSprite::create(
+                                           normalSprite,
+                                           selectedSprite,
+                                           disabledSprite,
+                                           CC_CALLBACK_1(SelectLevelState::onLevelTouch, this));                                          
 	levelItem->setRotation(-90.0f);
     levelItem->setPosition(Vec2(origin.x + levelItem->getContentSize().width/2 ,
                                 origin.y + levelItem->getContentSize().height/2));

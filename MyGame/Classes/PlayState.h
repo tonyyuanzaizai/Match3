@@ -1,63 +1,93 @@
-#include "PlayState.h"
-#include "Constants.h"
+#ifndef __PlayState_LAYER_H__
+#define __PlayState_LAYER_H__
 
-USING_NS_CC;
+#include "cocos2d.h"
 
-bool PlayState::init()
+class PlayState : public GameState
 {
-    // 1. super init first
-    if(!GameState::init()) {
-        return false;
-    }
+
+//public init
+public:
+    virtual bool init();
+
+//public 变量    
+public:
+    int matchInARow;// = 0, 
+    int inputState;// = null, 
+    int goal;// = GOAL_DIRT, 
+    //TextField* goalLabel;// = new DNTextField("0", "font_", -3), 
+    int dirtCount;// = 0, 
+    int fieldWidth;// = 8, 
+    int fieldHeight;// = 8, 
+
+    Chip* selectedChip;// = null, 
+    Chip* swapChip1;// = null, 
+    Chip* swapChip2;// = null, 
+    Chip* lastMovedChip;// = null, 
+
+    Layer* dirtLayer;// = new createjs.Container, 
+    Layer* underChipsLayer;// = new createjs.Container, 
+    Layer* backChipsLayer;// = new createjs.Container, 
+    Layer* holeLayer;// = new createjs.Container, 
+    Layer* edgesLayer;// = new createjs.Container, 
+
+    int inputStateTime;// = 0, 
+    int score;// = 0, 
+    int tmpScore;// = 0, 
+    //TextField* scoreLabel = new DNTextField("00000", "font_", -3), 
+    int moves;// = 30, 
+    //TextField* movesLabel = new DNTextField("50", "font_", -3), 
+    Point findedMatchPos1;// = null, 
+    Point findedMatchPos2;// = null, 
+    //MoveHint* moveHint;// = null, 
+    int chipTypesCount;// = 5, 
+    int awesomeEffectTime;// = 0, 
+    int superbEffectTime;// = 0, 
+    bool waitLose;// = false, 
+    int waitLoseTime;// = 0, 
+    bool waitWin;// = false, 
+    int waitWinTime;// = 0, 
+    int lastDropSoundTime;// = -10, 
+    int lastDropID;// = -1, 
+    int g_curLevel;// = -1;
+
+
+//public static var
+public:
+    static int GOAL_DIRT;// = 1;//"GOAL_DIRT", 
+    static int GOAL_COUNT;// = 2;//"GOAL_COUNT"    
+
+    static int INPUT_STATE_WAIT_SELECTION;// = 1;//"INPUT_STATE_WAIT_SELECTION", 
+    static int INPUT_STATE_LOCK;// = 2;//"INPUT_STATE_LOCK", 
+    static int INPUT_STATE_WAIT_SPAWN;// = 3;//"INPUT_STATE_WAIT_SPAWN", 
+    static int INPUT_STATE_SHIFT;// = 4;//"INPUT_STATE_SHIFT", 
+    static int INPUT_STATE_MATCHING;// = 5;//"INPUT_STATE_MATCHING", 
+    static int INPUT_STATE_WAIT_NEXT_ROUND;// = 6;//"INPUT_STATE_WAIT_NEXT_ROUND", 
     
-    this.matchInARow = 0, 
-    this.inputState = null, 
-    this.goal = t.GOAL_DIRT, 
-    //this.goalLabel = new DNTextField("0", "font_", -3), 
-    this.dirtCount = 0, 
-    this.fieldWidth = 8, 
-    this.fieldHeight = 8, 
+    PlayState* g_instance;
+// public 方法
+public:
+
     
-    this.selectedChip = null, 
-    this.swapChip1 = null, 
-    this.swapChip2 = null, 
-    this.lastMovedChip = null, 
-    
-    this.dirtLayer = new createjs.Container, 
-    this.underChipsLayer = new createjs.Container, 
-    this.backChipsLayer = new createjs.Container, 
-    this.holeLayer = new createjs.Container, 
-    this.edgesLayer = new createjs.Container, 
-
-    this.inputStateTime = 0, this.score = 0, 
-    this.tmpScore = 0, 
-    //this.scoreLabel = new DNTextField("00000", "font_", -3), 
-    this.moves = 30, 
-    //this.movesLabel = new DNTextField("50", "font_", -3), 
-    this.findedMatchPos1 = null, 
-    this.findedMatchPos2 = null, 
-    this.moveHint = null, 
-    this.chipTypesCount = 5, 
-    this.awesomeEffectTime = 0, 
-    this.superbEffectTime = 0, 
-    this.waitLose = false, 
-    this.waitLoseTime = 0, 
-    this.waitWin = false, 
-    this.waitWinTime = 0, 
-    this.lastDropSoundTime = -10, 
-    this.lastDropID = -1, 
-    this.lastSound = null;
-    this.g_curLevel = -1;
-
-    return true;
-}
+    // implement the "static create()" method manually
+    CREATE_FUNC(PlayState);
+};
 
 
+int PlayState::GOAL_DIRT = 1;//"GOAL_DIRT", 
+int PlayState::GOAL_COUNT = 2;//"GOAL_COUNT"    
+
+int PlayState::INPUT_STATE_WAIT_SELECTION = 1;//"INPUT_STATE_WAIT_SELECTION", 
+int PlayState::INPUT_STATE_LOCK = 2;//"INPUT_STATE_LOCK", 
+int PlayState::INPUT_STATE_WAIT_SPAWN = 3;//"INPUT_STATE_WAIT_SPAWN", 
+int PlayState::INPUT_STATE_SHIFT = 4;//"INPUT_STATE_SHIFT", 
+int PlayState::INPUT_STATE_MATCHING = 5;//"INPUT_STATE_MATCHING", 
+int PlayState::INPUT_STATE_WAIT_NEXT_ROUND = 6;//"INPUT_STATE_WAIT_NEXT_ROUND", 
+PlayState* PlayState::g_instance = null;
+#endif // __PlayState_LAYER_H__
+/////
 
 
-
-
-//////////////
 
 //PlayState.h
 #ifndef __PlayState_SCENE_H__
@@ -66,17 +96,12 @@ bool PlayState::init()
 #include "cocos2d.h"
 
 
-// TODO lihua
+
 //PlayState.cpp
 // 三消界面
 public class PlayState extends GameState{
         public PlayState(n, r) {
-            this.INPUT_STATE_WAIT_SELECTION = "INPUT_STATE_WAIT_SELECTION", 
-            this.INPUT_STATE_LOCK = "INPUT_STATE_LOCK", 
-            this.INPUT_STATE_WAIT_SPAWN = "INPUT_STATE_WAIT_SPAWN", 
-            this.INPUT_STATE_SHIFT = "INPUT_STATE_SHIFT", 
-            this.INPUT_STATE_MATCHING = "INPUT_STATE_MATCHING", 
-            this.INPUT_STATE_WAIT_NEXT_ROUND = "INPUT_STATE_WAIT_NEXT_ROUND", 
+
             this.matchInARow = 0, 
             this.inputState = null, 
             this.goal = t.GOAL_DIRT, 
@@ -84,10 +109,12 @@ public class PlayState extends GameState{
             this.dirtCount = 0, 
             this.fieldWidth = 8, 
             this.fieldHeight = 8, 
+            
             this.selectedChip = null, 
             this.swapChip1 = null, 
             this.swapChip2 = null, 
             this.lastMovedChip = null, 
+            
             this.dirtLayer = new createjs.Container, 
             this.underChipsLayer = new createjs.Container, 
             this.backChipsLayer = new createjs.Container, 
@@ -105,13 +132,15 @@ public class PlayState extends GameState{
             this.chipTypesCount = 5, 
             this.awesomeEffectTime = 0, 
             this.superbEffectTime = 0, 
-            this.waitLose = !1, 
+            this.waitLose = false, 
             this.waitLoseTime = 0, 
-            this.waitWin = !1, 
+            this.waitWin = false, 
             this.waitWinTime = 0, 
             this.lastDropSoundTime = -10, 
             this.lastDropID = -1, 
             this.lastSound = null;
+            this.g_curLevel = -1;
+            
             try {
                 t.g_curLevel = n;
                 var s = AssetsManager.g_instance.getImage(Constants.IMAGE_BACK);
@@ -832,7 +861,8 @@ public class PlayState extends GameState{
             }
         }, 
         t.g_curLevel = -1, 
-        t.GOAL_DIRT = "GOAL_DIRT", 
-        t.GOAL_COUNT = "GOAL_COUNT"
+        
+        
 }   
+    
     

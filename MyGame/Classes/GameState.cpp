@@ -14,8 +14,6 @@ bool GameState::init()
     return true;
 }
 
-
-
 bool GameState::isInitiliazed() {
     return initiliazed;
 }

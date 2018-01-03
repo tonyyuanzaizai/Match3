@@ -87,12 +87,12 @@ public class WinState extends GameState {
             }, 300, createjs.Ease.linear), this.hiddingNow = !0)
         }, 
         t.prototype.onRestartTouch = function() {
-            StateManager.g_instance.pushState(new ShadeInCircleState(new PlayState(PlayState.g_curLevel, !1)))
+            StateManager.g_instance.pushState(new ShadeInCircleState(new PlayState(PlayState.g_curLevel, false)))
         }, 
         t.prototype.onExitTouch = function() {
             StateManager.g_instance.pushState(new ShadeInState(new SelectLevelState))
         }, 
         t.prototype.onNextTouch = function() {
-            PlayState.g_curLevel + 1 < GameData.getInstance().levelsAvailable() ? StateManager.g_instance.pushState(new ShadeInState(new PlayState(PlayState.g_curLevel + 1, !0))) : StateManager.g_instance.pushState(new ShadeInState(new SelectLevelState))
+            PlayState.g_curLevel + 1 < GameData.getInstance().levelsAvailable() ? StateManager.g_instance.pushState(new ShadeInState(new PlayState(PlayState.g_curLevel + 1, true))) : StateManager.g_instance.pushState(new ShadeInState(new SelectLevelState))
         }, t
 }

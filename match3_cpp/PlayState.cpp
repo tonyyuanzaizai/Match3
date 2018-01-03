@@ -79,7 +79,9 @@ public class PlayState extends GameState{
                 t.g_instance = this, 
                 this.chipTypesCount = GameData.getInstance().getLevelDef(n).chip_types, 
                 this.field = new Array(this.fieldWidth);
-                for (var o = 0; o < this.fieldWidth; o++) this.field[o] = new Array(this.fieldHeight);
+                for (var o = 0; o < this.fieldWidth; o++) {
+                    this.field[o] = new Array(this.fieldHeight);
+                }
                 this.addChild(this.holeLayer), 
                 this.addChild(this.dirtLayer), 
                 this.addChild(this.edgesLayer), 

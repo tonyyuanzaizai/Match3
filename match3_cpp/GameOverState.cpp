@@ -39,7 +39,7 @@ public class GameOverState extends GameState {
         }
  
         t.prototype.onRestartTouch = function() {
-            StateManager.g_instance.pushState(new ShadeInCircleState(new PlayState(PlayState.g_curLevel, !1)))
+            StateManager.g_instance.pushState(new ShadeInCircleState(new PlayState(PlayState.g_curLevel, false)))
         }, 
         t.prototype.onExitTouch = function() {
             StateManager.g_instance.pushState(new ShadeInState(new MainMenuState))

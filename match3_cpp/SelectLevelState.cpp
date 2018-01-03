@@ -36,7 +36,7 @@ public class SelectLevelButton extends DNButton {
         //@override
         public runFunc() {
             //onLevelTouch(this.levelNum)
-            StateManager.g_instance.pushState(new ShadeInState(new PlayState(this.levelNum, !0)))
+            StateManager.g_instance.pushState(new ShadeInState(new PlayState(this.levelNum, true)))
         }
 }
 
@@ -85,7 +85,7 @@ public class SelectLevelState extends GameState {
         }
         
         public onLevelTouch(e) {
-            StateManager.g_instance.pushState(new ShadeInState(new PlayState(e, !0)))
+            StateManager.g_instance.pushState(new ShadeInState(new PlayState(e, true)))
         } 
 
         public onMouseDown(t, n) {

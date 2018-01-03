@@ -25,8 +25,8 @@ public:
 //public 变量    
 public:
     int levelsCompleted = 0;
-    int totalScore = 0;
-    int levels = [];
+    int totalScore;// = 0;
+    Vector<LevelDef*> levels;// = [];
 
 //static var
 private:

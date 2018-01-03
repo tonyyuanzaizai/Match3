@@ -127,8 +127,9 @@ GameData::GameData() {
     levelDef3.chip_goal = 0;
     levelDef3.chip_goal_count = 0;
     
-    
-
+    levels.push_back(levelDef1);
+    levels.push_back(levelDef2);
+    levels.push_back(levelDef3);
 }
 
 GameData::~GameData() {

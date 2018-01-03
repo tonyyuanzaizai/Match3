@@ -13,10 +13,10 @@ PlayState* PlayState::createPlayState(int curLevel, bool isTask) {
         layer.addChild(s);
 
         layer.chipTypesCount = GameData.getInstance().getLevelDef(curLevel).chip_types;
-        layer.field = new Array(layer.fieldWidth);
-        for (var o = 0; o < layer.fieldWidth; o++) {
-            layer.field[o] = new Array(layer.fieldHeight);
-        }
+        layer.field = new Chip* [layer.fieldWidth][layer.fieldHeight];
+        //for (var o = 0; o < layer.fieldWidth; o++) {
+        //    layer.field[o] = new Array();
+        //}
         
         layer.addChild(layer.holeLayer), 
         layer.addChild(layer.dirtLayer), 
@@ -126,11 +126,11 @@ PlayState* PlayState::createPlayState(int curLevel, bool isTask) {
                 
         layer.holeLayer.cache(0, 0, Constants.ASSETS_WIDTH, Constants.ASSETS_HEIGHT, 1);
         layer.edgesLayer.cache(0, 0, Constants.ASSETS_WIDTH, Constants.ASSETS_HEIGHT, 1);
-        layer.fieldDirt = new Array(layer.fieldWidth);
+        layer.fieldDirt = new Sprite* [layer.fieldWidth][layer.fieldHeight];//new Array(layer.fieldWidth);
         
-        for (var o = 0; o < this.fieldWidth; o++) {
-            layer.fieldDirt[o] = new Array(layer.fieldHeight);
-        }
+        //for (var o = 0; o < this.fieldWidth; o++) {
+        //    layer.fieldDirt[o] = new Array(layer.fieldHeight);
+        //}
         
         var E = GameData.getInstance().getLevelDef(curLevel).dirt;
         if (E) {
@@ -555,37 +555,66 @@ void PlayState::decreseMoves() {
 
 Vector<Chip*> PlayState::findMatches() {
     try {
-        var e = Array();
+        Vector<Chip*> e = new Vector<Chip*>();
         for (var t = 0; t < this.fieldHeight; t++) {
             for (var n = 0; n < this.fieldWidth;) {
-                var r = -1,
-                    i = 0,
-                    s = new Array;
+                int r = -1,
+                int i = 0,
+
+                Vector<Chip*> s = new Vector<Chip*>();
                 for (var o = n; o < this.fieldWidth; o++) {
-                    if (this.field[o][t] == null || this.field[o][t].isBonus() || this.field[o][t].getColorID() == -1) break;
-                    r == -1 && (r = this.field[o][t].getColorID());
-                    if (this.field[o][t].getColorID() != r) break;
-                    s.push(this.field[o][t]), i++
+                    if (this.field[o][t] == null || this.field[o][t].isBonus() || this.field[o][t].getColorID() == -1) {
+                        break;
+                    }
+                    if(r == -1){
+                        r = this.field[o][t].getColorID();
+                    }
+                    
+                    if (this.field[o][t].getColorID() != r) {
+                        break;
+                    }
+
+                    s->pushBack(this.field[o][t]);
+                    i++;
                 }
-                i >= 3 && e.push(s), i != 0 ? n += i : n++
+                
+                if(i >= 3) {
+                    e->pushBack(s);
+                }
+                i != 0 ? n += i : n++;
             }
         }
         for (var n = 0; n < this.fieldWidth; n++) {
             for (var t = 0; t < this.fieldHeight; t) {
-                var r = -1,
-                    i = 0,
-                    s = new Array;
+                int r = -1;
+                int i = 0;
+
+                Vector<Chip*> s = new Vector<Chip*>();
                 for (var o = t; o < this.fieldHeight; o++) {
-                    if (this.field[n][o] == null || this.field[n][o].isBonus() || this.field[n][o].getColorID() == -1) break;
-                    r == -1 && (r = this.field[n][o].getColorID());
-                    if (this.field[n][o].getColorID() != r) break;
-                    s.push(this.field[n][o]), i++
+                    if (this.field[n][o] == null || this.field[n][o].isBonus() || this.field[n][o].getColorID() == -1) {
+                        break;
+                    }
+                    if(r == -1){
+                        r = this.field[n][o].getColorID();
+                    }
+
+                    if (this.field[n][o].getColorID() != r) {
+                        break;
+                    }
+                    
+                    s->pushBack(this.field[n][o]);
+                    i++;
                 }
-                i >= 3 && e.push(s), i != 0 ? t += i : t++
+                
+                if(i >= 3) {
+                    e->pushBack(s);
+                }
+                
+                i != 0 ? t += i : t++;
             }
         }
     } catch (u) {}
-    return e
+    return e;
 }
 
 /*

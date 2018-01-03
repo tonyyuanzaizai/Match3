@@ -13,8 +13,8 @@ public:
 //public 变量    
 public:
     bool initiliazed;
-    Vector<GameState*> GameStates;
-    Vector<GameState*> newGameStates;
+    Vector<GameState*> gameObjects;
+    Vector<GameState*> newGameObjects;
     Vector<GameState*> gui;
 
 // public 方法

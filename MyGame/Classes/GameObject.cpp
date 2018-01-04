@@ -27,7 +27,7 @@ void GameObject::kill()
 
 bool GameObject::isDead()  
 {  
-    return this.killed;
+    return this->killed;
 }  
  
 void GameObject::onDead()  

@@ -19,7 +19,7 @@ public:
     void onWinLevel(int lvl, int score);
     int getTotalScore();
     int levelsAvailable();
-    LevelDef getLevelDef(int e);
+    LevelDef* getLevelDef(int e);
     int getTotalLevels();
 
 //public 变量    
@@ -33,6 +33,6 @@ private:
     static instance;
 };
 
-int GameData::instance = null;//"BONUS_4";
+int GameData::instance = nullptr;//"BONUS_4";
 #endif // __GameData_LAYER_H__
 //////

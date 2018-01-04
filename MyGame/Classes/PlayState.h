@@ -9,7 +9,7 @@ class PlayState : public GameState
 // public static function
 public:
     static PlayState* createPlayState(int curLevel, bool isTask);
-
+    void createPlayState(int curLevel, bool isTask);
 //public init
 public:
     virtual bool init();
@@ -113,7 +113,7 @@ public:
     bool findPattern(int e, int t, int n, int r, int i, int s);
     void setHintIndeces(int e, int t, int n, int r);
     Chip* getChipAt(int e, int t);
-    void getColorAt(int e, int t);
+    int getColorAt(int e, int t);
     void onShiftEnded();
     void configureYAlign();
     void runParticleEffect(int x, int y);

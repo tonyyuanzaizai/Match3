@@ -18,7 +18,7 @@ public:
     int[8][8] chips;//
     int chip_types;//: 5,
     int moves;//: 25,
-    int chip_goal//: 4,
+    int chip_goal;//: 4,
     int chip_goal_count;//: 13
 
 };

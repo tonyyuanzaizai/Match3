@@ -6,41 +6,59 @@ USING_NS_CC;
 Chip* Chip::createChip(int cake, int x, int y, int pos, float delay){
     Chip* layer = Chip::create();
 
-    layer->wasClear = false; //bool
-    layer->state = 0; //std::string --> int
-    layer->rotationSpeed = ; //int
-    layer->selected = false; //bool
-    layer->stateTime = 0;//int 
-    layer->rotationTimeOffset = Utils.RandomRange(0, 20), //int
-    layer->bonusType = 0; //std::string  --> int
-    layer->jellyAnim = false; //bool
-    layer->doubleMatched = false; //bool
-    layer->canBeMatched = true; //bool
-    layer->matchReason = 0; //std::string --> int
-    layer->hole = false; //bool
-    layer->stoneHeart = false; //bool
-    layer->spawnYPos = pos; //int
-    layer->colorID = cake; //int
-    layer->spawnDelay = delay; //float
+    layer->initChip(cake, x, y, pos, delay);
+    return layer;
+}
+
+
+void Chip::initChip(int cake, int x, int y, int pos, float delay) {
+    this->wasClear = false; //bool
+    this->state = 0; //std::string --> int
+    this->rotationSpeed = 0; //int
+    this->selected = false; //bool
+    this->stateTime = 0;//int
+    this->rotationTimeOffset = 1;//Utils.RandomRange(0, 20), //int
+    this->bonusType = 0; //std::string  --> int
+    this->jellyAnim = false; //bool
+    this->doubleMatched = false; //bool
+    this->canBeMatched = true; //bool
+    this->matchReason = 0; //std::string --> int
+    this->hole = false; //bool
+    this->stoneHeart = false; //bool
+    this->spawnYPos = pos; //int
+    this->colorID = cake; //int
+    this->spawnDelay = delay; //float
+    this->horizontal = false;
     
-    layer->indexX = x;
-    layer->indexY = y;
+    this->indexX = x;
+    this->indexY = y;
     
     if(cake != 9 && cake != 0) {
-        layer->chipPicture = AssetsManager.g_instance.getImage("cake_" + cake), 
-        layer->addChild(layer->chipPicture), 
-        layer->chipPicture.x = -layer->chipPicture.getBounds().width / 2, 
-        layer->chipPicture.y = -Constants.CELL_SIZE
+        //layer->chipPicture = AssetsManager.g_instance.getImage("cake_" + cake),
+        //int to string
+        //std::to_string(intValue);
+        //(stringstream()<<intValue).str();
+        //(stringstream()<<year<<"/"<<month<<"/"<<day).str();// 2014/10/24
+        
+        //std::string _pngpath = "assets/art/cake_";
+        //_pngpath = _pngpath + std::to_string(cake) + ".png";
+        std::string _pngpath = (std::stringstream()<<"assets/art/cake_"<<cake<<".png").str();
+        auto sp = Sprite::create(_pngpath);
+        this->addChild(sp, 0);
+        
+        this->chipPicture = sp;
+        //layer->chipPicture.x = -layer->chipPicture.getBounds().width / 2,
+        //layer->chipPicture.y = -Constants.CELL_SIZE
     }
-
     
-    layer->setState(STATE_SPAWN_NEW), 
+    
+    this->setState(STATE_SPAWN_NEW);
     
     if(cake == 9){
-        layer->convertToStoneHeart();
+        this->convertToStoneHeart();
     }
     
-    return layer;
+    //return this;
 }
 
 // on "init" you need to initialize your instance
@@ -59,54 +77,54 @@ bool Chip::init()
 
 // public 函数
 int Chip::getMatchReason() {
-    return this.matchReason
+    return this->matchReason;
 }
 bool Chip::isHorizontal() {
-    return this.horizontal
+    return this->horizontal;
 }
-int Chip::getBonusType = function() {
-    return this.bonusType
+int Chip::getBonusType() {
+    return this->bonusType;
 }
 int Chip::getColorID() {
-    return this.colorID
+    return this->colorID;
 }
 //Point Chip::getIndeces() {
 //    return new Point(this.indexX, this.indexY)
 //}
 int Chip::getIndexX() {
-    return this.indexX
+    return this->indexX;
 }
 int Chip::getIndexY() {
-    return this.indexY
+    return this->indexY;
 }
 void Chip::setIncexes(int x, int y) {
-    this.indexX = x;
-    this.indexY = y;
+    this->indexX = x;
+    this->indexY = y;
 } 
 bool Chip::isMatching() {
-    return this.state == this.STATE_MATCH
+    return this->state == STATE_MATCH;
 }
 void Chip::update(float e) {
-    this.stateTime += e;
-    switch (this.state) {
+    this->stateTime += e;
+    switch (this->state) {
         case STATE_NORMAL:
-            if (this.stoneHeart) {
+            if (this->stoneHeart) {
                 break;
             }
-            var n = this.stateTime * 9;
-            r = Math.sin(n) * .13;
-            this.scaleX = 1 + r;
-            this.scaleY = 1 - r;
-            if(n >= Math.PI * 1) {
-                this.scaleX = 1;
-                this.scaleY = 1;
+            float n = this->stateTime * 9;
+            float r = sin(n) * 0.13f;
+            this->setScaleX(1 + r);
+            this->setScaleY(1 - r);
+            if(n >= M_PI * 1) {
+                this->setScaleX(1);
+                this->setScaleY(1);
             }
             
-            this.canBeMatched = true;
+            this->canBeMatched = true;
             break;
         case STATE_EXCHANGE:
-            if(this.stateTime >= Constants.EXCHANGE_TIME){
-                this.setState(this.STATE_NORMAL);
+            if(this->stateTime >= Constants.EXCHANGE_TIME){
+                this->setState(STATE_NORMAL);
             }
             break;
         case STATE_SPAWN_NEW:
@@ -136,26 +154,29 @@ void Chip::update(float e) {
             this.x += e * this.speed.x;
             this.y += e * this.speed.y;
             this.rotation += this.rotationSpeed * e;
-            if(this.y >= 1e3){
-                this.kill();
+
+            if(this.y >= 1000){
+                this->kill();
             }
             break;
         case this.STATE_MATCH:
-            this.scaleY = 1 - this.stateTime * 1.5;
-            this.scaleX = 1 + this.stateTime * 1.5;
+            this->setScaleY(1 - this.stateTime * 1.5);
+            this->setScaleX(1 + this.stateTime * 1.5);
+            
             this.alpha = 1 - this.stateTime / Constants.MATCH_TIME;
-            if(this.stateTime >= Constants.MATCH_TIME / 2 && !this.wasClear){
-                PlayState.g_instance.addPointsAt(this, this.matchReason);
+            
+            if(this->stateTime >= Constants.MATCH_TIME / 2 && !this->wasClear){
+                PlayState.g_instance.addPointsAt(this, this->matchReason);
                 PlayState.g_instance.clearCell(this);
-                this.wasClear = true;
+                this->wasClear = true;
             }
 
             if(this.stateTime >= Constants.MATCH_TIME) {
-                this.kill();
+                this->kill();
             }
     }
-    if(this.shiningCircle){
-        this.shiningCircle.rotation += e * 20;
+    if(this->shiningCircle){
+        this->shiningCircle.rotation += e * 20;
     }
 }
 
@@ -201,7 +222,7 @@ void Chip::shiftDown(int y, int pos) {
     this.setState(this.STATE_SHIFT_DOWN);
 }
 
-void Chip::match(e) {
+void Chip::match(int e) {
     if (this.stoneHeart) {
         this.fallDown();
         return
@@ -251,9 +272,9 @@ bool Chip::isBonus() {
 }
 
 void Chip::convertToBonus(int bonusType, bool horizontal) {
-    this.horizontal = horizontal;
-    this.bonusType = bonusType;
-    this.removeAllChildren();
+    this->horizontal = horizontal;
+    this->bonusType = bonusType;
+    this->removeAllChildren();
     if (bonusType == t.BONUS_5) {
         var r = AssetsManager.g_instance.getImage("donut");
         this.addChild(r);
@@ -261,7 +282,7 @@ void Chip::convertToBonus(int bonusType, bool horizontal) {
         r.y = -r.getBounds().height
     }
     if (bonusType == t.BONUS_4) {
-        var r = AssetsManager.g_instance.getImage(this.horizontal ? Constants.IMAGE_ARROW_BONUS_HOR : Constants.IMAGE_ARROW_BONUS_VERT);
+        var r = AssetsManager.g_instance.getImage(this->horizontal ? Constants.IMAGE_ARROW_BONUS_HOR : Constants.IMAGE_ARROW_BONUS_VERT);
         this.addChild(r);
         r.x = -r.getBounds().width / 2;
         r.y = -r.getBounds().height

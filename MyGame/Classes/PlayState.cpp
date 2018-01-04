@@ -375,14 +375,14 @@ void PlayState::exchangeChips(Chip* e, Chip* t) {
         }).to({
             x: u,
             y: a
-        }, Constants.EXCHANGE_TIME * 1e3, createjs.Ease.linear).call(function() {
+        }, Constants.EXCHANGE_TIME * 1000, createjs.Ease.linear).call(function() {
             return n.onExchangeEnded()
         }), createjs.Tween.get(t, {
             loop: !1
         }).to({
             x: r,
             y: i
-        }, Constants.EXCHANGE_TIME * 1e3, createjs.Ease.linear), this.selectedChip = null, this.setInpunState(this.INPUT_STATE_LOCK)
+        }, Constants.EXCHANGE_TIME * 1000, createjs.Ease.linear), this.selectedChip = null, this.setInpunState(this.INPUT_STATE_LOCK)
     } catch (c) {}
 }
 

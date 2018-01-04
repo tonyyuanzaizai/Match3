@@ -6,38 +6,38 @@ USING_NS_CC;
 Chip* Chip::createChip(int cake, int x, int y, int pos, float delay){
     Chip* layer = Chip::create();
 
-    layer.wasClear = false, //bool
-    layer.state = null, //std::string
-    layer.rotationSpeed = 0, //int
-    layer.selected = false, //bool
-    layer.stateTime = 0,//int 
-    layer.rotationTimeOffset = Utils.RandomRange(0, 20), //int
-    layer.bonusType = null, //std::string
-    layer.jellyAnim = false, //bool
-    layer.doubleMatched = false, //bool
-    layer.canBeMatched = true, //bool
-    layer.matchReason = null, //std::string
-    layer.hole = false, //bool
-    layer.stoneHeart = false, //bool
-    layer.spawnYPos = pos, //int
-    layer.colorID = cake; //int
-    layer.spawnDelay = delay; //float
+    layer->wasClear = false; //bool
+    layer->state = 0; //std::string --> int
+    layer->rotationSpeed = ; //int
+    layer->selected = false; //bool
+    layer->stateTime = 0;//int 
+    layer->rotationTimeOffset = Utils.RandomRange(0, 20), //int
+    layer->bonusType = 0; //std::string  --> int
+    layer->jellyAnim = false; //bool
+    layer->doubleMatched = false; //bool
+    layer->canBeMatched = true; //bool
+    layer->matchReason = 0; //std::string --> int
+    layer->hole = false; //bool
+    layer->stoneHeart = false; //bool
+    layer->spawnYPos = pos; //int
+    layer->colorID = cake; //int
+    layer->spawnDelay = delay; //float
     
-    this.indexX = x;
-    this.indexY = y;
+    layer->indexX = x;
+    layer->indexY = y;
     
     if(cake != 9 && cake != 0) {
-        this.chipPicture = AssetsManager.g_instance.getImage("cake_" + cake), 
-        this.addChild(this.chipPicture), 
-        this.chipPicture.x = -this.chipPicture.getBounds().width / 2, 
-        this.chipPicture.y = -Constants.CELL_SIZE
+        layer->chipPicture = AssetsManager.g_instance.getImage("cake_" + cake), 
+        layer->addChild(layer->chipPicture), 
+        layer->chipPicture.x = -layer->chipPicture.getBounds().width / 2, 
+        layer->chipPicture.y = -Constants.CELL_SIZE
     }
 
     
-    this.setState(STATE_SPAWN_NEW), 
+    layer->setState(STATE_SPAWN_NEW), 
     
     if(cake == 9){
-        this.convertToStoneHeart();
+        layer->convertToStoneHeart();
     }
     
     return layer;

@@ -17,16 +17,16 @@ public:
 //public 变量    
 public:
     bool wasClear; //bool
-    std::string state; //std::string
+    int state; //std::string
     int rotationSpeed; //int
     bool selected; //bool
     int stateTime; //int 
     int rotationTimeOffset; //int
-    std::string bonusType; //std::string
+    int bonusType; //std::string
     bool jellyAnim; //bool
     bool doubleMatched; //bool
     bool canBeMatched; //bool
-    std::string matchReason; //std::string
+    int matchReason; //std::string
     bool hole; //bool
     bool stoneHeart; //bool
 

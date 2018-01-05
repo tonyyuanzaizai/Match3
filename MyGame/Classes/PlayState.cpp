@@ -1,6 +1,7 @@
 #include "GameState.h"
 #include "PlayState.h"
-#include "Constants::h"
+#include "Chip.h"
+#include "Constants.h"
 
 USING_NS_CC;
 
@@ -29,7 +30,7 @@ void PlayState::initPlayState(int curLevel, bool isTask) {
         this->addChild(this->underChipsLayer);
         this->addChild(this->backChipsLayer);
 
-        this->matchInARow = 0, 
+        this->matchInARow = 0;
 
         //初始化match3 格子信息, this->field
         this->spawnDefinedChips(GameData.getInstance().getLevelDef(curLevel).chips);
@@ -51,7 +52,8 @@ void PlayState::initPlayState(int curLevel, bool isTask) {
                     if (f > 0 && u[f - 1][a] != 0 && a < this->fieldWidth - 1 && u[f][a + 1] != 0) {
                         var p = AssetsManager.g_instance.getImage(Constants::IMAGE_BORDER_CORNER);
                         p.x = l + Constants::CELL_SIZE + 8 - 4;
-                        p.y = c - 4, p.rotation = 90; 
+                        p.y = c - 4;
+                        p.rotation = 90;
                         this->edgesLayer->addChild(p);
                     }
                     if (f < this->fieldHeight - 1 && u[f + 1][a] != 0 && a > 0 && u[f][a - 1] != 0) {
@@ -108,7 +110,8 @@ void PlayState::initPlayState(int curLevel, bool isTask) {
                     if (f > 0 && u[f - 1][a] == 0 && a < this->fieldWidth - 1 && u[f][a + 1] == 0) {
                         var p = AssetsManager.g_instance.getImage(Constants::IMAGE_BORDER_CORNER);
                         p.x = m.x + Constants::CELL_SIZE + 8 - 4;
-                        p.y = m.y - 4, p.rotation = 90;
+                        p.y = m.y - 4;
+                        p.rotation = 90;
                         this->edgesLayer->addChild(p);
                     }
                     if (f < this->fieldHeight - 1 && u[f + 1][a] == 0 && a > 0 && u[f][a - 1] == 0) {
@@ -166,7 +169,7 @@ void PlayState::initPlayState(int curLevel, bool isTask) {
         var x = new createjs.Container;
         x.scaleX = x.scaleY = .7;
         var T = new DNButton(Constants::IMAGE_BUTTON_PAUSE, function() {
-            return i.onPauseClick()
+            return i.onPauseClick();
         });
         x.addChild(T);
         this->addGuiObject(T);
@@ -266,11 +269,11 @@ void PlayState::onPauseClick() {
 }
 
 void PlayState::createChip(int e, int t, float n) {
-    var r = Utils.RandomRangeInt(1, this->chipTypesCount),
-    i = Chip::createChip(r, e, t, this->getYPosByYIndex(t), n);
+    var r = Utils.RandomRangeInt(1, this->chipTypesCount);
+    Chip* i = Chip::createChip(r, e, t, this->getYPosByYIndex(t), n);
     i.setIncexes(e, t);
     this->addGameObjectAtPos(i, this->backChipsLayer, this->getXPosByXIndex(e), -Constants::CELL_SIZE);
-    this->field[e][t] = i
+    this->field[e][t] = i;
 }
 
 void PlayState::createChipWithColorID(int e, int t, float n, int r) {
@@ -395,8 +398,8 @@ void PlayState::exchangeChips(Chip* e, Chip* t) {
         this->field[f][l] = e;
         e.exchange(f, l);
         t.exchange(s, o);
-        this->swapChip1 = e, 
-        this->swapChip2 = t, 
+        this->swapChip1 = e;
+        this->swapChip2 = t;
         
         createjs.Tween.get(e, {
             loop: false
@@ -404,7 +407,7 @@ void PlayState::exchangeChips(Chip* e, Chip* t) {
             x: u,
             y: a
         }, Constants::EXCHANGE_TIME * 1000, createjs.Ease.linear).call(function() {
-            return n.onExchangeEnded()
+            return n.onExchangeEnded();
         });
         
         createjs.Tween.get(t, {
@@ -541,17 +544,19 @@ void PlayState::matchBonus(Chip* e, Chip* t) {
 void PlayState::boom(Chip* e) {
     try {
         SoundManager.g_instance.play(SoundManager.SOUND_BOOM);
-        var t = e.getIndexX(),
-            n = e.getIndexY(),
-            r = 1;
-        for (var i = t - r; i <= t + r; i++)
+        var t = e.getIndexX();
+        var n = e.getIndexY();
+        var r = 1;
+        for (var i = t - r; i <= t + r; i++){
             for (var s = n - r; s <= n + r; s++) {
                 if(this->validCoords(i, s) && this->field[i][s] != null) {
                     this->field[i][s]->match(Chip::MATCH_REASON_BONUS_EFFECT_4_HOR);
                 }
             }
+        }
+
         var o = new AutoreleaseEffect;
-        this->addGameObjectAtPos(o, this, e.x, e.y)
+        this->addGameObjectAtPos(o, this, e.x, e.y);
     } catch (u) {}
 }
 
@@ -561,7 +566,7 @@ bool PlayState::validCoords(int e, int t) {
 
 void PlayState::onExchangeEnded() {
     try {
-        var e = this->swapChip1 != null || this->swapChip2 != null,
+        var e = this->swapChip1 != null || this->swapChip2 != null;
         var t = false;
         if(e){
             if(this->swapChip1 != null && this->swapChip1.isBonus()) {
@@ -687,14 +692,14 @@ void PlayState::onMouseDown(t, n) {
     var r = this->checkChipSelection(t, n);
     if (r) {
         if (r == this->selectedChip) return;
-        this->selectedChip ? this->canExchange(this->selectedChip, r) ? (this->lastMovedChip = this->selectedChip, this->exchangeChips(this->selectedChip, r), SoundManager.g_instance.play(SoundManager.SOUND_EXCHANGE)) : (this->selectedChip::deselect(), this->selectedChip = r, this->selectedChip::select()) : (this->selectedChip = r, this->selectedChip::select())
+        this->selectedChip ? this->canExchange(this->selectedChip, r) ? (this->lastMovedChip = this->selectedChip, this->exchangeChips(this->selectedChip, r), SoundManager.g_instance.play(SoundManager.SOUND_EXCHANGE)) : (this->selectedChip::deselect(), this->selectedChip = r, this->selectedChip::select()) : (this->selectedChip = r, this->selectedChip::select());
     }
 }
 
 void PlayState::onMouseMove(t, n) {
     e.prototype.onMouseMove.call(this, t, n);
     if (this->inputState != INPUT_STATE_WAIT_SELECTION) return;
-    this->onMouseDown(t, n)
+    this->onMouseDown(t, n);
 }
 */
 void PlayState::shiftChips() {
@@ -709,7 +714,7 @@ void PlayState::shiftChips() {
                 if (this->field[t][i] == null) {
                     e = true;
                     var s = i;
-                    this->field[t][n]->shiftDown(s, this->getYPosByYIndex(s)), 
+                    this->field[t][n]->shiftDown(s, this->getYPosByYIndex(s));
                     this->field[t][s] = this->field[t][n], 
                     this->field[t][n] = null;
                     break;
@@ -807,10 +812,10 @@ void PlayState::takeStockMatch(Chip* e) {
 }
 
 void PlayState::clearCell(Chip* e) {
-    var n = e.getIndexX(),
-    var r = e.getIndexY();
+    var n = e->getIndexX(),
+    var r = e->getIndexY();
     if(this->field[n][r] == e){
-        if(this->goal == t.GOAL_COUNT && e.getColorID() == this->goalChipID){
+        if(this->goal == t.GOAL_COUNT && e->getColorID() == this->goalChipID){
             this->chipGoalCount--;
             if(this->chipGoalCount <= 0){
                 this->chipGoalCount = 0;
@@ -820,17 +825,17 @@ void PlayState::clearCell(Chip* e) {
             this->goalLabel.setText(this->chipGoalCount.toString());
         }
         
-        if(e.getMatchReason() == Chip::MATCH_REASON_BONUS_EFFECT_5 || 
-            e.getMatchReason() == Chip::MATCH_REASON_BONUS_EFFECT_4_HOR || 
-            e.getMatchReason() == Chip::MATCH_REASON_BONUS_EFFECT_4_VERT) {
-            this->runParticleEffect(e.x, e.y - Constants::CELL_SIZE / 2);
+        if(e->getMatchReason() == Chip::MATCH_REASON_BONUS_EFFECT_5 || 
+            e->getMatchReason() == Chip::MATCH_REASON_BONUS_EFFECT_4_HOR || 
+            e->getMatchReason() == Chip::MATCH_REASON_BONUS_EFFECT_4_VERT) {
+            this->runParticleEffect(e->x, e->y - Constants::CELL_SIZE / 2);
         }
         
         this->field[n][r] = null;
     }
     
     this->tryClearDirt(n, r);
-    if(e.isStoneHeart()){
+    if(e->isStoneHeart()){
         //
     }
     else {
@@ -961,7 +966,7 @@ bool PlayState::tryShowSuperb(int e, int t) {
         if(n.x > Constants::ASSETS_WIDTH - 120) {
             n.x = Constants::ASSETS_WIDTH - 120;
         }
-        this->score += 500, 
+        this->score += 500;
         
         return true;
     }

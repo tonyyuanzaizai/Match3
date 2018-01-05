@@ -1,4 +1,5 @@
 #include "Chip.h"
+#include "PlayState.h"
 #include "Constants.h"
 
 USING_NS_CC;
@@ -9,7 +10,6 @@ Chip* Chip::createChip(int cake, int x, int y, int pos, float delay){
     layer->initChip(cake, x, y, pos, delay);
     return layer;
 }
-
 
 void Chip::initChip(int cake, int x, int y, int pos, float delay) {
     this->wasClear = false; //bool
@@ -143,7 +143,7 @@ void Chip::update(float e) {
                 }
             }
             break;
-        case this->STATE_SHIFT_DOWN:
+        case STATE_SHIFT_DOWN:
             this->speed.y += this->acceleration.y * e;
             this->x += e * this->speed.x;
             this->y += e * this->speed.y;
@@ -153,7 +153,7 @@ void Chip::update(float e) {
                  PlayState.g_instance.onShiftEnded();
             }
             break;
-        case t.STATE_FALL_DOWN:
+        case STATE_FALL_DOWN:
             this->speed.y += this->acceleration.y * e;
             this->x += e * this->speed.x;
             this->y += e * this->speed.y;
@@ -163,7 +163,7 @@ void Chip::update(float e) {
                 this->kill();
             }
             break;
-        case this->STATE_MATCH:
+        case STATE_MATCH:
             this->setScaleY(1 - this->stateTime * 1.5);
             this->setScaleX(1 + this->stateTime * 1.5);
             
@@ -205,9 +205,9 @@ void Chip::setState(int e) {
                 scaleY: 1
             }, 170, createjs.Ease.linear);
             break;
-        case t.STATE_SPAWN_NEW:
-            this->speed = new createjs.Point(0, 500), 
-            this->acceleration = new createjs.Point(0, Constants.GRAVITY_ACC)
+        case STATE_SPAWN_NEW:
+            this->speed = new createjs.Point(0, 500);
+            this->acceleration = new createjs.Point(0, Constants.GRAVITY_ACC);//重力加速度
     }
 }
 
@@ -241,7 +241,7 @@ void Chip::match(int e) {
     if (!this->canBeMatched) {
         return;
     }
-    this->matchReason = e, 
+    this->matchReason = e;
     this->setState(STATE_MATCH);
 }
 
@@ -279,25 +279,25 @@ void Chip::convertToBonus(int bonusType, bool horizontal) {
     this->horizontal = horizontal;
     this->bonusType = bonusType;
     this->removeAllChildren();
-    if (bonusType == t.BONUS_5) {
+    if (bonusType == BONUS_5) {
         var r = AssetsManager.g_instance.getImage("donut");
         this->addChild(r);
         r.x = -r.getBounds().width / 2;
         r.y = -r.getBounds().height;
     }
-    if (bonusType == t.BONUS_4) {
+    if (bonusType == BONUS_4) {
         var r = AssetsManager.g_instance.getImage(this->horizontal ? Constants.IMAGE_ARROW_BONUS_HOR : Constants.IMAGE_ARROW_BONUS_VERT);
         this->addChild(r);
         r.x = -r.getBounds().width / 2;
         r.y = -r.getBounds().height;
     }
-    if (bonusType == t.BONUS_BOMB) {
+    if (bonusType == BONUS_BOMB) {
         var r = AssetsManager.g_instance.getImage(Constants.IMAGE_BOMB);
         this->addChild(r);
         r.x = -r.getBounds().width / 2;
         r.y = -r.getBounds().height;
     }
-    if(this->state != t.STATE_SPAWN_NEW) {
+    if(this->state != STATE_SPAWN_NEW) {
         PlayState.g_instance.addConverToBonusEffect(this);
     }
     this->canBeMatched = false; 
@@ -309,11 +309,11 @@ void Chip::convertToBonus(int bonusType, bool horizontal) {
 }
 
 void Chip::fallDown() {
-    if (this->state == t.STATE_FALL_DOWN) {
+    if (this->state == STATE_FALL_DOWN) {
         return;
     }
     
-    this->setState(t.STATE_FALL_DOWN);
+    this->setState(STATE_FALL_DOWN);
     this->chipPicture.y = -this->chipPicture->getContentSize().height / 2;
     
     this->y -= this->chipPicture->getContentSize().height / 2;
@@ -357,5 +357,5 @@ void Chip::convertToStoneHeart() {
 }
 
 bool Chip::isStoneHeart() {
-    return this->stoneHeart
+    return this->stoneHeart;
 }

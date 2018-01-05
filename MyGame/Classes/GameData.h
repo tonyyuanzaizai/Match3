@@ -30,9 +30,9 @@ public:
 
 //static var
 private:
-    static instance;
+    static GameData* instance;
 };
 
-int GameData::instance = nullptr;//"BONUS_4";
+GameData::instance = nullptr;//"BONUS_4";
 #endif // __Match3_GameData_LAYER_H__
 //////

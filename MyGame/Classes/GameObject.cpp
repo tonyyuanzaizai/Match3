@@ -6,7 +6,7 @@ USING_NS_CC;
 bool GameObject::init()
 {
     // 1. super init first
-    if(!Node::init()) {
+    if(!Layer::init()) {
         return false;
     }
 

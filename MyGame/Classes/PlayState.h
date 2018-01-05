@@ -9,7 +9,7 @@ class PlayState : public GameState
 // public static function
 public:
     static PlayState* createPlayState(int curLevel, bool isTask);
-    void createPlayState(int curLevel, bool isTask);
+    void initPlayState(int curLevel, bool isTask);
 //public init
 public:
     virtual bool init();

@@ -3,7 +3,7 @@
 
 #include "cocos2d.h"
 
-class GameObject : public cocos2d::Node
+class GameObject : public cocos2d::Layer
 {
 // 构造函数，默认参数
 public:

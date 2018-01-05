@@ -49,14 +49,14 @@ void GameState::update(float e) {
 void GameState::addGameObject(GameState* e) {
     gameObjects->pushBack(e);
 }
-void GameState::addGameObjectAt(GameState* e, Node* t) {
+void GameState::addGameObjectAt(GameState* e, Layer* t) {
     gameObjects->pushBack(e);
     
     if(t){
         t.addChild(e);
     }
 }
-void GameState::addGameObjectAtPos(GameState* e, Node* t, float n, float r) {
+void GameState::addGameObjectAtPos(GameState* e, Layer* t, float n, float r) {
     gameObjects->pushBack(e);
     
     if(t) {

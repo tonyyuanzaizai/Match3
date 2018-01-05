@@ -1,4 +1,5 @@
 #include "GameState.h"
+#include "GameObject.h"
 #include "Constants.h"
 
 USING_NS_CC;
@@ -6,14 +7,14 @@ USING_NS_CC;
 bool GameState::init()
 {
     // 1. super init first
-    if(!Node::init()) {
+    if(!GameObject::init()) {
         return false;
     }
 
     initiliazed = true;
-    gameObjects = new Vector<GameState*>();
-    newGameObjects = new Vector<GameState*>();
-    gui = new Vector<GameState*>();
+    //gameObjects = new std::vector<GameState*>();
+    //newGameObjects = new std::vector<GameState*>();
+    //gui = new std::vector<GameState*>();
     return true;
 }
 
@@ -32,37 +33,37 @@ void GameState::onMouseUp(e, t) {
 }
 */
 void GameState::addGuiObject(GameState* e) {
-    gui->pushBack(e);
+    gui.push_back(e);
     addGameObject(e);
 }
 void GameState::update(float e) {
     liveTime += e;
     // TODO 这里有可能有内存泄露，需要删除旧的gameObjects 指针
-    newGameObjects = new Vector<GameState*>();
-    for (var t = 0; t < this.gameObjects.length; t++) {
-        var n = gameObjects[t];
-        n.update(e);
-        n.isDead() ? n.onDead() : newGameObjects->pushBack(n);
+    newGameObjects.clear();
+    for (int t = 0; t < this->gameObjects.size(); t++) {
+        GameState* n = gameObjects[t];
+        n->update(e);
+        n->isDead() ? n->onDead() : newGameObjects.push_back(n);
     }
-    gameObjects = newGameObjects
+    gameObjects = newGameObjects;
 }
 void GameState::addGameObject(GameState* e) {
-    gameObjects->pushBack(e);
+    gameObjects.push_back(e);
 }
 void GameState::addGameObjectAt(GameState* e, Layer* t) {
-    gameObjects->pushBack(e);
+    gameObjects.push_back(e);
     
     if(t){
-        t.addChild(e);
+        t->addChild(e);
     }
 }
 void GameState::addGameObjectAtPos(GameState* e, Layer* t, float n, float r) {
-    gameObjects->pushBack(e);
+    gameObjects.push_back(e);
     
     if(t) {
-        t.addChild(e);
-        e.x = n;
-        e.y = r;
+        t->addChild(e);
+        e->setPositionX(n);
+        e->setPositionY(r);
     }
 } 
 

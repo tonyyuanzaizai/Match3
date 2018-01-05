@@ -1,7 +1,10 @@
 #ifndef __Match3_GameData_LAYER_H__
 #define __Match3_GameData_LAYER_H__
 
+#include "LevelDef.h"
 #include "cocos2d.h"
+
+#define LEVEL_COUNT 3
 
 class GameData
 {
@@ -24,15 +27,15 @@ public:
 
 //public 变量    
 public:
-    int levelsCompleted = 0;
+    int levelsCompleted;// = 0;
     int totalScore;// = 0;
-    Vector<LevelDef*> levels;// = [];
+    LevelDef* levels[LEVEL_COUNT];// = [];
 
 //static var
 private:
     static GameData* instance;
 };
 
-GameData::instance = nullptr;//"BONUS_4";
+GameData* GameData::instance = nullptr;//"BONUS_4";
 #endif // __Match3_GameData_LAYER_H__
 //////

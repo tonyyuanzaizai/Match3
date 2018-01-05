@@ -1,6 +1,6 @@
 #include "Chip.h"
 #include "PlayState.h"
-#include "Constants.h"
+#include "Constants::h"
 
 USING_NS_CC;
 
@@ -35,7 +35,7 @@ void Chip::initChip(int cake, int x, int y, int pos, float delay) {
     this->indexY = y;
     
     if(cake != 9 && cake != 0) {
-        //layer->chipPicture = AssetsManager.g_instance.getImage("cake_" + cake),
+        //layer->chipPicture = AssetsManager::g_instance->getImage("cake_" + cake),
         //int to string
         //std::to_string(intValue);
         //(stringstream()<<intValue).str();
@@ -49,7 +49,7 @@ void Chip::initChip(int cake, int x, int y, int pos, float delay) {
         
         this->chipPicture = sp;
         //layer->chipPicture.x = -layer->chipPicture.getBounds().width / 2,
-        //layer->chipPicture.y = -Constants.CELL_SIZE
+        //layer->chipPicture.y = -Constants::CELL_SIZE
     }
     
     
@@ -139,7 +139,7 @@ void Chip::update(float e) {
                     this->y = this->spawnYPos;
                     
                     this->setState(STATE_NORMAL);
-                    PlayState.g_instance.onShiftEnded();
+                    PlayState::g_instance->onShiftEnded();
                 }
             }
             break;
@@ -150,7 +150,7 @@ void Chip::update(float e) {
             if(this->y >= this->spawnYPos) {
                  this->y = this->spawnYPos;
                  this->setState(this->STATE_NORMAL);
-                 PlayState.g_instance.onShiftEnded();
+                 PlayState::g_instance->onShiftEnded();
             }
             break;
         case STATE_FALL_DOWN:
@@ -167,15 +167,15 @@ void Chip::update(float e) {
             this->setScaleY(1 - this->stateTime * 1.5);
             this->setScaleX(1 + this->stateTime * 1.5);
             
-            this->alpha = 1 - this->stateTime / Constants.MATCH_TIME;
+            this->alpha = 1 - this->stateTime / Constants::MATCH_TIME;
             
-            if(this->stateTime >= Constants.MATCH_TIME / 2 && !this->wasClear){
-                PlayState.g_instance.addPointsAt(this, this->matchReason);
-                PlayState.g_instance.clearCell(this);
+            if(this->stateTime >= Constants::MATCH_TIME / 2 && !this->wasClear){
+                PlayState::g_instance->addPointsAt(this, this->matchReason);
+                PlayState::g_instance->clearCell(this);
                 this->wasClear = true;
             }
 
-            if(this->stateTime >= Constants.MATCH_TIME) {
+            if(this->stateTime >= Constants::MATCH_TIME) {
                 this->kill();
             }
     }
@@ -199,7 +199,7 @@ void Chip::setState(int e) {
             break;
         case STATE_SHIFT_DOWN:
             createjs.Tween.get(this, {
-                loop: !1
+                loop: false
             }).to({
                 scaleX: 1,
                 scaleY: 1
@@ -207,7 +207,7 @@ void Chip::setState(int e) {
             break;
         case STATE_SPAWN_NEW:
             this->speed = new createjs.Point(0, 500);
-            this->acceleration = new createjs.Point(0, Constants.GRAVITY_ACC);//重力加速度
+            this->acceleration = new createjs.Point(0, Constants::GRAVITY_ACC);//重力加速度
     }
 }
 
@@ -229,7 +229,7 @@ void Chip::shiftDown(int y, int pos) {
 void Chip::match(int e) {
     if (this->stoneHeart) {
         this->fallDown();
-        return
+        return;
     }
     if (this->isHole()) {
         return;
@@ -280,32 +280,41 @@ void Chip::convertToBonus(int bonusType, bool horizontal) {
     this->bonusType = bonusType;
     this->removeAllChildren();
     if (bonusType == BONUS_5) {
-        var r = AssetsManager.g_instance.getImage("donut");
+        //var r = AssetsManager::g_instance->getImage("donut");
+        std::string _pngpath = (std::stringstream()<<"assets/art/cake_"<<"donut"<<".png").str();
+        auto r = Sprite::create(_pngpath);
+        
         this->addChild(r);
         r.x = -r.getBounds().width / 2;
         r.y = -r.getBounds().height;
     }
     if (bonusType == BONUS_4) {
-        var r = AssetsManager.g_instance.getImage(this->horizontal ? Constants.IMAGE_ARROW_BONUS_HOR : Constants.IMAGE_ARROW_BONUS_VERT);
+        //svar r = AssetsManager::g_instance->getImage(this->horizontal ? Constants::IMAGE_ARROW_BONUS_HOR : Constants::IMAGE_ARROW_BONUS_VERT);
+        std::string img = this->horizontal ? Constants::IMAGE_ARROW_BONUS_HOR : Constants::IMAGE_ARROW_BONUS_VERT;
+        std::string _pngpath = (std::stringstream()<<"assets/art/cake_"<<img<<".png").str();
+        auto r = Sprite::create(_pngpath);
+        
         this->addChild(r);
-        r.x = -r.getBounds().width / 2;
-        r.y = -r.getBounds().height;
+        r.x = -r->getBounds().width / 2;
+        r.y = -r->getBounds().height;
     }
     if (bonusType == BONUS_BOMB) {
-        var r = AssetsManager.g_instance.getImage(Constants.IMAGE_BOMB);
+        //var r = AssetsManager::g_instance->getImage(Constants::IMAGE_BOMB);
+        std::string _pngpath = (std::stringstream()<<"assets/art/cake_"<<Constants::IMAGE_BOMB<<".png").str();
+        auto r = Sprite::create(_pngpath);
         this->addChild(r);
-        r.x = -r.getBounds().width / 2;
-        r.y = -r.getBounds().height;
+        r.x = -r->getBounds().width / 2;
+        r.y = -r->getBounds().height;
     }
     if(this->state != STATE_SPAWN_NEW) {
-        PlayState.g_instance.addConverToBonusEffect(this);
+        PlayState::g_instance->addConverToBonusEffect(this);
     }
     this->canBeMatched = false; 
-    PlayState.g_instance.takeStockMatch(this);
+    PlayState::g_instance->takeStockMatch(this);
     this->colorID = -1;
     this->setState(this->STATE_NORMAL);
-    PlayState.g_instance.tryClearDirt(this->indexX, this->indexY);
-    PlayState.g_instance.tryClearStoneHeart(this->indexX, this->indexY);
+    PlayState::g_instance->tryClearDirt(this->indexX, this->indexY);
+    PlayState::g_instance->tryClearStoneHeart(this->indexX, this->indexY);
 }
 
 void Chip::fallDown() {
@@ -321,9 +330,9 @@ void Chip::fallDown() {
     this->speed = new createjs.Point(Utils.RandomRange(-100, 100), -250);
     
     this->rotationSpeed = Utils.RandomRange(-300, 300);
-    PlayState.g_instance.addChild(this);
+    PlayState::g_instance->addChild(this);
     if(!this->wasClear) {
-        PlayState.g_instance.clearCell(this);
+        PlayState::g_instance->clearCell(this);
         this->wasClear = true;
     }
 }
@@ -344,7 +353,7 @@ void Chip::convertToStoneHeart() {
     this->stoneHeart = true;
     this->colorID = -1;
     //std::string e = Constants::IMAGE_STONE_HEART;
-    //this->chipPicture = AssetsManager.g_instance.getImage(e);
+    //this->chipPicture = AssetsManager::g_instance->getImage(e);
     
     std::string _pngpath = (std::stringstream()<<"assets/art/"<<Constants::IMAGE_STONE_HEART<<".png").str();    
     auto sp = Sprite::create(_pngpath);

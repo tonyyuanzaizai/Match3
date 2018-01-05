@@ -17,10 +17,10 @@ public:
     bool isHorizontal();
     int getBonusType();
     int getColorID();
-    //Point getIndeces();
-    int getIndexX(); 
-    int getIndexY();
-    void setIncexes(int x, int y);
+    //Point getIndeces();//格子位置
+    int getIndexX(); //格子位置
+    int getIndexY(); //格子位置
+    void setIncexes(int x, int y);//格子位置
     //this.indexX = x, this.indexY = y
     bool isMatching();
     //return this.state == this.STATE_MATCH

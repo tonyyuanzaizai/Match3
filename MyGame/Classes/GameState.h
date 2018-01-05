@@ -1,6 +1,7 @@
 #ifndef __Match3_GameState_LAYER_H__
 #define __Match3_GameState_LAYER_H__
 
+#include "GameObject.h"
 #include "cocos2d.h"
 
 class GameState : public GameObject
@@ -13,9 +14,9 @@ public:
 //public 变量    
 public:
     bool initiliazed;
-    Vector<GameState*> gameObjects;
-    Vector<GameState*> newGameObjects;
-    Vector<GameState*> gui;
+    std::vector<GameState*> gameObjects;
+    std::vector<GameState*> newGameObjects;
+    std::vector<GameState*> gui;
 
 // public 方法
 public:
@@ -25,9 +26,9 @@ public:
     //void onMouseUp(e, t);
     void addGuiObject(GameState* e);
     void update(float e);
-    void addGameState(GameState* e);
-    void addGameStateAt(GameState* e, Layer* t);
-    void addGameObjectAtPos(GameState* e, Layer* t, float n, float r);
+    void addGameObject(GameState* e);
+    void addGameObjectAt(GameState* e, cocos2d::Layer* t);
+    void addGameObjectAtPos(GameState* e, cocos2d::Layer* t, float n, float r);
     void cleanup();
     void resume();//屏幕适应
     

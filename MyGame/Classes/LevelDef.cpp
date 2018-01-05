@@ -10,9 +10,9 @@ LevelDef::LevelDef() {
     this->chip_goal = 0;
     this->chip_goal_count = 0;
 
-    this->form = nullptr;
-    this->dirt = nullptr;
-    this->chips = nullptr;
+    this->form[0][0] =-1;
+    this->dirt[0][0] = -1;
+    this->chips[0][0] = -1;
 }
 
 LevelDef::~LevelDef() {

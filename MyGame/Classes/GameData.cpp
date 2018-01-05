@@ -11,7 +11,7 @@ GameData::GameData() {
 
     // level 1
     LevelDef* levelDef1 = new LevelDef();
-    levelDef1->form = {
+    int form1[8][8] = {
         {0, 1, 1, 1, 1, 1, 1, 0},
         {0, 1, 1, 1, 1, 1, 1, 0},
         {0, 1, 1, 1, 1, 1, 1, 0},
@@ -21,8 +21,9 @@ GameData::GameData() {
         {0, 1, 1, 1, 1, 1, 1, 0},
         {0, 0, 0, 0, 0, 0, 0, 0}
     };
-    levelDef1->dirt = null;
-    levelDef1->chips = {
+    memcpy(&levelDef1->form[0][0],&form1[0][0],sizeof(form1));
+    levelDef1->dirt[0][0] = -1;
+    int chips1[8][8] = {
         {0, 5, 3, 2, 1, 2, 5, 0},
         {0, 1, 2, 1, 2, 1, 4, 0},
         {0, 3, 1, 5, 1, 5, 1, 0},
@@ -32,6 +33,7 @@ GameData::GameData() {
         {0, 1, 2, 3, 1, 4, 1, 0},
         {0, 0, 0, 0, 0, 0, 0, 0}
     };
+    memcpy(&levelDef1->chips[0][0],&chips1[0][0],sizeof(chips1));
     levelDef1->chip_types = 5;
     levelDef1->moves = 25;
     levelDef1->chip_goal = 4;
@@ -39,7 +41,7 @@ GameData::GameData() {
 
     // level 2
     LevelDef* levelDef2 = new LevelDef();
-    levelDef2->form = {
+    int form2[8][8] = {
         {0, 0, 1, 0, 0, 1, 0, 0},
         {0, 1, 1, 1, 1, 1, 1, 0},
         {1, 1, 1, 1, 1, 1, 1, 1},
@@ -49,8 +51,9 @@ GameData::GameData() {
         {0, 1, 1, 1, 1, 1, 1, 0},
         {0, 0, 1, 0, 0, 1, 0, 0}
     };
-    levelDef2->dirt = null;
-    levelDef2->chips = {
+    memcpy(&levelDef2->form[0][0],&form2[0][0],sizeof(form2));
+    levelDef2->dirt[0][0] = -1;
+    int chips2[8][8] = {
         {0, 0, 4, 0, 0, 1, 0, 0},
         {0, 1, 2, 2, 3, 4, 5, 0},
         {2, 1, 3, 3, 4, 1, 2, 3},
@@ -60,6 +63,7 @@ GameData::GameData() {
         {0, 5, 1, 5, 4, 2, 2, 0},
         {0, 0, 5, 0, 0, 1, 0, 0}
     };
+    memcpy(&levelDef2->chips[0][0],&chips2[0][0],sizeof(chips2));
     levelDef2->chip_types = 5;
     levelDef2->moves = 30;
     levelDef2->chip_goal = 1;
@@ -67,7 +71,7 @@ GameData::GameData() {
 
     // level 3
     LevelDef* levelDef3 = new LevelDef();
-    levelDef3->form = {
+    int form3[8][8] = {
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 1, 1, 1, 1, 1, 1, 0},
         {0, 1, 1, 1, 1, 1, 1, 0},
@@ -77,7 +81,8 @@ GameData::GameData() {
         {0, 1, 1, 1, 1, 1, 1, 0},
         {0, 0, 0, 0, 0, 0, 0, 0}
     };
-    levelDef3->dirt = {
+    memcpy(&levelDef3->form[0][0],&form3[0][0],sizeof(form3));
+    int dirt3[8][8] = {
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 1, 1, 1, 1, 0, 0},
         {0, 0, 1, 1, 1, 1, 0, 0},
@@ -87,7 +92,8 @@ GameData::GameData() {
         {0, 0, 1, 1, 1, 1, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0}
     };
-    levelDef3->chips = {
+    memcpy(&levelDef3->dirt[0][0],&dirt3[0][0],sizeof(dirt3));
+    int chips3[8][8] = {
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 1, 2, 4, 3, 4, 5, 0},
         {0, 3, 3, 5, 2, 1, 5, 0},
@@ -97,25 +103,26 @@ GameData::GameData() {
         {0, 2, 1, 5, 5, 4, 2, 0},
         {0, 0, 0, 0, 0, 0, 0, 0}
     };
+    memcpy(&levelDef3->chips[0][0],&chips3[0][0],sizeof(chips3));
     levelDef3->chip_types = 6;
     levelDef3->moves = 40;
     levelDef3->chip_goal = 0;
     levelDef3->chip_goal_count = 0;
     
-    levels.push_back(levelDef1);
-    levels.push_back(levelDef2);
-    levels.push_back(levelDef3);
+    levels[0] = levelDef1;
+    levels[1] = levelDef2;
+    levels[2] = levelDef3;
 }
 
 GameData::~GameData() {
 }
 
-void GameData::getInstance() {
-    if(this->instance == null) {
-        this->instance = new GameData();
+GameData* GameData::getInstance() {
+    if(GameData::instance == nullptr) {
+        GameData::instance = new GameData();
     }
     
-    return this->instance;
+    return GameData::instance;
 }
 
 // 存档 level
@@ -152,9 +159,9 @@ int GameData::levelsAvailable() {
 }
 
 LevelDef* GameData::getLevelDef(int e) {
-    return this->levels.at(e);
+    return this->levels[e];
 }
 
 int GameData::getTotalLevels() {
-    return this->levels.size();
+    return LEVEL_COUNT;//this->levels.length
 }

@@ -117,6 +117,7 @@ public:
     void onShiftEnded();
     void configureYAlign();
     void runParticleEffect(int x, int y);
+    Sprite* getImage(char* img);
     
     // implement the "static create()" method manually
     CREATE_FUNC(PlayState);
@@ -132,7 +133,7 @@ int PlayState::INPUT_STATE_WAIT_SPAWN = 3;//"INPUT_STATE_WAIT_SPAWN",
 int PlayState::INPUT_STATE_SHIFT = 4;//"INPUT_STATE_SHIFT", 
 int PlayState::INPUT_STATE_MATCHING = 5;//"INPUT_STATE_MATCHING", 
 int PlayState::INPUT_STATE_WAIT_NEXT_ROUND = 6;//"INPUT_STATE_WAIT_NEXT_ROUND", 
-PlayState* PlayState::g_instance = null;
+PlayState* PlayState::g_instance = nullptr;
 #endif // __Match3_PlayState_LAYER_H__
 /////////////////////////////////////
 

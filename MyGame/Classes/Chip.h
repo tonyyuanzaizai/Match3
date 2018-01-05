@@ -1,5 +1,5 @@
-#ifndef __Chip_LAYER_H__
-#define __Chip_LAYER_H__
+#ifndef __Match3_Chip_LAYER_H__
+#define __Match3_Chip_LAYER_H__
 
 #include "cocos2d.h"
 
@@ -122,6 +122,6 @@ int Chip::STATE_SPAWN_NEW = 5;//"STATE_SPAWN_NEW";
 int Chip::STATE_FALL_DOWN = 6;//"STATE_FALL_DOWN"; 
 int Chip::STATE_HOLE = 7;//"STATE_HOLE";
 
-#endif // __Chip_LAYER_H__
+#endif // __Match3_Chip_LAYER_H__
 
 //////

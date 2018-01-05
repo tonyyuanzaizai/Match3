@@ -1,5 +1,5 @@
-#ifndef __GameObject_LAYER_H__
-#define __GameObject_LAYER_H__
+#ifndef __Match3_GameObject_LAYER_H__
+#define __Match3_GameObject_LAYER_H__
 
 #include "cocos2d.h"
 
@@ -32,4 +32,4 @@ public:
 
 };
 
-#endif // __GameObject_LAYER_H__
+#endif // __Match3_GameObject_LAYER_H__

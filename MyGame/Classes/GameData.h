@@ -1,5 +1,5 @@
-#ifndef __GameData_LAYER_H__
-#define __GameData_LAYER_H__
+#ifndef __Match3_GameData_LAYER_H__
+#define __Match3_GameData_LAYER_H__
 
 #include "cocos2d.h"
 
@@ -34,5 +34,5 @@ private:
 };
 
 int GameData::instance = nullptr;//"BONUS_4";
-#endif // __GameData_LAYER_H__
+#endif // __Match3_GameData_LAYER_H__
 //////

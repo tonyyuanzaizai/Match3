@@ -1,5 +1,5 @@
-#ifndef __PlayState_LAYER_H__
-#define __PlayState_LAYER_H__
+#ifndef __Match3_PlayState_LAYER_H__
+#define __Match3_PlayState_LAYER_H__
 
 #include "cocos2d.h"
 
@@ -133,7 +133,7 @@ int PlayState::INPUT_STATE_SHIFT = 4;//"INPUT_STATE_SHIFT",
 int PlayState::INPUT_STATE_MATCHING = 5;//"INPUT_STATE_MATCHING", 
 int PlayState::INPUT_STATE_WAIT_NEXT_ROUND = 6;//"INPUT_STATE_WAIT_NEXT_ROUND", 
 PlayState* PlayState::g_instance = null;
-#endif // __PlayState_LAYER_H__
+#endif // __Match3_PlayState_LAYER_H__
 /////////////////////////////////////
 
 

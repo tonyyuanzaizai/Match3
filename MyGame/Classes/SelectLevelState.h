@@ -1,5 +1,5 @@
-#ifndef __SelectLevelState_LAYER_H__
-#define __SelectLevelState_LAYER_H__
+#ifndef __Match3_SelectLevelState_LAYER_H__
+#define __Match3_SelectLevelState_LAYER_H__
 
 #include "cocos2d.h"
 
@@ -17,4 +17,4 @@ public:
     CREATE_FUNC(SelectLevelState);
 };
 
-#endif // __SelectLevelState_LAYER_H__
+#endif // __Match3_SelectLevelState_LAYER_H__

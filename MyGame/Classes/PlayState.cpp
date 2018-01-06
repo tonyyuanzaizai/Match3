@@ -11,7 +11,6 @@ PlayState* PlayState::createPlayState(int curLevel, bool isTask) {
     return layer;
 }
 
-
 void PlayState::initPlayState(int curLevel, bool isTask) {  
     try {
         PlayState::g_curLevel = curLevel;
@@ -35,14 +34,14 @@ void PlayState::initPlayState(int curLevel, bool isTask) {
         //初始化match3 格子信息, this->field
         this->spawnDefinedChips(GameData::getInstance()->getLevelDef(curLevel)->chips);
         
-        var u = GameData::getInstance()->getLevelDef(curLevel)->form;
+        int u[ROW][COLUMN] = GameData::getInstance()->getLevelDef(curLevel)->form;
         for (int a = 0; a < this->fieldWidth; a++){
             for (int f = 0; f < this->fieldHeight; f++){
                 if (u[f][a] == 0) {
-                    this->field[a][f]->convertToHole()；
+                    this->field[a][f]->convertToHole();
                     this->holeLayer->addChild(this->field[a][f]);
-                    var l = this->getXPosByXIndex(a) - Constants::CELL_SIZE / 2;
-                    var c = this->getYPosByYIndex(f) - Constants::CELL_SIZE;
+                    float l = this->getXPosByXIndex(a) - Constants::CELL_SIZE / 2;
+                    float c = this->getYPosByYIndex(f) - Constants::CELL_SIZE;
                     if (f > 0 && u[f - 1][a] != 0 && a > 0 && u[f][a - 1] != 0) {
                         auto h = this->getImage(Constants::IMAGE_BORDER_CORNER);
                         h.x = l - 4;
@@ -140,8 +139,8 @@ void PlayState::initPlayState(int curLevel, bool isTask) {
         //    this->fieldDirt[o] = new Array(this->fieldHeight);
         //}
         
-        var E = GameData::getInstance()->getLevelDef(curLevel)->dirt;
-        if (E) {
+        int E[ROW][COLUMN] = GameData::getInstance()->getLevelDef(curLevel)->dirt;
+        if (E[0][0] != -1) {
             this->goal = t.GOAL_DIRT;
             for (int a = 0; a < this->fieldWidth; a++){
                 for (int f = 0; f < this->fieldHeight; f++){
@@ -158,7 +157,7 @@ void PlayState::initPlayState(int curLevel, bool isTask) {
             this->goalLabel.setText(this->dirtCount.toString());
         }
         else {
-            this->goal = t.GOAL_COUNT;
+            this->goal = GOAL_COUNT;
             this->goalChipID = GameData::getInstance()->getLevelDef(curLevel)->chip_goal; 
             this->chipGoalCount = GameData::getInstance()->getLevelDef(curLevel)->chip_goal_count; 
             this->goalLabel.setText(this->chipGoalCount.toString());
@@ -277,8 +276,8 @@ void PlayState::createChip(int e, int t, float n) {
 }
 
 void PlayState::createChipWithColorID(int e, int t, float n, int r) {
-    var i = Chip::createChip(r, e, t, this->getYPosByYIndex(t), n);
-    i.setIncexes(e, t);
+    Chip* i = Chip::createChip(r, e, t, this->getYPosByYIndex(t), n);
+    i->setIncexes(e, t);
     this->addGameObjectAtPos(i, this->backChipsLayer, this->getXPosByXIndex(e), -Constants::CELL_SIZE);
     this->field[e][t] = i;
 }
@@ -346,7 +345,7 @@ void PlayState::update(float n) {
             this->tmpScore = this->score;
         }
 
-        var s = this->tmpScore.toString();
+        std::string s = this->tmpScore.toString();
         switch (s.length) {
             case 1:
                 s = "0000" + s;
@@ -360,7 +359,7 @@ void PlayState::update(float n) {
             case 4:
                 s = "0" + s
         }
-        this->scoreLabel.setText(s)
+        this->scoreLabel->setText(s)
     }
 }
 
@@ -387,7 +386,7 @@ bool PlayState::canExchange(Chip* e, Chip* t) {
 }
 
 void PlayState::exchangeChips(Chip* e, Chip* t) {
-    var n = this;
+    //var n = this;
     try {
         var r = e.x;
         var i = e.y;
@@ -410,7 +409,7 @@ void PlayState::exchangeChips(Chip* e, Chip* t) {
             x: u,
             y: a
         }, Constants::EXCHANGE_TIME * 1000, createjs.Ease.linear).call(function() {
-            return n.onExchangeEnded();
+            return onExchangeEnded();
         });
         
         createjs.Tween.get(t, {
@@ -425,7 +424,7 @@ void PlayState::exchangeChips(Chip* e, Chip* t) {
 }
 
 void PlayState::addConverToBonusEffect(Chip* e) {
-    var t = new ConvertToBonusEffect(e);
+    ConvertToBonusEffect* t = new ConvertToBonusEffect(e);
     this->addGameObjectAtPos(t, this->underChipsLayer, e.x, e.y - Constants::CELL_SIZE / 2);
 }
 
@@ -748,7 +747,7 @@ void PlayState::spawnNewChips() {
 }
 
 // 二维数组LevelDef
-void PlayState::spawnDefinedChips(int* e) {
+void PlayState::spawnDefinedChips(int e[ROW][COLUMN]) {
     for (int t = 0; t < this->fieldWidth; t++){
         for (int n = 0; n < this->fieldHeight; n++) {
             this->createChipWithColorID(t, n, (7 - n) * .13 + t * .11, e[n][t]);
@@ -803,7 +802,7 @@ void PlayState::setInpunState(e) {
 void PlayState::takeStockMatch(Chip* e) {
     var n = e->getIndexX(),
     var r = e->getIndexY();
-    if(this->field[n][r] == e && this->goal == t.GOAL_COUNT && e.getColorID() == this->goalChipID) {
+    if(this->field[n][r] == e && this->goal == GOAL_COUNT && e.getColorID() == this->goalChipID) {
         this->chipGoalCount--;
         if(this->chipGoalCount <= 0) {
             this->chipGoalCount = 0;
@@ -818,7 +817,7 @@ void PlayState::clearCell(Chip* e) {
     var n = e->getIndexX(),
     var r = e->getIndexY();
     if(this->field[n][r] == e){
-        if(this->goal == t.GOAL_COUNT && e->getColorID() == this->goalChipID){
+        if(this->goal == GOAL_COUNT && e->getColorID() == this->goalChipID){
             this->chipGoalCount--;
             if(this->chipGoalCount <= 0){
                 this->chipGoalCount = 0;
@@ -1113,7 +1112,7 @@ int PlayState::getColorAt(int e, int t) {
 void PlayState::onShiftEnded() {
     if (this->liveTime != this->lastDropSoundTime) {
         this->lastDropSoundTime = this->liveTime;
-        var e = Utils.RandomRangeInt(0, 2);
+        int e = Utils.RandomRangeInt(0, 2);
         for (int t = 0; e == this->lastDropID && t < 10; t++) {
             e = Utils.RandomRangeInt(0, 2);
         }
@@ -1151,11 +1150,11 @@ void PlayState::configureYAlign() {
 }
 
 void PlayState::runParticleEffect(int x, int y) {
-    var n = 80;
-    var r = Utils.RandomRangeInt(3, 4);
+    int n = 80;
+    int r = Utils.RandomRangeInt(3, 4);
     for (int i = 0; i < r; i++) {
         var s = Utils.RadToGrad(Utils.RandomRange(0, 360));
-        var o = new HeartParticle(Math.cos(s) * n, Math.sin(s) * n);
+        HeartParticle* o = new HeartParticle(Math.cos(s) * n, Math.sin(s) * n);
         this->addGameObject(o);
         this->addChild(o);
         o.x = x + Utils.RandomRange(-Constants::CELL_SIZE / 3, Constants::CELL_SIZE / 3);

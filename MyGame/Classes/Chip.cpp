@@ -137,8 +137,8 @@ void Chip::update(float e) {
                 this->setPositionY(this->getPositionY() + e * this->speed.y);
             
                 
-                if(this->y >= this->spawnYPos) {
-                    this->y = this->spawnYPos;
+                if(this->getPositionY() >= this->spawnYPos) {
+                    this->setPositionY(this->spawnYPos);
                     
                     this->setState(STATE_NORMAL);
                     PlayState::g_instance->onShiftEnded();
@@ -160,8 +160,7 @@ void Chip::update(float e) {
             this->speed.y += this->acceleration.y * e;
             this->setPositionX(this->getPositionX() + e * this->speed.x);
             this->setPositionY(this->getPositionY() + e * this->speed.y);
-            
-            this->rotation += this->rotationSpeed * e;
+            this->setRotation(this->getRotation() + this->rotationSpeed * e);
 
             if(this->y >= 1000){
                 this->kill();
@@ -184,7 +183,7 @@ void Chip::update(float e) {
             }
     }
     if(this->shiningCircle){
-        this->shiningCircle.rotation += e * 20;
+        this->shiningCircle->setRotation(this->shiningCircle->getRotation() + e * 20);
     }
 }
 
@@ -202,12 +201,12 @@ void Chip::setState(int e) {
         case STATE_EXCHANGE:
             break;
         case STATE_SHIFT_DOWN:
-            createjs.Tween.get(this, {
+            Tween.get(this, {
                 loop: false
             }).to({
                 scaleX: 1,
                 scaleY: 1
-            }, 170, createjs.Ease.linear);
+            }, 170, Ease.linear);
             break;
         case STATE_SPAWN_NEW:
             this->speed = Point(0, 500);
@@ -327,11 +326,10 @@ void Chip::fallDown() {
     }
     
     this->setState(STATE_FALL_DOWN);
-    this->chipPicture.y = -this->chipPicture->getContentSize().height / 2;
+    this->chipPicture->setPositionY(this->chipPicture->getPositionY() - this->chipPicture->getContentSize().height / 2);
+    this->setPositionY(this->getPositionY() - this->chipPicture->getContentSize().height / 2);
     
-    this->y -= this->chipPicture->getContentSize().height / 2;
-    
-    this->speed = new createjs.Point(Utils::RandomRange(-100, 100), -250);
+    this->speed = Point(Utils::RandomRange(-100, 100), -250);
     
     this->rotationSpeed = Utils::RandomRange(-300, 300);
     PlayState::g_instance->addChild(this);

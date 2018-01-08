@@ -162,7 +162,7 @@ void Chip::update(float e) {
             this->setPositionY(this->getPositionY() + e * this->speed.y);
             this->setRotation(this->getRotation() + this->rotationSpeed * e);
 
-            if(this->y >= 1000){
+            if(this->getPositionY() >= 1000){
                 this->kill();
             }
             break;

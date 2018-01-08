@@ -1,6 +1,7 @@
 #include "Chip.h"
+#include "Utils.h"
 #include "PlayState.h"
-#include "Constants::h"
+#include "Constants.h"
 
 USING_NS_CC;
 
@@ -17,7 +18,7 @@ void Chip::initChip(int cake, int x, int y, int pos, float delay) {
     this->rotationSpeed = 0; //int
     this->selected = false; //bool
     this->stateTime = 0;//int
-    this->rotationTimeOffset = 1;//Utils.RandomRange(0, 20), //int
+    this->rotationTimeOffset = 1;//Utils::RandomRange(0, 20), //int
     this->bonusType = 0; //std::string  --> int
     this->jellyAnim = false; //bool
     this->doubleMatched = false; //bool
@@ -48,7 +49,7 @@ void Chip::initChip(int cake, int x, int y, int pos, float delay) {
         this->addChild(sp, 0);
         
         this->chipPicture = sp;
-        //layer->chipPicture.x = -layer->chipPicture.getBounds().width / 2,
+        //layer->chipPicture.x = -layer->chipPicture.getContentSize().width / 2,
         //layer->chipPicture.y = -Constants::CELL_SIZE
     }
     
@@ -132,8 +133,9 @@ void Chip::update(float e) {
             this->spawnDelay -= e;
             if(this->spawnDelay < 0) {
                 this->speed.y += this->acceleration.y * e;
-                this->x += e * this->speed.x;
-                this->y += e * this->speed.y;
+                this->setPositionX(this->getPositionX() + e * this->speed.x);
+                this->setPositionY(this->getPositionY() + e * this->speed.y);
+            
                 
                 if(this->y >= this->spawnYPos) {
                     this->y = this->spawnYPos;
@@ -145,18 +147,20 @@ void Chip::update(float e) {
             break;
         case STATE_SHIFT_DOWN:
             this->speed.y += this->acceleration.y * e;
-            this->x += e * this->speed.x;
-            this->y += e * this->speed.y;
-            if(this->y >= this->spawnYPos) {
-                 this->y = this->spawnYPos;
+            this->setPositionX(this->getPositionX() + e * this->speed.x);
+            this->setPositionY(this->getPositionY() + e * this->speed.y);
+            
+            if(this->this->getPositionY() >= this->spawnYPos) {
+                 this->setPositionY(this->spawnYPos);
                  this->setState(this->STATE_NORMAL);
                  PlayState::g_instance->onShiftEnded();
             }
             break;
         case STATE_FALL_DOWN:
             this->speed.y += this->acceleration.y * e;
-            this->x += e * this->speed.x;
-            this->y += e * this->speed.y;
+            this->setPositionX(this->getPositionX() + e * this->speed.x);
+            this->setPositionY(this->getPositionY() + e * this->speed.y);
+            
             this->rotation += this->rotationSpeed * e;
 
             if(this->y >= 1000){
@@ -206,8 +210,8 @@ void Chip::setState(int e) {
             }, 170, createjs.Ease.linear);
             break;
         case STATE_SPAWN_NEW:
-            this->speed = new createjs.Point(0, 500);
-            this->acceleration = new createjs.Point(0, Constants::GRAVITY_ACC);//重力加速度
+            this->speed = Point(0, 500);
+            this->acceleration = Point(0, Constants::GRAVITY_ACC);//重力加速度
     }
 }
 
@@ -219,7 +223,7 @@ void Chip::exchange(int x, int y) {
 }
 
 void Chip::shiftDown(int y, int pos) {
-    this->speed = new createjs.Point(0, -250);
+    this->speed = Point(0, -250);
     this->deselect();
     this->indexY = y;
     this->spawnYPos = pos;
@@ -285,8 +289,8 @@ void Chip::convertToBonus(int bonusType, bool horizontal) {
         auto r = Sprite::create(_pngpath);
         
         this->addChild(r);
-        r.x = -r.getBounds().width / 2;
-        r.y = -r.getBounds().height;
+        r->sePositionX(-r.getContentSize().width / 2);
+        r->sePositionY(-r.getContentSize().height);
     }
     if (bonusType == BONUS_4) {
         //svar r = AssetsManager::g_instance->getImage(this->horizontal ? Constants::IMAGE_ARROW_BONUS_HOR : Constants::IMAGE_ARROW_BONUS_VERT);
@@ -295,16 +299,16 @@ void Chip::convertToBonus(int bonusType, bool horizontal) {
         auto r = Sprite::create(_pngpath);
         
         this->addChild(r);
-        r.x = -r->getBounds().width / 2;
-        r.y = -r->getBounds().height;
+        r->sePositionX(-r.getContentSize().width / 2);
+        r->sePositionY(-r.getContentSize().height);
     }
     if (bonusType == BONUS_BOMB) {
         //var r = AssetsManager::g_instance->getImage(Constants::IMAGE_BOMB);
         std::string _pngpath = (std::stringstream()<<"assets/art/cake_"<<Constants::IMAGE_BOMB<<".png").str();
         auto r = Sprite::create(_pngpath);
         this->addChild(r);
-        r.x = -r->getBounds().width / 2;
-        r.y = -r->getBounds().height;
+        r->sePositionX(-r.getContentSize().width / 2);
+        r->sePositionY(-r.getContentSize().height);
     }
     if(this->state != STATE_SPAWN_NEW) {
         PlayState::g_instance->addConverToBonusEffect(this);
@@ -327,9 +331,9 @@ void Chip::fallDown() {
     
     this->y -= this->chipPicture->getContentSize().height / 2;
     
-    this->speed = new createjs.Point(Utils.RandomRange(-100, 100), -250);
+    this->speed = new createjs.Point(Utils::RandomRange(-100, 100), -250);
     
-    this->rotationSpeed = Utils.RandomRange(-300, 300);
+    this->rotationSpeed = Utils::RandomRange(-300, 300);
     PlayState::g_instance->addChild(this);
     if(!this->wasClear) {
         PlayState::g_instance->clearCell(this);

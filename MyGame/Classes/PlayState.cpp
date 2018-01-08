@@ -1,18 +1,21 @@
 #include "GameState.h"
+#include "GameData.h"
 #include "PlayState.h"
+
 #include "Chip.h"
+#include "Utils.h"
 #include "Constants.h"
 
 USING_NS_CC;
 
 PlayState* PlayState::createPlayState(int curLevel, bool isTask) {
     PlayState* layer = PlayState::create();
-    this->initPlayState(curLevel, isTask);
+    layer->initPlayState(curLevel, isTask);
     return layer;
 }
 
 void PlayState::initPlayState(int curLevel, bool isTask) {  
-    try {
+//    try {
         PlayState::g_curLevel = curLevel;
         auto s = this->getImage(Constants::IMAGE_BACK);
         this->addChild(s);
@@ -44,87 +47,96 @@ void PlayState::initPlayState(int curLevel, bool isTask) {
                     float c = this->getYPosByYIndex(f) - Constants::CELL_SIZE;
                     if (f > 0 && u[f - 1][a] != 0 && a > 0 && u[f][a - 1] != 0) {
                         auto h = this->getImage(Constants::IMAGE_BORDER_CORNER);
-                        h.x = l - 4;
-                        h.y = c - 4;
+                        h->setPositionX(l - 4);
+                        h->setPositionY(c - 4);
+                        
                         this->edgesLayer->addChild(h);
                     }
                     if (f > 0 && u[f - 1][a] != 0 && a < this->fieldWidth - 1 && u[f][a + 1] != 0) {
                         auto p = this->getImage(Constants::IMAGE_BORDER_CORNER);
-                        p.x = l + Constants::CELL_SIZE + 8 - 4;
-                        p.y = c - 4;
-                        p.rotation = 90;
+                        p->setPositionX(l + Constants::CELL_SIZE + 8 - 4);
+                        p->setPositionY(c - 4);
+                        p->setRotation(90);
+                        
                         this->edgesLayer->addChild(p);
                     }
                     if (f < this->fieldHeight - 1 && u[f + 1][a] != 0 && a > 0 && u[f][a - 1] != 0) {
                         auto d = this->getImage(Constants::IMAGE_BORDER_CORNER);
-                        d.x = l - 4;
-                        d.y = c + Constants::CELL_SIZE + 8 - 4;
-                        d.rotation = -90;
+                        d->setPositionX(l - 4);
+                        d->setPositionY(c + Constants::CELL_SIZE + 8 - 4);
+                        d->setRotation(-90);
+                        
                         this->edgesLayer->addChild(d);
                     }
                     if (f < this->fieldHeight - 1 && u[f + 1][a] != 0 && a < this->fieldWidth - 1 && u[f][a + 1] != 0) {
                         auto v = this->getImage(Constants::IMAGE_BORDER_CORNER);
-                        v.x = l + Constants::CELL_SIZE + 8 - 4; 
-                        v.y = c + Constants::CELL_SIZE + 8 - 4; 
-                        v.rotation = -180;
+                        v->setPositionX(l + Constants::CELL_SIZE + 8 - 4); 
+                        v->setPositionY(c + Constants::CELL_SIZE + 8 - 4); 
+                        v->setRotation(-180);
+                        
                         this->edgesLayer->addChild(v);
                     }
                 } else {
                     auto m = this->getImage(Constants::IMAGE_CELL);
                     this->holeLayer->addChild(m);
-                    m.x = this->getXPosByXIndex(a) - Constants::CELL_SIZE / 2;
-                    m.y = this->getYPosByYIndex(f) - Constants::CELL_SIZE;
+                    m->setPositionX(this->getXPosByXIndex(a) - Constants::CELL_SIZE / 2);
+                    m->setPositionY(this->getYPosByYIndex(f) - Constants::CELL_SIZE);
                     if (a > 0 && u[f][a - 1] == 0) {
                         auto g = this->getImage(Constants::IMAGE_BORDER_SIDE);
-                        g.rotation = -90;
-                        g.x = m.x - 4;
-                        g.y = m.y + Constants::CELL_SIZE;
+                        g->setRotation(-90);
+                        g->setPositionX(m->getPositionX() - 4);
+                        g->setPositionY(m->getPositionY() + Constants::CELL_SIZE);
+                        
                         this->edgesLayer->addChildAt(g, 0);
                     }
                     if (a < this->fieldWidth - 1 && u[f][a + 1] == 0) {
                         auto y = this->getImage(Constants::IMAGE_BORDER_SIDE);
-                        y.rotation = -90;
-                        y.x = m.x + Constants::CELL_SIZE - 4;
-                        y.y = m.y + Constants::CELL_SIZE;
+                        y->setRotation(-90);
+                        y->setPositionX(m->getPositionX() + Constants::CELL_SIZE - 4);
+                        y->setPositionY(m->getPositionY() + Constants::CELL_SIZE);
+                        
                         this->edgesLayer->addChildAt(y, 0);
                     }
                     if (f > 0 && u[f - 1][a] == 0) {
                         auto b = this->getImage(Constants::IMAGE_BORDER_SIDE);
-                        b.x = m.x;
-                        b.y = m.y - 4;
+                        b->setPositionX(m->getPositionX());
+                        b->setPositionY(m->getPositionY() - 4);
                         this->edgesLayer->addChildAt(b, 0);
                     }
                     if (f < this->fieldHeight - 1 && u[f + 1][a] == 0) {
                         auto w = this->getImage(Constants::IMAGE_BORDER_SIDE);
-                        w.x = m.x;
-                        w.y = m.y + Constants::CELL_SIZE - 4;
+                        w->setPositionX(m->getPositionX());
+                        w->setPositionY(m->getPositionY() + Constants::CELL_SIZE - 4);
                         this->edgesLayer->addChildAt(w, 0)
                     }
                     if (f > 0 && u[f - 1][a] == 0 && a > 0 && u[f][a - 1] == 0) {
                         auto h = this->getImage(Constants::IMAGE_BORDER_CORNER);
-                        h.x = m.x - 4; 
-                        h.y = m.y - 4; 
+                        h->setPositionX(m->getPositionX() - 4); 
+                        h->setPositionY(m->getPositionY() - 4); 
                         this->edgesLayer->addChild(h)
                     }
                     if (f > 0 && u[f - 1][a] == 0 && a < this->fieldWidth - 1 && u[f][a + 1] == 0) {
                         auto p = this->getImage(Constants::IMAGE_BORDER_CORNER);
-                        p.x = m.x + Constants::CELL_SIZE + 8 - 4;
-                        p.y = m.y - 4;
-                        p.rotation = 90;
+                        p->setPositionX(m->getPositionX() + Constants::CELL_SIZE + 8 - 4);
+                        p->setPositionY(m->getPositionY() - 4);
+                        p->setRotation(90);
+                        
                         this->edgesLayer->addChild(p);
                     }
                     if (f < this->fieldHeight - 1 && u[f + 1][a] == 0 && a > 0 && u[f][a - 1] == 0) {
                         auto d = this->getImage(Constants::IMAGE_BORDER_CORNER);
-                        d.x = m.x - 4;
-                        d.y = m.y + Constants::CELL_SIZE + 8 - 4;
-                        d.rotation = -90;
+                        d->setPositionX(m->getPositionX() - 4);
+                        d->setPositionY(m->getPositionY() + Constants::CELL_SIZE + 8 - 4);
+                        d->setRotation(-90);
+                        
                         this->edgesLayer->addChild(d);
                     }
                     if (f < this->fieldHeight - 1 && u[f + 1][a] == 0 && a < this->fieldWidth - 1 && u[f][a + 1] == 0) {
                         auto v = this->getImage(Constants::IMAGE_BORDER_CORNER);
-                        v.x = m.x + Constants::CELL_SIZE + 8 - 4;
-                        v.y = m.y + Constants::CELL_SIZE + 8 - 4; 
-                        v.rotation = -180;
+                        v->setPositionX(m->getPositionX() + Constants::CELL_SIZE + 8 - 4);
+                        v->setPositionY(m->getPositionY() + Constants::CELL_SIZE + 8 - 4); 
+                        v->setRotation(-180);
+                        
                         this->edgesLayer->addChild(v);
                     }
                 }
@@ -154,15 +166,15 @@ void PlayState::initPlayState(int curLevel, bool isTask) {
                     }
                 }
             }
-            this->goalLabel.setText(this->dirtCount.toString());
+            //this->goalLabel.setText(this->dirtCount.toString());
         }
         else {
             this->goal = GOAL_COUNT;
             this->goalChipID = GameData::getInstance()->getLevelDef(curLevel)->chip_goal; 
             this->chipGoalCount = GameData::getInstance()->getLevelDef(curLevel)->chip_goal_count; 
-            this->goalLabel.setText(this->chipGoalCount.toString());
+            //this->goalLabel.setText(this->chipGoalCount.toString());
         }
-        
+        /*
         this->addChild(this->getImage(Constants::IMAGE_GUI));//gui.png
         
         var x = new createjs.Container;
@@ -191,14 +203,15 @@ void PlayState::initPlayState(int curLevel, bool isTask) {
             auto N = this->getImage(Constants::IMAGE_DIRT);
             N.scaleX = N.scaleY = .45;
             this->addChild(N);
-            N.x = 506;
-            N.y = 130;
+            N->getPositionX(506);
+            N->getPositionY(130);
         } else {
             auto C = getImage((std::stringstream()<<"cake_"<<this->goalChipID).str());
-            C.scaleX = C.scaleY = .66;
+            C->setScaleX(.66);
+            C->setScaleY(.66);
             this->addChild(C);
-            C.x = 525;
-            C.y = 149;
+            C->getPositionX(525);
+            C->getPositionY(149);
         }
         if (isTask) {
             var k = new TaskEffect(this->goal, this->chipGoalCount, this->goalChipID);
@@ -207,9 +220,10 @@ void PlayState::initPlayState(int curLevel, bool isTask) {
         }
         
         this->configureYAlign();
-    } catch (L) {
-        console.log(L, "playstate::constructor")
-    }
+        */
+//    } catch (L) {
+//        console.log(L, "playstate::constructor")
+//    }
 }
 
 bool PlayState::init()
@@ -232,11 +246,11 @@ bool PlayState::init()
     this->swapChip2 = nullptr;
     this->lastMovedChip = nullptr;
     
-    this->dirtLayer = new createjs.Container;
-    this->underChipsLayer = new createjs.Container;
-    this->backChipsLayer = new createjs.Container;
-    this->holeLayer = new createjs.Container;
-    this->edgesLayer = new createjs.Container;
+    this->dirtLayer = cocos2d::Layer::create();
+    this->underChipsLayer = cocos2d::Layer::create();
+    this->backChipsLayer = cocos2d::Layer::create();
+    this->holeLayer = cocos2d::Layer::create();
+    this->edgesLayer = cocos2d::Layer::create();
 
     this->inputStateTime = 0;
     this->score = 0;
@@ -268,7 +282,7 @@ void PlayState::onPauseClick() {
 }
 
 void PlayState::createChip(int e, int t, float n) {
-    var r = Utils.RandomRangeInt(1, this->chipTypesCount);
+    var r = Utils::RandomRangeInt(1, this->chipTypesCount);
     Chip* i = Chip::createChip(r, e, t, this->getYPosByYIndex(t), n);
     i.setIncexes(e, t);
     this->addGameObjectAtPos(i, this->backChipsLayer, this->getXPosByXIndex(e), -Constants::CELL_SIZE);
@@ -463,7 +477,7 @@ void PlayState::matchMatches(Vector<Chip*> e) {
                             break
                         }
                     }
-                    i || (t = !0, e[n][Utils.RandomRangeInt(1, 2)]->convertToBonus(Chip::BONUS_4))
+                    i || (t = !0, e[n][Utils::RandomRangeInt(1, 2)]->convertToBonus(Chip::BONUS_4))
                 }
                 if (e[n].length >= 5) {
                     bool i = false;
@@ -475,7 +489,7 @@ void PlayState::matchMatches(Vector<Chip*> e) {
                             this->lastMovedChip = nullptr;
                             break;
                         }
-                    i || (t = true, e[n][Utils.RandomRangeInt(1, e[n].length - 2)]->convertToBonus(Chip::BONUS_5))
+                    i || (t = true, e[n][Utils::RandomRangeInt(1, e[n].length - 2)]->convertToBonus(Chip::BONUS_5))
                 }
             }
             if (!t){
@@ -507,25 +521,25 @@ void PlayState::matchBonus(Chip* e, Chip* t) {
             if (n) {
                 var r = e->getIndexY();
                 for (int i = 0; i < this->fieldWidth; i++) this->field[i][r] != null && this->field[i][r]->match(Chip::MATCH_REASON_BONUS_EFFECT_4_HOR);
-                this->addGameObjectAtPos(new KillLineEffect(new createjs.Point(1200, 0)), this, e.x, e.y - Constants::CELL_SIZE / 2);
-                this->addGameObjectAtPos(new KillLineEffect(new createjs.Point(-1200, 0)), this, e.x, e.y - Constants::CELL_SIZE / 2);
+                this->addGameObjectAtPos(new KillLineEffect(Point(1200, 0)), this, e.x, e.y - Constants::CELL_SIZE / 2);
+                this->addGameObjectAtPos(new KillLineEffect(Point(-1200, 0)), this, e.x, e.y - Constants::CELL_SIZE / 2);
             } else {
                 var s = e->getIndexX();
                 for (int i = 0; i < this->fieldHeight; i++) this->field[s][i] != null && this->field[s][i]->match(Chip::MATCH_REASON_BONUS_EFFECT_4_VERT);
-                this->addGameObjectAtPos(new KillLineEffect(new createjs.Point(0, -1200)), this, e.x, e.y - Constants::CELL_SIZE / 2);
-                this->addGameObjectAtPos(new KillLineEffect(new createjs.Point(0, 1200)), this, e.x, e.y - Constants::CELL_SIZE / 2);
+                this->addGameObjectAtPos(new KillLineEffect(Point(0, -1200)), this, e.x, e.y - Constants::CELL_SIZE / 2);
+                this->addGameObjectAtPos(new KillLineEffect(Point(0, 1200)), this, e.x, e.y - Constants::CELL_SIZE / 2);
             }
         }
         if (e->getBonusType() == Chip::BONUS_5) {
             SoundManager.g_instance.play(SoundManager.SOUND_KILL_COLOR);
             e->match(Chip::MATCH_REASON_I_AM_BONUS);
-            var o = new createjs.Point(e.x, e.y),
+            var o = Point(e.x, e.y),
             var u = t->getColorID();
             if (u != -1){
                 for (int a = 0; a < this->fieldWidth; a++){
                     for (int f = 0; f < this->fieldHeight; f++){
                         if (this->field[a][f] != null && this->field[a][f]->getColorID() == u) {
-                            var l = new createjs.Point(this->field[a][f].x, this->field[a][f].y - Constants::CELL_SIZE / 2);
+                            var l = Point(this->field[a][f].x, this->field[a][f].y - Constants::CELL_SIZE / 2);
                             this->addGameObjectAtPos(new KillColorEffect(o, l), this, o.x, o.y);
                             this->field[a][f]->match(Chip::MATCH_REASON_BONUS_EFFECT_5);
                         }
@@ -783,9 +797,9 @@ void PlayState::setInpunState(e) {
             } else {
                 this->moveHint = nullptr;
                 for (int r = 0; r < 100; r++) {
-                    var i = this->field[Utils.RandomRangeInt(0, this->fieldWidth - 1)][Utils.RandomRangeInt(0, this->fieldHeight - 1)];
+                    var i = this->field[Utils::RandomRangeInt(0, this->fieldWidth - 1)][Utils::RandomRangeInt(0, this->fieldHeight - 1)];
                     if (!i->isHole() && !i.isBonus() && !i.isStoneHeart()) {
-                        i->convertToBonus([Chip::BONUS_BOMB, Chip::BONUS_4, Chip::BONUS_5][Utils.RandomRangeInt(0, 2)]);
+                        i->convertToBonus([Chip::BONUS_BOMB, Chip::BONUS_4, Chip::BONUS_5][Utils::RandomRangeInt(0, 2)]);
                         break;
                     }
                 }
@@ -997,18 +1011,18 @@ bool PlayState::tryShowAwesome(int e, int t) {
 }
 
 bool PlayState::findMoves() {
-    try {
-        var e = [
+    //try {
+        int e[3][2] = [
                 [2, -1],
                 [3, 0],
                 [2, 1]
-            ],
-            t = [
+            ];
+        int t[3][2] = [
                 [-1, -1],
                 [-2, 0],
                 [-1, 1]
-            ],
-            n = [
+            ];
+        int n[2][2] = [
                 [1, -1],
                 [1, 1]
             ];
@@ -1027,17 +1041,17 @@ bool PlayState::findMoves() {
             }
         }
 
-        var s = [
+        int s[3][2] = [
                 [-1, 2],
                 [0, 3],
                 [1, 2]
             ];
-        var o = [
+        int o[3][2] = [
                 [-1, -1],
                 [0, -2],
                 [1, -1]
             ];
-        var u = [
+        int u[2][2] = [
                 [-1, 1],
                 [1, 1]
             ];
@@ -1055,10 +1069,11 @@ bool PlayState::findMoves() {
                 if (this->field[i][r]->getColorID() == this->field[i][r + 2]->getColorID() && this->findPattern(i, r, this->field[i][r]->getColorID(), u, i, r + 1)) return true;                
             }
         }
-    } catch (a) {
-        console.log(a, "playstate::findmoves");
-        return false;
-    }
+    //} catch (a) {
+    //    console.log(a, "playstate::findmoves");
+    //    return false;
+    //}
+    
     return false;
 }
 
@@ -1073,13 +1088,14 @@ bool PlayState::findPattern(int e, int t, int n, int r, int i, int s) {
         return false;
     }
     for (int o = 0; o < r.length; o++) {
-        var u = this->getColorAt(e + r[o][0], t + r[o][1]);
+        int u = this->getColorAt(e + r[o][0], t + r[o][1]);
         if (u <= 0) {
             continue;
         }
         if (u == n) {
-            this->findedMatchPos1 = new createjs.Point(i, s);
-            this->findedMatchPos2 = new createjs.Point(e + r[o][0], t + r[o][1]);
+            //Point anchorP = Point(rect.size.width * _anchorPoint.x, rect.size.height * _anchorPoint.y);
+            this->findedMatchPos1 = Point(i, s);
+            this->findedMatchPos2 = Point(e + r[o][0], t + r[o][1]);
             return true;
         }
     }
@@ -1087,8 +1103,8 @@ bool PlayState::findPattern(int e, int t, int n, int r, int i, int s) {
 }
 
 void PlayState::setHintIndeces(int e, int t, int n, int r) {
-    this->findedMatchPos1 = new createjs.Point(e, t);
-    this->findedMatchPos2 = new createjs.Point(n, r);
+    this->findedMatchPos1 = Point(e, t);
+    this->findedMatchPos2 = Point(n, r);
 }
 
 Chip* PlayState::getChipAt(int e, int t) {
@@ -1112,9 +1128,9 @@ int PlayState::getColorAt(int e, int t) {
 void PlayState::onShiftEnded() {
     if (this->liveTime != this->lastDropSoundTime) {
         this->lastDropSoundTime = this->liveTime;
-        int e = Utils.RandomRangeInt(0, 2);
+        int e = Utils::RandomRangeInt(0, 2);
         for (int t = 0; e == this->lastDropID && t < 10; t++) {
-            e = Utils.RandomRangeInt(0, 2);
+            e = Utils::RandomRangeInt(0, 2);
         }
         this->lastDropID = e;
         switch (e) {
@@ -1131,6 +1147,7 @@ void PlayState::onShiftEnded() {
 }
 
 void PlayState::configureYAlign() {
+    /*
     if (Constants::SCREEN_HEIGHT < Constants::ASSETS_HEIGHT){
         this->y = Constants::SCREEN_HEIGHT - Constants::ASSETS_HEIGHT;
     }
@@ -1147,18 +1164,19 @@ void PlayState::configureYAlign() {
         t.graphics.endFill();
         this->addChild(t);
     }
+    */
 }
 
 void PlayState::runParticleEffect(int x, int y) {
     int n = 80;
-    int r = Utils.RandomRangeInt(3, 4);
+    int r = Utils::RandomRangeInt(3, 4);
     for (int i = 0; i < r; i++) {
-        var s = Utils.RadToGrad(Utils.RandomRange(0, 360));
+        var s = Utils::RadToGrad(Utils::RandomRange(0, 360));
         HeartParticle* o = new HeartParticle(Math.cos(s) * n, Math.sin(s) * n);
         this->addGameObject(o);
         this->addChild(o);
-        o.x = x + Utils.RandomRange(-Constants::CELL_SIZE / 3, Constants::CELL_SIZE / 3);
-        o.y = y + Utils.RandomRange(-Constants::CELL_SIZE / 3, Constants::CELL_SIZE / 3);
+        o.x = x + Utils::RandomRange(-Constants::CELL_SIZE / 3, Constants::CELL_SIZE / 3);
+        o.y = y + Utils::RandomRange(-Constants::CELL_SIZE / 3, Constants::CELL_SIZE / 3);
     }
 }
 

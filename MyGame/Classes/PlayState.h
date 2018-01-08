@@ -1,6 +1,9 @@
 #ifndef __Match3_PlayState_LAYER_H__
 #define __Match3_PlayState_LAYER_H__
 
+#include "GameState.h"
+#include "Chip.h"
+
 #include "cocos2d.h"
 
 class PlayState : public GameState

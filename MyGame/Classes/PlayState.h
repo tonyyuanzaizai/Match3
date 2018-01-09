@@ -68,15 +68,15 @@ public:
 //public static var
 public:
     static int g_curLevel;// = -1;
-    static int GOAL_DIRT;// = 1;//"GOAL_DIRT", 
-    static int GOAL_COUNT;// = 2;//"GOAL_COUNT"    
+    const static int GOAL_DIRT = 1;// = 1;//"GOAL_DIRT",
+    const static int GOAL_COUNT = 2;// = 2;//"GOAL_COUNT"
 
-    static int INPUT_STATE_WAIT_SELECTION;// = 1;//"INPUT_STATE_WAIT_SELECTION", 
-    static int INPUT_STATE_LOCK;// = 2;//"INPUT_STATE_LOCK", 
-    static int INPUT_STATE_WAIT_SPAWN;// = 3;//"INPUT_STATE_WAIT_SPAWN", 
-    static int INPUT_STATE_SHIFT;// = 4;//"INPUT_STATE_SHIFT", 
-    static int INPUT_STATE_MATCHING;// = 5;//"INPUT_STATE_MATCHING", 
-    static int INPUT_STATE_WAIT_NEXT_ROUND;// = 6;//"INPUT_STATE_WAIT_NEXT_ROUND", 
+    const static int INPUT_STATE_WAIT_SELECTION = 1;// = 1;//"INPUT_STATE_WAIT_SELECTION",
+    const static int INPUT_STATE_LOCK = 2;// = 2;//"INPUT_STATE_LOCK",
+    const static int INPUT_STATE_WAIT_SPAWN = 3;// = 3;//"INPUT_STATE_WAIT_SPAWN",
+    const static int INPUT_STATE_SHIFT = 4;// = 4;//"INPUT_STATE_SHIFT",
+    const static int INPUT_STATE_MATCHING = 5;// = 5;//"INPUT_STATE_MATCHING",
+    const static int INPUT_STATE_WAIT_NEXT_ROUND = 6;// = 6;//"INPUT_STATE_WAIT_NEXT_ROUND",
     
     PlayState* g_instance;
 
@@ -135,15 +135,15 @@ public:
 };
 
 int PlayState::g_curLevel = -1;
-int PlayState::GOAL_DIRT = 1;//"GOAL_DIRT", 
-int PlayState::GOAL_COUNT = 2;//"GOAL_COUNT"    
+//int PlayState::GOAL_DIRT = 1;//"GOAL_DIRT",
+//int PlayState::GOAL_COUNT = 2;//"GOAL_COUNT"
 
-int PlayState::INPUT_STATE_WAIT_SELECTION = 1;//"INPUT_STATE_WAIT_SELECTION", 
-int PlayState::INPUT_STATE_LOCK = 2;//"INPUT_STATE_LOCK", 
-int PlayState::INPUT_STATE_WAIT_SPAWN = 3;//"INPUT_STATE_WAIT_SPAWN", 
-int PlayState::INPUT_STATE_SHIFT = 4;//"INPUT_STATE_SHIFT", 
-int PlayState::INPUT_STATE_MATCHING = 5;//"INPUT_STATE_MATCHING", 
-int PlayState::INPUT_STATE_WAIT_NEXT_ROUND = 6;//"INPUT_STATE_WAIT_NEXT_ROUND", 
+//int PlayState::INPUT_STATE_WAIT_SELECTION = 1;//"INPUT_STATE_WAIT_SELECTION",
+//int PlayState::INPUT_STATE_LOCK = 2;//"INPUT_STATE_LOCK",
+//int PlayState::INPUT_STATE_WAIT_SPAWN = 3;//"INPUT_STATE_WAIT_SPAWN",
+//int PlayState::INPUT_STATE_SHIFT = 4;//"INPUT_STATE_SHIFT",
+//int PlayState::INPUT_STATE_MATCHING = 5;//"INPUT_STATE_MATCHING",
+//int PlayState::INPUT_STATE_WAIT_NEXT_ROUND = 6;//"INPUT_STATE_WAIT_NEXT_ROUND",
 #endif // __Match3_PlayState_LAYER_H__
 /////////////////////////////////////
 

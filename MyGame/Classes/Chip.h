@@ -84,28 +84,28 @@ private:
 
 //public static var
 public:
-    static int BONUS_4;// = "BONUS_4"; //1
-    static int BONUS_5;// = "BONUS_5"; //2
-    static int BONUS_BOMB;// = "BONUS_BOMB";//3 
+    const static int BONUS_4 = 1;// = "BONUS_4"; //1
+    const static int BONUS_5 = 2;// = "BONUS_5"; //2
+    const static int BONUS_BOMB = 3;// = "BONUS_BOMB";//3
 
-    static int MATCH_REASON_SIMPLE;// = "MATCH_REASON_SIMPLE"; //1
-    static int MATCH_REASON_EXCHANGE_WIHT_BONUS;// = "MATCH_REASON_EXCHANGE_WIHT_BONUS"; //2
-    static int MATCH_REASON_BONUS_EFFECT_5;// = "MATCH_REASON_BONUS_EFFECT_5"; //3
-    static int MATCH_REASON_BONUS_EFFECT_4_HOR;// = "MATCH_REASON_BONUS_EFFECT_4_HOR"; //4
-    static int MATCH_REASON_BONUS_EFFECT_4_VERT;// = "MATCH_REASON_BONUS_EFFECT_4_VERT"; //5
-    static int MATCH_REASON_I_AM_BONUS;// = "MATCH_REASON_I_AM_BONUS"; //6
+    const static int MATCH_REASON_SIMPLE = 1;// = "MATCH_REASON_SIMPLE"; //1
+    const static int MATCH_REASON_EXCHANGE_WIHT_BONUS = 2;// = "MATCH_REASON_EXCHANGE_WIHT_BONUS"; //2
+    const static int MATCH_REASON_BONUS_EFFECT_5 = 3;// = "MATCH_REASON_BONUS_EFFECT_5"; //3
+    const static int MATCH_REASON_BONUS_EFFECT_4_HOR = 4;// = "MATCH_REASON_BONUS_EFFECT_4_HOR"; //4
+    const static int MATCH_REASON_BONUS_EFFECT_4_VERT = 5;// = "MATCH_REASON_BONUS_EFFECT_4_VERT"; //5
+    const static int MATCH_REASON_I_AM_BONUS = 6;// = "MATCH_REASON_I_AM_BONUS"; //6
 
-    static int STATE_NORMAL;// = "STATE_NORMAL"; //1
-    static int STATE_EXCHANGE;// = "STATE_EXCHANGE";//2 
-    static int STATE_SHIFT_DOWN;// = "STATE_SHIFT_DOWN";//3 
-    static int STATE_MATCH;// = "STATE_MATCH"; //4
-    static int STATE_SPAWN_NEW;// = "STATE_SPAWN_NEW"; //5
-    static int STATE_FALL_DOWN;// = "STATE_FALL_DOWN"; //6
-    static int STATE_HOLE;// = "STATE_HOLE"; //7
+    const static int STATE_NORMAL = 1;// = "STATE_NORMAL"; //1
+    const static int STATE_EXCHANGE = 2;// = "STATE_EXCHANGE";//2
+    const static int STATE_SHIFT_DOWN = 3;// = "STATE_SHIFT_DOWN";//3
+    const static int STATE_MATCH = 4;// = "STATE_MATCH"; //4
+    const static int STATE_SPAWN_NEW = 5;// = "STATE_SPAWN_NEW"; //5
+    const static int STATE_FALL_DOWN = 6;// = "STATE_FALL_DOWN"; //6
+    const static int STATE_HOLE = 7;// = "STATE_HOLE"; //7
 
 
 };
-
+/*
 int Chip::BONUS_4 = 1;//"BONUS_4";
 int Chip::BONUS_5 = 2;//"BONUS_5"; 
 int Chip::BONUS_BOMB = 3;//"BONUS_BOMB";
@@ -124,7 +124,7 @@ int Chip::STATE_MATCH = 4;//"STATE_MATCH";
 int Chip::STATE_SPAWN_NEW = 5;//"STATE_SPAWN_NEW";
 int Chip::STATE_FALL_DOWN = 6;//"STATE_FALL_DOWN"; 
 int Chip::STATE_HOLE = 7;//"STATE_HOLE";
-
+*/
 #endif // __Match3_Chip_LAYER_H__
 
 //////

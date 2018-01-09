@@ -277,7 +277,7 @@ bool PlayState::init()
     this->waitWinTime = 0;
     this->lastDropSoundTime = -10;
     this->lastDropID = -1;
-    this->lastSound = null;
+    //this->lastSound = null;
     this->g_curLevel = -1;
 
     return true;
@@ -292,14 +292,14 @@ void PlayState::createChip(int e, int t, float n) {
     int r = Utils::RandomRangeInt(1, this->chipTypesCount);
     Chip* i = Chip::createChip(r, e, t, this->getYPosByYIndex(t), n);
     i->setIncexes(e, t);
-    this->addGameObjectAtPos(i, this->backChipsLayer, this->getXPosByXIndex(e), -Constants::CELL_SIZE);
+    this->addGameObjectAtPos((GameState*)i, this->backChipsLayer, this->getXPosByXIndex(e), -Constants::CELL_SIZE);
     this->field[e][t] = i;
 }
 
 void PlayState::createChipWithColorID(int e, int t, float n, int r) {
     Chip* i = Chip::createChip(r, e, t, this->getYPosByYIndex(t), n);
     i->setIncexes(e, t);
-    this->addGameObjectAtPos(i, this->backChipsLayer, this->getXPosByXIndex(e), -Constants::CELL_SIZE);
+    this->addGameObjectAtPos((GameState*)i, this->backChipsLayer, this->getXPosByXIndex(e), -Constants::CELL_SIZE);
     this->field[e][t] = i;
 }
 
@@ -446,6 +446,11 @@ void PlayState::exchangeChips(Chip* e, Chip* t) {
             y: i
         }, Constants::EXCHANGE_TIME * 1000, createjs.Ease.linear);
         */
+        e->setPositionX(u);
+        e->setPositionY(a);
+        t->setPositionX(r);
+        t->setPositionY(i);
+    
         onExchangeEnded();
     
         

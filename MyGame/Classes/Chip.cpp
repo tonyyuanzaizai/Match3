@@ -110,7 +110,9 @@ void Chip::update(float e) {
     this->stateTime += e;
     switch (this->state) {
         case STATE_NORMAL:
-            if (this->stoneHeart) {
+        {
+            
+        if (this->stoneHeart) {
                 break;
             }
             float n = this->stateTime * 9;
@@ -124,12 +126,17 @@ void Chip::update(float e) {
             
             this->canBeMatched = true;
             break;
+        }
         case STATE_EXCHANGE:
+        {
+        
             if(this->stateTime >= Constants::EXCHANGE_TIME){
                 this->setState(STATE_NORMAL);
             }
             break;
+        }
         case STATE_SPAWN_NEW:
+        {
             this->spawnDelay -= e;
             if(this->spawnDelay < 0) {
                 this->speed.y += this->acceleration.y * e;
@@ -141,11 +148,14 @@ void Chip::update(float e) {
                     this->setPositionY(this->spawnYPos);
                     
                     this->setState(STATE_NORMAL);
-                    PlayState::g_instance->onShiftEnded();
+                    //PlayState::g_instance->onShiftEnded();
                 }
             }
             break;
+        }
         case STATE_SHIFT_DOWN:
+        {
+        
             this->speed.y += this->acceleration.y * e;
             this->setPositionX(this->getPositionX() + e * this->speed.x);
             this->setPositionY(this->getPositionY() + e * this->speed.y);
@@ -153,38 +163,45 @@ void Chip::update(float e) {
             if(this->getPositionY() >= this->spawnYPos) {
                  this->setPositionY(this->spawnYPos);
                  this->setState(this->STATE_NORMAL);
-                 PlayState::g_instance->onShiftEnded();
+                 //PlayState::g_instance->onShiftEnded();
             }
             break;
+        }
         case STATE_FALL_DOWN:
+        {
+        
             this->speed.y += this->acceleration.y * e;
             this->setPositionX(this->getPositionX() + e * this->speed.x);
             this->setPositionY(this->getPositionY() + e * this->speed.y);
             this->setRotation(this->getRotation() + this->rotationSpeed * e);
 
             if(this->getPositionY() >= 1000){
-                this->kill();
+         //       this->kill();
             }
             break;
+        }
         case STATE_MATCH:
+        {
+        
             this->setScaleY(1 - this->stateTime * 1.5);
             this->setScaleX(1 + this->stateTime * 1.5);
             
-            this->alpha = 1 - this->stateTime / Constants::MATCH_TIME;
+            //this->alpha = 1 - this->stateTime / Constants::MATCH_TIME;
             
             if(this->stateTime >= Constants::MATCH_TIME / 2 && !this->wasClear){
-                PlayState::g_instance->addPointsAt(this, this->matchReason);
-                PlayState::g_instance->clearCell(this);
+                //PlayState::g_instance->addPointsAt(this, this->matchReason);
+                //PlayState::g_instance->clearCell(this);
                 this->wasClear = true;
             }
 
             if(this->stateTime >= Constants::MATCH_TIME) {
-                this->kill();
+                //this->kill();
             }
+        }
     }
-    if(this->shiningCircle){
-        this->shiningCircle->setRotation(this->shiningCircle->getRotation() + e * 20);
-    }
+    //if(this->shiningCircle){
+    //    this->shiningCircle->setRotation(this->shiningCircle->getRotation() + e * 20);
+    //}
 }
 
 void Chip::setState(int e) {
@@ -290,8 +307,8 @@ void Chip::convertToBonus(int bonusType, bool horizontal) {
         auto r = Sprite::create(_pngpath);
         
         this->addChild(r);
-        r->sePositionX(-r.getContentSize().width / 2);
-        r->sePositionY(-r.getContentSize().height);
+        r->setPositionX(-r->getContentSize().width / 2);
+        r->setPositionY(-r->getContentSize().height);
     }
     if (bonusType == BONUS_4) {
         //svar r = AssetsManager::g_instance->getImage(this->horizontal ? Constants::IMAGE_ARROW_BONUS_HOR : Constants::IMAGE_ARROW_BONUS_VERT);
@@ -300,26 +317,26 @@ void Chip::convertToBonus(int bonusType, bool horizontal) {
         auto r = Sprite::create(_pngpath);
         
         this->addChild(r);
-        r->sePositionX(-r.getContentSize().width / 2);
-        r->sePositionY(-r.getContentSize().height);
+        r->setPositionX(-r->getContentSize().width / 2);
+        r->setPositionY(-r->getContentSize().height);
     }
     if (bonusType == BONUS_BOMB) {
         //var r = AssetsManager::g_instance->getImage(Constants::IMAGE_BOMB);
         std::string _pngpath = (std::stringstream()<<"assets/art/cake_"<<Constants::IMAGE_BOMB<<".png").str();
         auto r = Sprite::create(_pngpath);
         this->addChild(r);
-        r->sePositionX(-r.getContentSize().width / 2);
-        r->sePositionY(-r.getContentSize().height);
+        r->setPositionX(-r->getContentSize().width / 2);
+        r->setPositionY(-r->getContentSize().height);
     }
     if(this->state != STATE_SPAWN_NEW) {
-        PlayState::g_instance->addConverToBonusEffect(this);
+        //PlayState::g_instance->addConverToBonusEffect(this);
     }
     this->canBeMatched = false; 
-    PlayState::g_instance->takeStockMatch(this);
+    //PlayState::g_instance->takeStockMatch(this);
     this->colorID = -1;
     this->setState(this->STATE_NORMAL);
-    PlayState::g_instance->tryClearDirt(this->indexX, this->indexY);
-    PlayState::g_instance->tryClearStoneHeart(this->indexX, this->indexY);
+    //PlayState::g_instance->tryClearDirt(this->indexX, this->indexY);
+    //PlayState::g_instance->tryClearStoneHeart(this->indexX, this->indexY);
 }
 
 void Chip::fallDown() {
@@ -334,9 +351,9 @@ void Chip::fallDown() {
     this->speed = Point(Utils::RandomRange(-100, 100), -250);
     
     this->rotationSpeed = Utils::RandomRange(-300, 300);
-    PlayState::g_instance->addChild(this);
+    //PlayState::g_instance->addChild(this);
     if(!this->wasClear) {
-        PlayState::g_instance->clearCell(this);
+        //PlayState::g_instance->clearCell(this);
         this->wasClear = true;
     }
 }

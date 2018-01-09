@@ -6,6 +6,10 @@
 
 #include "cocos2d.h"
 
+
+#define ROW 8
+#define COLUMN 8
+
 class PlayState : public GameState
 {
 
@@ -25,7 +29,9 @@ public:
     //TextField* goalLabel;// = new DNTextField("0", "font_", -3), 
     int dirtCount;// = 0, //需要消除的冰块数量
     int fieldWidth;// = 8, 
-    int fieldHeight;// = 8, 
+    int fieldHeight;// = 8,
+    Chip* field[ROW][COLUMN];// ,
+    cocos2d::Sprite* fieldDirt[ROW][COLUMN];
 
     Chip* selectedChip;// = null, 
     Chip* swapChip1;// = null, 
@@ -44,8 +50,8 @@ public:
     //TextField* scoreLabel = new DNTextField("00000", "font_", -3), 
     int moves;// = 30, 
     //TextField* movesLabel = new DNTextField("50", "font_", -3), 
-    Point findedMatchPos1;// = null, 
-    Point findedMatchPos2;// = null, 
+    cocos2d::Point findedMatchPos1;// = null, 
+    cocos2d::Point findedMatchPos2;// = null, 
     //MoveHint* moveHint;// = null, 
     int chipTypesCount;// = 5, 
     int awesomeEffectTime;// = 0, 
@@ -55,7 +61,9 @@ public:
     bool waitWin;// = false, 
     int waitWinTime;// = 0, 
     int lastDropSoundTime;// = -10, 
-    int lastDropID;// = -1, 
+    int lastDropID;// = -1,
+    int goalChipID;
+    int chipGoalCount;
 
 //public static var
 public:
@@ -84,13 +92,13 @@ public:
     bool canExchange(Chip* e, Chip* t);
     void exchangeChips(Chip* e, Chip* t);
     void addConverToBonusEffect(Chip* e);
-    void matchMatches(Vector<Chip*> e);
+    void matchMatches(cocos2d::Vector<cocos2d::Vector<Chip*>> e);
     void matchBonus(Chip* e, Chip* t);
     void boom(Chip* e);
     void validCoords(int e, int t);
     void onExchangeEnded();
     void decreseMoves();
-    Vector<Chip*> findMatches();
+    cocos2d::Vector<Chip*> findMatches();
     /*
     void onMouseUp(t, n);
     void onMouseDown(t, n);
@@ -99,9 +107,9 @@ public:
     void shiftChips();
     void spawnNewChips();
     // 二维数组LevelDef
-    void spawnDefinedChips(int* e);
+    void spawnDefinedChips(int e[ROW][COLUMN]);
     Chip* checkChipSelection(int e, int t);
-    void setInpunState(e);
+    void setInpunState(int e);
     void takeStockMatch(Chip* e);
     void clearCell(Chip* e);
     void tryClearDirt(int e, int n);
@@ -120,7 +128,7 @@ public:
     void onShiftEnded();
     void configureYAlign();
     void runParticleEffect(int x, int y);
-    Sprite* getImage(char* img);
+    cocos2d::Sprite* getImage(char* img);
     
     // implement the "static create()" method manually
     CREATE_FUNC(PlayState);
@@ -136,7 +144,6 @@ int PlayState::INPUT_STATE_WAIT_SPAWN = 3;//"INPUT_STATE_WAIT_SPAWN",
 int PlayState::INPUT_STATE_SHIFT = 4;//"INPUT_STATE_SHIFT", 
 int PlayState::INPUT_STATE_MATCHING = 5;//"INPUT_STATE_MATCHING", 
 int PlayState::INPUT_STATE_WAIT_NEXT_ROUND = 6;//"INPUT_STATE_WAIT_NEXT_ROUND", 
-PlayState* PlayState::g_instance = nullptr;
 #endif // __Match3_PlayState_LAYER_H__
 /////////////////////////////////////
 

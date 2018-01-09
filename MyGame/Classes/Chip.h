@@ -47,6 +47,7 @@ public:
     void convertToHole();
     void convertToStoneHeart();
     bool isStoneHeart();
+    //void kill();
     
     // implement the "static create()" method manually
     CREATE_FUNC(Chip);
@@ -78,6 +79,8 @@ private:
     int colorID; //int
     float spawnDelay; //float
     cocos2d::Sprite* chipPicture;
+    cocos2d::Point speed;
+    cocos2d::Point acceleration;
 
 //public static var
 public:

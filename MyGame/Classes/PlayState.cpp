@@ -21,7 +21,8 @@ void PlayState::initPlayState(int curLevel, bool isTask) {
         this->addChild(s);
 
         this->chipTypesCount = GameData::getInstance()->getLevelDef(curLevel)->chip_types;
-        this->field = new Chip* [this->fieldWidth][this->fieldHeight];
+        //this->field = new Chip* [this->fieldWidth][this->fieldHeight];
+        //this->field = new Chip* [ROW][COLUMN];
         //for (int o = 0; o < this->fieldWidth; o++) {
         //    this->field[o] = new Array();
         //}
@@ -37,7 +38,10 @@ void PlayState::initPlayState(int curLevel, bool isTask) {
         //初始化match3 格子信息, this->field
         this->spawnDefinedChips(GameData::getInstance()->getLevelDef(curLevel)->chips);
         
-        int u[ROW][COLUMN] = GameData::getInstance()->getLevelDef(curLevel)->form;
+        int u[ROW][COLUMN];
+        //GameData::getInstance()->getLevelDef(curLevel)->form;
+        memcpy(&u[0][0],&GameData::getInstance()->getLevelDef(curLevel)->form[0][0],sizeof(GameData::getInstance()->getLevelDef(curLevel)->form));
+    
         for (int a = 0; a < this->fieldWidth; a++){
             for (int f = 0; f < this->fieldHeight; f++){
                 if (u[f][a] == 0) {
@@ -87,7 +91,7 @@ void PlayState::initPlayState(int curLevel, bool isTask) {
                         g->setPositionX(m->getPositionX() - 4);
                         g->setPositionY(m->getPositionY() + Constants::CELL_SIZE);
                         
-                        this->edgesLayer->addChildAt(g, 0);
+                        this->edgesLayer->addChild(g, 0);
                     }
                     if (a < this->fieldWidth - 1 && u[f][a + 1] == 0) {
                         auto y = this->getImage(Constants::IMAGE_BORDER_SIDE);
@@ -95,25 +99,25 @@ void PlayState::initPlayState(int curLevel, bool isTask) {
                         y->setPositionX(m->getPositionX() + Constants::CELL_SIZE - 4);
                         y->setPositionY(m->getPositionY() + Constants::CELL_SIZE);
                         
-                        this->edgesLayer->addChildAt(y, 0);
+                        this->edgesLayer->addChild(y, 0);
                     }
                     if (f > 0 && u[f - 1][a] == 0) {
                         auto b = this->getImage(Constants::IMAGE_BORDER_SIDE);
                         b->setPositionX(m->getPositionX());
                         b->setPositionY(m->getPositionY() - 4);
-                        this->edgesLayer->addChildAt(b, 0);
+                        this->edgesLayer->addChild(b, 0);
                     }
                     if (f < this->fieldHeight - 1 && u[f + 1][a] == 0) {
                         auto w = this->getImage(Constants::IMAGE_BORDER_SIDE);
                         w->setPositionX(m->getPositionX());
                         w->setPositionY(m->getPositionY() + Constants::CELL_SIZE - 4);
-                        this->edgesLayer->addChildAt(w, 0)
+                        this->edgesLayer->addChild(w, 0);
                     }
                     if (f > 0 && u[f - 1][a] == 0 && a > 0 && u[f][a - 1] == 0) {
                         auto h = this->getImage(Constants::IMAGE_BORDER_CORNER);
                         h->setPositionX(m->getPositionX() - 4); 
                         h->setPositionY(m->getPositionY() - 4); 
-                        this->edgesLayer->addChild(h)
+                        this->edgesLayer->addChild(h, 0);
                     }
                     if (f > 0 && u[f - 1][a] == 0 && a < this->fieldWidth - 1 && u[f][a + 1] == 0) {
                         auto p = this->getImage(Constants::IMAGE_BORDER_CORNER);
@@ -143,24 +147,27 @@ void PlayState::initPlayState(int curLevel, bool isTask) {
             }
         }
                 
-        this->holeLayer->cache(0, 0, Constants::ASSETS_WIDTH, Constants::ASSETS_HEIGHT, 1);
-        this->edgesLayer->cache(0, 0, Constants::ASSETS_WIDTH, Constants::ASSETS_HEIGHT, 1);
-        this->fieldDirt = new Sprite* [this->fieldWidth][this->fieldHeight];//new Array(this->fieldWidth);
+        //this->holeLayer->cache(0, 0, Constants::ASSETS_WIDTH, Constants::ASSETS_HEIGHT, 1);
+        //this->edgesLayer->cache(0, 0, Constants::ASSETS_WIDTH, Constants::ASSETS_HEIGHT, 1);
+        //this->fieldDirt = Sprite* [ROW][COLUMN];//new Array(this->fieldWidth);
         
         //for (int o = 0; o < this->fieldWidth; o++) {
         //    this->fieldDirt[o] = new Array(this->fieldHeight);
         //}
         
-        int E[ROW][COLUMN] = GameData::getInstance()->getLevelDef(curLevel)->dirt;
+        int E[ROW][COLUMN];
+        //= GameData::getInstance()->getLevelDef(curLevel)->dirt;
+        memcpy(&E[0][0],&GameData::getInstance()->getLevelDef(curLevel)->dirt[0][0],sizeof(GameData::getInstance()->getLevelDef(curLevel)->dirt));
         if (E[0][0] != -1) {
-            this->goal = t.GOAL_DIRT;
+            this->goal = GOAL_DIRT;
             for (int a = 0; a < this->fieldWidth; a++){
                 for (int f = 0; f < this->fieldHeight; f++){
                     if (E[f][a] != 0) {
                         this->dirtCount++;
-                        var S = AssetsManager.g_instance.getCenteredBitmapWithProxy(Constants::IMAGE_DIRT);
-                        S.x = this->getXPosByXIndex(a) - 1;
-                        S.y = this->getYPosByYIndex(f) - Constants::CELL_SIZE / 2 + 3;
+                        //var S = AssetsManager.g_instance.getCenteredBitmapWithProxy(Constants::IMAGE_DIRT);
+                        Sprite* S = getImage(Constants::IMAGE_DIRT);
+                        S->setPositionX(this->getXPosByXIndex(a) - 1);
+                        S->setPositionY(this->getYPosByYIndex(f) - Constants::CELL_SIZE / 2 + 3);
                         this->dirtLayer->addChild(S);
                         this->fieldDirt[a][f] = S;
                     }
@@ -234,8 +241,8 @@ bool PlayState::init()
     }
     
     this->matchInARow = 0;
-    this->inputState = nullptr;
-    this->goal = t.GOAL_DIRT;
+    this->inputState = 0;
+    this->goal = GOAL_DIRT;
     //this->goalLabel = new DNTextField("0", "font_", -3);
     this->dirtCount = 0;
     this->fieldWidth = 8;
@@ -260,7 +267,7 @@ bool PlayState::init()
     //this->movesLabel = new DNTextField("50", "font_", -3);
     this->findedMatchPos1 = nullptr;
     this->findedMatchPos2 = nullptr;
-    this->moveHint = nullptr;
+    //this->moveHint = 0;
     this->chipTypesCount = 5;
     this->awesomeEffectTime = 0;
     this->superbEffectTime = 0;
@@ -282,9 +289,9 @@ void PlayState::onPauseClick() {
 }
 
 void PlayState::createChip(int e, int t, float n) {
-    var r = Utils::RandomRangeInt(1, this->chipTypesCount);
+    int r = Utils::RandomRangeInt(1, this->chipTypesCount);
     Chip* i = Chip::createChip(r, e, t, this->getYPosByYIndex(t), n);
-    i.setIncexes(e, t);
+    i->setIncexes(e, t);
     this->addGameObjectAtPos(i, this->backChipsLayer, this->getXPosByXIndex(e), -Constants::CELL_SIZE);
     this->field[e][t] = i;
 }
@@ -305,6 +312,7 @@ int PlayState::getYPosByYIndex(int e) {
 }
 
 void PlayState::update(float n) {
+    /*
     e.prototype.update.call(this, n);
     
     //win
@@ -325,18 +333,22 @@ void PlayState::update(float n) {
     }
     
     this->inputStateTime += n;
+    
     if(this->inputState != INPUT_STATE_WAIT_SELECTION && this->moveHint){
         this->moveHint.isDead() ? this->moveHint = null : this->moveHint.hide();
     }
+    */
     
     switch (this->inputState) {
         case INPUT_STATE_WAIT_SELECTION:
+            /*
             try {
                 int r = 3;
                 if(this->inputStateTime > r && this->moveHint && !this->moveHint.parent){
                      this->addGameObjectAt(this->moveHint, this);
                 }
             } catch (i) {}
+            */
             break;
         case INPUT_STATE_WAIT_SPAWN:
             if(this->allChipsNormal()){
@@ -353,14 +365,15 @@ void PlayState::update(float n) {
                  this->shiftChips();
             }
     }
+    /*
     if (this->tmpScore < this->score) {
         this->tmpScore += 17;
         if(this->tmpScore > this->score){
             this->tmpScore = this->score;
         }
-
+        
         std::string s = this->tmpScore.toString();
-        switch (s.length) {
+        switch (s.size()) {
             case 1:
                 s = "0000" + s;
                 break;
@@ -374,7 +387,7 @@ void PlayState::update(float n) {
                 s = "0" + s
         }
         this->scoreLabel->setText(s)
-    }
+    }*/
 }
 
 bool PlayState::allChipsNormal() {
@@ -388,35 +401,35 @@ bool PlayState::allChipsNormal() {
 }
 
 bool PlayState::canExchange(Chip* e, Chip* t) {
-    try {
+    //try {
         if (e == t) return false;
         if (e->isHole() || t->isHole()) return false;
         int n = e->getIndexX() - t->getIndexX();
         int r = e->getIndexY() - t->getIndexY();
-    } catch (i) {
+    //} catch (i) {
         return false;
-    }
-    return Math.abs(n) == 1 && r == 0 || Math.abs(r) == 1 && n == 0;
+    //}
+    return (abs(n) == 1 && r == 0) || (abs(r) == 1 && n == 0);
 }
 
 void PlayState::exchangeChips(Chip* e, Chip* t) {
     //var n = this;
-    try {
-        var r = e.x;
-        var i = e.y;
-        var s = e->getIndexX();
-        var o = e->getIndexY();
-        var u = t.x;
-        var a = t.y;
-        var f = t->getIndexX();
-        var l = t->getIndexY();
+    //try {
+        float r = e->getPositionX();
+        float i = e->getPositionY();
+        int s = e->getIndexX();
+        int o = e->getIndexY();
+        float u = t->getPositionX();
+        float a = t->getPositionY();
+        int f = t->getIndexX();
+        int l = t->getIndexY();
         this->field[s][o] = t;
         this->field[f][l] = e;
-        e.exchange(f, l);
-        t.exchange(s, o);
+        e->exchange(f, l);
+        t->exchange(s, o);
         this->swapChip1 = e;
         this->swapChip2 = t;
-        
+        /*
         createjs.Tween.get(e, {
             loop: false
         }).to({
@@ -432,19 +445,24 @@ void PlayState::exchangeChips(Chip* e, Chip* t) {
             x: r,
             y: i
         }, Constants::EXCHANGE_TIME * 1000, createjs.Ease.linear);
-        this->selectedChip = null;
+        */
+        onExchangeEnded();
+    
+        
+        this->selectedChip = nullptr;
         this->setInpunState(INPUT_STATE_LOCK);
-    } catch (c) {}
+    //} catch (c) {}
 }
 
 void PlayState::addConverToBonusEffect(Chip* e) {
-    ConvertToBonusEffect* t = new ConvertToBonusEffect(e);
-    this->addGameObjectAtPos(t, this->underChipsLayer, e.x, e.y - Constants::CELL_SIZE / 2);
+    //ConvertToBonusEffect* t = new ConvertToBonusEffect(e);
+    //this->addGameObjectAtPos(t, this->underChipsLayer, e.x, e.y - Constants::CELL_SIZE / 2);
 }
 
-void PlayState::matchMatches(Vector<Chip*> e) {
-    try {
-        if (e.length != 0) {
+void PlayState::matchMatches(cocos2d::Vector<cocos2d::Vector<Chip*>> e) {
+    //try {
+        if (e.size() != 0) {
+            /*
             switch (this->matchInARow) {
                 case 0:
                     SoundManager.g_instance.play(SoundManager.SOUND_MATCH_1);
@@ -461,9 +479,10 @@ void PlayState::matchMatches(Vector<Chip*> e) {
                 default:
                     SoundManager.g_instance.play(SoundManager.SOUND_MATCH_5)
             }
+            */
             bool t = false;
-            for (int n = 0; n < e.length; n++) {
-                for (int r = 0; r < e[n].length; r++) {
+            for (int n = 0; n < e.size(); n++) {
+                for (int r = 0; r < e.at(n).size(); r++) {
                     e[n][r]->match(Chip::MATCH_REASON_SIMPLE);
                 }
                 if (e[n]->size() == 4) {
@@ -474,7 +493,7 @@ void PlayState::matchMatches(Vector<Chip*> e) {
                             t = true; 
                             this->lastMovedChip->convertToBonus(Chip::BONUS_4, Math.random() < .5);
                             this->lastMovedChip = nullptr;
-                            break
+                            break;
                         }
                     }
                     i || (t = !0, e[n][Utils::RandomRangeInt(1, 2)]->convertToBonus(Chip::BONUS_4))
@@ -508,9 +527,9 @@ void PlayState::matchMatches(Vector<Chip*> e) {
         } else {
             this->shiftChips();
         }
-    } catch (o) {
-        console.log(o, "playstate::matchmatches")
-    }
+    //} catch (o) {
+    //    console.log(o, "playstate::matchmatches")
+    //}
 }
 
 void PlayState::matchBonus(Chip* e, Chip* t) {
@@ -633,9 +652,9 @@ void PlayState::decreseMoves() {
     this->movesLabel.setText(this->moves.toString());
 }
 
-Vector<Chip*> PlayState::findMatches() {
+Vector<Vector<Chip*>> PlayState::findMatches() {
     try {
-        Vector<Chip*> e = new Vector<Chip*>();
+        Vector<Vector<Chip*>> e = new Vector<Chip*>();
         for (int t = 0; t < this->fieldHeight; t++) {
             for (int n = 0; n < this->fieldWidth;) {
                 int r = -1;

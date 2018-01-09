@@ -150,7 +150,7 @@ void Chip::update(float e) {
             this->setPositionX(this->getPositionX() + e * this->speed.x);
             this->setPositionY(this->getPositionY() + e * this->speed.y);
             
-            if(this->this->getPositionY() >= this->spawnYPos) {
+            if(this->getPositionY() >= this->spawnYPos) {
                  this->setPositionY(this->spawnYPos);
                  this->setState(this->STATE_NORMAL);
                  PlayState::g_instance->onShiftEnded();
@@ -201,12 +201,14 @@ void Chip::setState(int e) {
         case STATE_EXCHANGE:
             break;
         case STATE_SHIFT_DOWN:
+            /*
             Tween.get(this, {
                 loop: false
             }).to({
                 scaleX: 1,
                 scaleY: 1
             }, 170, Ease.linear);
+            */
             break;
         case STATE_SPAWN_NEW:
             this->speed = Point(0, 500);

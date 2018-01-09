@@ -488,12 +488,12 @@ void PlayState::matchMatches(cocos2d::Vector<cocos2d::Vector<Chip*>> e) {
             bool t = false;
             for (int n = 0; n < e.size(); n++) {
                 for (int r = 0; r < e.at(n).size(); r++) {
-                    e[n][r]->match(Chip::MATCH_REASON_SIMPLE);
+                    e.at(n).at(r)->match(Chip::MATCH_REASON_SIMPLE);
                 }
-                if (e[n]->size() == 4) {
+                if (e.at(n).size() == 4) {
                     bool i = false;
-                    for (int s = 0; s < e[n].length; s++){
-                        if (e[n][s] == this->lastMovedChip) {
+                    for (int s = 0; s < e.at(n).size(); s++){
+                        if (e.at(n).at(s) == this->lastMovedChip) {
                             i = true;
                             t = true; 
                             this->lastMovedChip->convertToBonus(Chip::BONUS_4, Math.random() < .5);
@@ -501,26 +501,26 @@ void PlayState::matchMatches(cocos2d::Vector<cocos2d::Vector<Chip*>> e) {
                             break;
                         }
                     }
-                    i || (t = !0, e[n][Utils::RandomRangeInt(1, 2)]->convertToBonus(Chip::BONUS_4))
+                    i || (t = !0, e.at(n).at(Utils::RandomRangeInt(1, 2))->convertToBonus(Chip::BONUS_4))
                 }
-                if (e[n].length >= 5) {
+                if (e.at(n).size() >= 5) {
                     bool i = false;
-                    for (int s = 0; s < e[n].length; s++)
-                        if (e[n][s] == this->lastMovedChip) {
+                    for (int s = 0; s < e.at(n).size(); s++)
+                        if (e.at(n).at(s) == this->lastMovedChip) {
                             t = true;
                             i = true;
                             this->lastMovedChip->convertToBonus(Chip::BONUS_5);
                             this->lastMovedChip = nullptr;
                             break;
                         }
-                    i || (t = true, e[n][Utils::RandomRangeInt(1, e[n].length - 2)]->convertToBonus(Chip::BONUS_5))
+                    i || (t = true, e.at(n).at(Utils::RandomRangeInt(1, e.at(n).size() - 2))->convertToBonus(Chip::BONUS_5))
                 }
             }
             if (!t){
-                for (int n = 0; n < e.length; n++) {
-                    for (int r = 0; r < e[n].length; r++){
-                        if (e[n][r]->isDoubleMatched()) {
-                            e[n][r]->convertToBonus(Chip::BONUS_BOMB);
+                for (int n = 0; n < e.size(); n++) {
+                    for (int r = 0; r < e.at(n).size(); r++){
+                        if (e.at(n).at(r)->isDoubleMatched()) {
+                            e.at(n).at(r)->convertToBonus(Chip::BONUS_BOMB);
                             n = 100;
                             break;
                         }
@@ -605,7 +605,7 @@ bool PlayState::validCoords(int e, int t) {
 }
 
 void PlayState::onExchangeEnded() {
-    try {
+    //try {
         bool e = this->swapChip1 != null || this->swapChip2 != null;
         bool t = false;
         if(e){
@@ -617,8 +617,8 @@ void PlayState::onExchangeEnded() {
             }
         }
         
-        var n = this->findMatches();
-        if(n.length == 0){
+        Vector<Vector<Chip*>> n = this->findMatches();
+        if(n.size() == 0){
             if(!t){
                 if(e){
                     this->exchangeChips(this->swapChip1, this->swapChip2);
@@ -644,9 +644,9 @@ void PlayState::onExchangeEnded() {
             }
             this->decreseMoves();
         }
-    } catch (r) {
-        console.log(r, "playstate::exchangeended")
-    }
+    //} catch (r) {
+    //    console.log(r, "playstate::exchangeended")
+    //}
 }
 
 void PlayState::decreseMoves() {
@@ -658,7 +658,7 @@ void PlayState::decreseMoves() {
 }
 
 Vector<Vector<Chip*>> PlayState::findMatches() {
-    try {
+    //try {
         Vector<Vector<Chip*>> e = new Vector<Chip*>();
         for (int t = 0; t < this->fieldHeight; t++) {
             for (int n = 0; n < this->fieldWidth;) {
@@ -717,7 +717,7 @@ Vector<Vector<Chip*>> PlayState::findMatches() {
                 i != 0 ? t += i : t++;
             }
         }
-    } catch (u) {}
+    //} catch (u) {}
     return e;
 }
 

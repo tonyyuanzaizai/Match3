@@ -92,13 +92,13 @@ public:
     bool canExchange(Chip* e, Chip* t);
     void exchangeChips(Chip* e, Chip* t);
     void addConverToBonusEffect(Chip* e);
-    void matchMatches(cocos2d::Vector<cocos2d::Vector<Chip*>> e);
+    void matchMatches(std::vector<std::vector<Chip*>> e);
     void matchBonus(Chip* e, Chip* t);
     void boom(Chip* e);
-    void validCoords(int e, int t);
+    bool validCoords(int e, int t);
     void onExchangeEnded();
     void decreseMoves();
-    cocos2d::Vector<Chip*> findMatches();
+    std::vector<std::vector<Chip*>> findMatches();
     /*
     void onMouseUp(t, n);
     void onMouseDown(t, n);
@@ -121,7 +121,7 @@ public:
     bool tryShowSuperb(int e, int t);
     bool tryShowAwesome(int e, int t);
     bool findMoves();
-    bool findPattern(int e, int t, int n, int r, int i, int s);
+    bool findPattern(int e, int t, int n, int r[][2], int i, int s);
     void setHintIndeces(int e, int t, int n, int r);
     Chip* getChipAt(int e, int t);
     int getColorAt(int e, int t);

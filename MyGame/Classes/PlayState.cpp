@@ -464,7 +464,7 @@ void PlayState::addConverToBonusEffect(Chip* e) {
     //this->addGameObjectAtPos(t, this->underChipsLayer, e.x, e.y - Constants::CELL_SIZE / 2);
 }
 
-void PlayState::matchMatches(cocos2d::Vector<cocos2d::Vector<Chip*>> e) {
+void PlayState::matchMatches(std::vector<std::vector<Chip*>> e) {
     //try {
         if (e.size() != 0) {
             /*
@@ -496,31 +496,44 @@ void PlayState::matchMatches(cocos2d::Vector<cocos2d::Vector<Chip*>> e) {
                         if (e.at(n).at(s) == this->lastMovedChip) {
                             i = true;
                             t = true; 
-                            this->lastMovedChip->convertToBonus(Chip::BONUS_4, Math.random() < .5);
+                            this->lastMovedChip->convertToBonus(Chip::BONUS_4, std::rand() < .5);
                             this->lastMovedChip = nullptr;
                             break;
                         }
                     }
-                    i || (t = !0, e.at(n).at(Utils::RandomRangeInt(1, 2))->convertToBonus(Chip::BONUS_4))
+                    if(i){
+                        //
+                    }
+                    else {
+                        t = true;
+                        e.at(n).at(Utils::RandomRangeInt(1, 2))->convertToBonus(Chip::BONUS_4, false);
+                    }
                 }
                 if (e.at(n).size() >= 5) {
                     bool i = false;
-                    for (int s = 0; s < e.at(n).size(); s++)
+                    for (int s = 0; s < e.at(n).size(); s++){
                         if (e.at(n).at(s) == this->lastMovedChip) {
                             t = true;
                             i = true;
-                            this->lastMovedChip->convertToBonus(Chip::BONUS_5);
+                            this->lastMovedChip->convertToBonus(Chip::BONUS_5, false);
                             this->lastMovedChip = nullptr;
                             break;
                         }
-                    i || (t = true, e.at(n).at(Utils::RandomRangeInt(1, e.at(n).size() - 2))->convertToBonus(Chip::BONUS_5))
+                    }
+                    if(i){
+                        //
+                    }
+                    else {
+                        t = true;
+                        e.at(n).at(Utils::RandomRangeInt(1, e.at(n).size() - 2))->convertToBonus(Chip::BONUS_5, false);
+                    }
                 }
             }
             if (!t){
                 for (int n = 0; n < e.size(); n++) {
                     for (int r = 0; r < e.at(n).size(); r++){
                         if (e.at(n).at(r)->isDoubleMatched()) {
-                            e.at(n).at(r)->convertToBonus(Chip::BONUS_BOMB);
+                            e.at(n).at(r)->convertToBonus(Chip::BONUS_BOMB, false);
                             n = 100;
                             break;
                         }
@@ -538,33 +551,41 @@ void PlayState::matchMatches(cocos2d::Vector<cocos2d::Vector<Chip*>> e) {
 }
 
 void PlayState::matchBonus(Chip* e, Chip* t) {
-    try {
+    //try {
         if (e->getBonusType() == Chip::BONUS_4) {
-            SoundManager.g_instance.play(SoundManager.SOUND_LINE);
-            var n = e->isHorizontal();
+            //SoundManager.g_instance.play(SoundManager.SOUND_LINE);
+            bool n = e->isHorizontal();
             if (n) {
-                var r = e->getIndexY();
-                for (int i = 0; i < this->fieldWidth; i++) this->field[i][r] != null && this->field[i][r]->match(Chip::MATCH_REASON_BONUS_EFFECT_4_HOR);
-                this->addGameObjectAtPos(new KillLineEffect(Point(1200, 0)), this, e.x, e.y - Constants::CELL_SIZE / 2);
-                this->addGameObjectAtPos(new KillLineEffect(Point(-1200, 0)), this, e.x, e.y - Constants::CELL_SIZE / 2);
+                int r = e->getIndexY();
+                for (int i = 0; i < this->fieldWidth; i++) {
+                    if(this->field[i][r] != nullptr){
+                        this->field[i][r]->match(Chip::MATCH_REASON_BONUS_EFFECT_4_HOR);
+                    }
+                }
+                //this->addGameObjectAtPos(new KillLineEffect(Point(1200, 0)), this, e->getPositionX(), e->getPositionY() - Constants::CELL_SIZE / 2);
+                //this->addGameObjectAtPos(new KillLineEffect(Point(-1200, 0)), this, e->getPositionX(), e->getPositionY() - Constants::CELL_SIZE / 2);
             } else {
-                var s = e->getIndexX();
-                for (int i = 0; i < this->fieldHeight; i++) this->field[s][i] != null && this->field[s][i]->match(Chip::MATCH_REASON_BONUS_EFFECT_4_VERT);
-                this->addGameObjectAtPos(new KillLineEffect(Point(0, -1200)), this, e.x, e.y - Constants::CELL_SIZE / 2);
-                this->addGameObjectAtPos(new KillLineEffect(Point(0, 1200)), this, e.x, e.y - Constants::CELL_SIZE / 2);
+                int s = e->getIndexX();
+                for (int i = 0; i < this->fieldHeight; i++){
+                    if(this->field[s][i] != nullptr){
+                        this->field[s][i]->match(Chip::MATCH_REASON_BONUS_EFFECT_4_VERT);
+                    }
+                }
+                //this->addGameObjectAtPos(new KillLineEffect(Point(0, -1200)), this, e->getPositionX(), e->getPositionY() - Constants::CELL_SIZE / 2);
+                //this->addGameObjectAtPos(new KillLineEffect(Point(0, 1200)), this, e->getPositionX(), e->getPositionY() - Constants::CELL_SIZE / 2);
             }
         }
         if (e->getBonusType() == Chip::BONUS_5) {
-            SoundManager.g_instance.play(SoundManager.SOUND_KILL_COLOR);
+            //SoundManager.g_instance.play(SoundManager.SOUND_KILL_COLOR);
             e->match(Chip::MATCH_REASON_I_AM_BONUS);
-            var o = Point(e.x, e.y),
-            var u = t->getColorID();
+            Point o = Point(e->getPositionX(), e->getPositionY());
+            int u = t->getColorID();
             if (u != -1){
                 for (int a = 0; a < this->fieldWidth; a++){
                     for (int f = 0; f < this->fieldHeight; f++){
-                        if (this->field[a][f] != null && this->field[a][f]->getColorID() == u) {
-                            var l = Point(this->field[a][f].x, this->field[a][f].y - Constants::CELL_SIZE / 2);
-                            this->addGameObjectAtPos(new KillColorEffect(o, l), this, o.x, o.y);
+                        if (this->field[a][f] != nullptr && this->field[a][f]->getColorID() == u) {
+                            Point l = Point(this->field[a][f]->getPositionX(), this->field[a][f]->getPositionY() - Constants::CELL_SIZE / 2);
+                            //this->addGameObjectAtPos(new KillColorEffect(o, l), this, o->getPositionX(), o->getPositionY());
                             this->field[a][f]->match(Chip::MATCH_REASON_BONUS_EFFECT_5);
                         }
                     }
@@ -578,26 +599,26 @@ void PlayState::matchBonus(Chip* e, Chip* t) {
             t->match(Chip::MATCH_REASON_EXCHANGE_WIHT_BONUS);
         }
         this->setInpunState(INPUT_STATE_MATCHING);
-    } catch (c) {}
+    //} catch (c) {}
 }
 
 void PlayState::boom(Chip* e) {
-    try {
-        SoundManager.g_instance.play(SoundManager.SOUND_BOOM);
+    //try {
+        //SoundManager.g_instance.play(SoundManager.SOUND_BOOM);
         int t = e->getIndexX();
         int n = e->getIndexY();
         int r = 1;
         for (int i = t - r; i <= t + r; i++){
             for (int s = n - r; s <= n + r; s++) {
-                if(this->validCoords(i, s) && this->field[i][s] != null) {
+                if(this->validCoords(i, s) && this->field[i][s] != nullptr) {
                     this->field[i][s]->match(Chip::MATCH_REASON_BONUS_EFFECT_4_HOR);
                 }
             }
         }
 
-        var o = new AutoreleaseEffect;
-        this->addGameObjectAtPos(o, this, e.x, e.y);
-    } catch (u) {}
+        //var o = new AutoreleaseEffect;
+        //this->addGameObjectAtPos(o, this, e.x, e.y);
+    //} catch (u) {}
 }
 
 bool PlayState::validCoords(int e, int t) {
@@ -606,24 +627,24 @@ bool PlayState::validCoords(int e, int t) {
 
 void PlayState::onExchangeEnded() {
     //try {
-        bool e = this->swapChip1 != null || this->swapChip2 != null;
+        bool e = this->swapChip1 != nullptr || this->swapChip2 != nullptr;
         bool t = false;
         if(e){
-            if(this->swapChip1 != null && this->swapChip1.isBonus()) {
+            if(this->swapChip1 != nullptr && this->swapChip1->isBonus()) {
                 t = true;
             }
-            if(this->swapChip2 != null && this->swapChip2.isBonus()) {
+            if(this->swapChip2 != nullptr && this->swapChip2->isBonus()) {
                 t = true;
             }
         }
         
-        Vector<Vector<Chip*>> n = this->findMatches();
+        std::vector<std::vector<Chip*>> n = this->findMatches();
         if(n.size() == 0){
             if(!t){
                 if(e){
                     this->exchangeChips(this->swapChip1, this->swapChip2);
-                    this->swapChip1 = null;
-                    this->swapChip2 = null;
+                    this->swapChip1 = nullptr;
+                    this->swapChip2 = nullptr;
                 }
                 else {
                     this->setInpunState(INPUT_STATE_WAIT_SELECTION);
@@ -636,10 +657,10 @@ void PlayState::onExchangeEnded() {
         }
         
         if(e && t) {
-            if(this->swapChip1.isBonus()) {
+            if(this->swapChip1->isBonus()) {
                 this->matchBonus(this->swapChip1, this->swapChip2);
             }
-            if(this->swapChip2.isBonus()) {
+            if(this->swapChip2->isBonus()) {
                 this->matchBonus(this->swapChip2, this->swapChip1);
             }
             this->decreseMoves();
@@ -654,20 +675,20 @@ void PlayState::decreseMoves() {
     if(this->moves < 0) {
         this->moves = 0;
     }
-    this->movesLabel.setText(this->moves.toString());
+    //this->movesLabel.setText(this->moves.toString());
 }
 
-Vector<Vector<Chip*>> PlayState::findMatches() {
+std::vector<std::vector<Chip*>> PlayState::findMatches() {
     //try {
-        Vector<Vector<Chip*>> e = new Vector<Chip*>();
+    std::vector<std::vector<Chip*>> e;// = new cocos2d::Vector<cocos2d::Vector<Chip*>>();
         for (int t = 0; t < this->fieldHeight; t++) {
             for (int n = 0; n < this->fieldWidth;) {
                 int r = -1;
                 int i = 0;
 
-                Vector<Chip*> s = new Vector<Chip*>();
+                std::vector<Chip*> s;// = new Vector<Chip*>();
                 for (int o = n; o < this->fieldWidth; o++) {
-                    if (this->field[o][t] == null || this->field[o][t]->isBonus() || this->field[o][t]->getColorID() == -1) {
+                    if (this->field[o][t] == nullptr || this->field[o][t]->isBonus() || this->field[o][t]->getColorID() == -1) {
                         break;
                     }
                     if(r == -1){
@@ -678,24 +699,24 @@ Vector<Vector<Chip*>> PlayState::findMatches() {
                         break;
                     }
 
-                    s->pushBack(this->field[o][t]);
+                    s.push_back(this->field[o][t]);
                     i++;
                 }
                 
                 if(i >= 3) {
-                    e->pushBack(s);
+                    e.push_back(s);
                 }
                 i != 0 ? n += i : n++;
             }
         }
         for (int n = 0; n < this->fieldWidth; n++) {
-            for (int t = 0; t < this->fieldHeight; t) {
+            for (int t = 0; t < this->fieldHeight;) {
                 int r = -1;
                 int i = 0;
 
-                Vector<Chip*> s = new Vector<Chip*>();
+                std::vector<Chip*> s;// = new Vector<Chip*>();
                 for (int o = t; o < this->fieldHeight; o++) {
-                    if (this->field[n][o] == null || this->field[n][o]->isBonus() || this->field[n][o]->getColorID() == -1) {
+                    if (this->field[n][o] == nullptr || this->field[n][o]->isBonus() || this->field[n][o]->getColorID() == -1) {
                         break;
                     }
                     if(r == -1){
@@ -706,12 +727,12 @@ Vector<Vector<Chip*>> PlayState::findMatches() {
                         break;
                     }
                     
-                    s->pushBack(this->field[n][o]);
+                    s.push_back(this->field[n][o]);
                     i++;
                 }
                 
                 if(i >= 3) {
-                    e->pushBack(s);
+                    e.push_back(s);
                 }
                 
                 i != 0 ? t += i : t++;
@@ -771,7 +792,7 @@ void PlayState::spawnNewChips() {
     for (int t = 0; t < this->fieldWidth; t++) {
         int n = -1;
         for (int r = this->fieldHeight - 1; r >= 0; r--) {
-            if(this->field[t][r] == null){
+            if(this->field[t][r] == nullptr){
                 if(n == -1){
                     n = r;
                 }
@@ -798,32 +819,32 @@ void PlayState::spawnDefinedChips(int e[ROW][COLUMN]) {
 Chip* PlayState::checkChipSelection(int e, int t) {
     for (int n = 0; n < this->fieldWidth; n++)
         for (int r = 0; r < this->fieldHeight; r++) {
-            var i = this->field[n][r];
-            if (i && Math.abs(i.x - e) < Constants::CELL_SIZE / 2 && i.y > t && i.y < t + Constants::CELL_SIZE) {
+            Chip* i = this->field[n][r];
+            if (i && std::abs(i->getPositionX() - e) < Constants::CELL_SIZE / 2 && i->getPositionY() > t && i->getPositionY() < t + Constants::CELL_SIZE) {
                 return i;
             }
         }
     return nullptr;
 }
 
-void PlayState::setInpunState(e) {
-    try {
+void PlayState::setInpunState(int e) {
+    //try {
         this->inputState = e;
         this->inputStateTime = 0;
         if (this->inputState == INPUT_STATE_WAIT_SELECTION) {
             this->matchInARow = 0;
             if (this->findMoves()) {
-                var t = this->field[this->findedMatchPos1.x][this->findedMatchPos1.y],
-                var n = this->field[this->findedMatchPos2.x][this->findedMatchPos2.y];
-                this->moveHint = new MoveHint(this->findedMatchPos1.y != this->findedMatchPos2.y);
-                this->moveHint.x = (t.x + n.x) / 2;
-                this->moveHint.y = (t.y + n.y) / 2 - Constants::CELL_SIZE / 2;
+                //var t = this->field[this->findedMatchPos1.x][this->findedMatchPos1.y];
+                //var n = this->field[this->findedMatchPos2.x][this->findedMatchPos2.y];
+                //this->moveHint = new MoveHint(this->findedMatchPos1.y != this->findedMatchPos2.y);
+                //this->moveHint.x = (t.x + n.x) / 2;
+                //this->moveHint.y = (t.y + n.y) / 2 - Constants::CELL_SIZE / 2;
             } else {
-                this->moveHint = nullptr;
+                //this->moveHint = nullptr;
                 for (int r = 0; r < 100; r++) {
-                    var i = this->field[Utils::RandomRangeInt(0, this->fieldWidth - 1)][Utils::RandomRangeInt(0, this->fieldHeight - 1)];
-                    if (!i->isHole() && !i.isBonus() && !i.isStoneHeart()) {
-                        i->convertToBonus([Chip::BONUS_BOMB, Chip::BONUS_4, Chip::BONUS_5][Utils::RandomRangeInt(0, 2)]);
+                    Chip* i = this->field[Utils::RandomRangeInt(0, this->fieldWidth - 1)][Utils::RandomRangeInt(0, this->fieldHeight - 1)];
+                    if (!i->isHole() && !i->isBonus() && !i->isStoneHeart()) {
+                        //i->convertToBonus([Chip::BONUS_BOMB, Chip::BONUS_4, Chip::BONUS_5][Utils::RandomRangeInt(0, 2)]);
                         break;
                     }
                 }
@@ -832,28 +853,28 @@ void PlayState::setInpunState(e) {
                 this->lose();
             }
         }
-    } catch (s) {
-        this->inputState = INPUT_STATE_WAIT_SELECTION
-    }
+    //} catch (s) {
+    //    this->inputState = INPUT_STATE_WAIT_SELECTION
+    //}
 }
 
 void PlayState::takeStockMatch(Chip* e) {
-    var n = e->getIndexX(),
-    var r = e->getIndexY();
-    if(this->field[n][r] == e && this->goal == GOAL_COUNT && e.getColorID() == this->goalChipID) {
+    int n = e->getIndexX();
+    int r = e->getIndexY();
+    if(this->field[n][r] == e && this->goal == GOAL_COUNT && e->getColorID() == this->goalChipID) {
         this->chipGoalCount--;
         if(this->chipGoalCount <= 0) {
             this->chipGoalCount = 0;
             this->win();
         }
 
-        this->goalLabel.setText(this->chipGoalCount.toString());
+        //this->goalLabel.setText(this->chipGoalCount.toString());
     }
 }
 
 void PlayState::clearCell(Chip* e) {
-    var n = e->getIndexX(),
-    var r = e->getIndexY();
+    int n = e->getIndexX();
+    int r = e->getIndexY();
     if(this->field[n][r] == e){
         if(this->goal == GOAL_COUNT && e->getColorID() == this->goalChipID){
             this->chipGoalCount--;
@@ -862,16 +883,16 @@ void PlayState::clearCell(Chip* e) {
                 this->win();
             }
 
-            this->goalLabel.setText(this->chipGoalCount.toString());
+            //this->goalLabel.setText(this->chipGoalCount.toString());
         }
         
         if(e->getMatchReason() == Chip::MATCH_REASON_BONUS_EFFECT_5 || 
             e->getMatchReason() == Chip::MATCH_REASON_BONUS_EFFECT_4_HOR || 
             e->getMatchReason() == Chip::MATCH_REASON_BONUS_EFFECT_4_VERT) {
-            this->runParticleEffect(e->x, e->y - Constants::CELL_SIZE / 2);
+            //this->runParticleEffect(e->x, e->y - Constants::CELL_SIZE / 2);
         }
         
-        this->field[n][r] = null;
+        this->field[n][r] = nullptr;
     }
     
     this->tryClearDirt(n, r);
@@ -884,55 +905,57 @@ void PlayState::clearCell(Chip* e) {
 }
 
 void PlayState::tryClearDirt(int e, int n) {
-    Chip* r = this->fieldDirt[e][n];
+    cocos2d::Sprite* r = this->fieldDirt[e][n];
     if(r){
-        createjs.Tween.get(r, {
+        /*createjs.Tween.get(r, {
                 loop: false
             }).to({
                 alpha: 0
             }, 250, createjs.Ease.linear);
-            
-        this->fieldDirt[e][n] = null;
+        */
+        // set r alpha 0  after 250ms
+        
+        this->fieldDirt[e][n] = nullptr;
         if(--this->dirtCount == 0){
              this->win();
         }
     } 
     
-    if(this->goal == t.GOAL_DIRT){
-        this->goalLabel.setText(this->dirtCount.toString());
+    if(this->goal == GOAL_DIRT){
+        //this->goalLabel.setText(this->dirtCount.toString());
     }
 }
 
 void PlayState::tryClearStoneHeart(int e, int t) {
-    try {
+    //try {
         Chip* n = nullptr;
         
         n = this->getChipAt(e + 1, t);
-        if(n !- null && n.isStoneHeart()){
-            n.fallDown();
+        if(n != nullptr && n->isStoneHeart()){
+            n->fallDown();
         }
         
-        n = this->getChipAt(e - 1, t)
-        if(n !- null && n.isStoneHeart()){
-            n.fallDown();
+        n = this->getChipAt(e - 1, t);
+        if(n != nullptr && n->isStoneHeart()){
+            n->fallDown();
         }
         
-        n = this->getChipAt(e, t + 1)
-        if(n !- null && n.isStoneHeart()){
-            n.fallDown();
+    n = this->getChipAt(e, t + 1);
+        if(n != nullptr && n->isStoneHeart()){
+            n->fallDown();
         }
         
-        n = this->getChipAt(e, t - 1)
-        if(n !- null && n.isStoneHeart()){
-            n.fallDown();
+    n = this->getChipAt(e, t - 1);
+        if(n != nullptr && n->isStoneHeart()){
+            n->fallDown();
         }
-    } catch (r) {}
+    //} catch (r) {}
 }
 
 void PlayState::finishLevel() {
     for (int e = 0; e < this->fieldWidth; e++){
         for (int t = 0; t < this->fieldHeight; t++) {
-            if(this->field[e][t] != null && this->field[e][t]->isNormal()){
+            if(this->field[e][t] != nullptr && this->field[e][t]->isNormal()){
                 this->field[e][t]->fallDown();
             }
         }
@@ -945,8 +968,8 @@ void PlayState::lose() {
     } 
     else {
         this->waitLose = true;
-        this->addGameObjectAt(new TimeIsUpEffect(Constants::IMAGE_OUT_OF_MOVES), this);
-        SoundManager.g_instance.play(SoundManager.SOUND_LOSE);
+        //this->addGameObjectAt(new TimeIsUpEffect(Constants::IMAGE_OUT_OF_MOVES), this);
+        //SoundManager.g_instance.play(SoundManager.SOUND_LOSE);
     }
 }
 
@@ -956,13 +979,13 @@ void PlayState::win() {
     } 
     else {
         this->waitWin = true;
-        SoundManager.g_instance.play(SoundManager.SOUND_WIN));
+        //SoundManager.g_instance.play(SoundManager.SOUND_WIN));
     }
 }
 
 void PlayState::addPointsAt(Chip* e, int t) {
-    if (e->getBonusType() == null) {
-        var n = 40;
+    if (e->getBonusType() == -1) {
+        int n = 40;
         switch (t) {
             case Chip::MATCH_REASON_EXCHANGE_WIHT_BONUS:
                 n = 40;
@@ -980,8 +1003,9 @@ void PlayState::addPointsAt(Chip* e, int t) {
                 n = 150;
                 break;
             default:
-                n = 40 + this->matchInARow * 20
+                n = 40 + this->matchInARow * 20;
         }
+        /*
         var r = new FlyingPoints(n);
         this->score += n;
         var i = e.x - Constants::CELL_SIZE / 2,
@@ -989,10 +1013,12 @@ void PlayState::addPointsAt(Chip* e, int t) {
         this->tryShowAwesome(i, s);
         this->tryShowSuperb(i, s);
         this->addGameObjectAtPos(r, this, i, s);
+         */
     }
 }
 
 bool PlayState::tryShowSuperb(int e, int t) {
+    /*
     if (this->matchInARow >= 3 && this->superbEffectTime != this->liveTime) {
         this->superbEffectTime = this->liveTime;
         SuperbEffect* n = new SuperbEffect;
@@ -1010,11 +1036,13 @@ bool PlayState::tryShowSuperb(int e, int t) {
         
         return true;
     }
+     */
     return false;
 }
 
 bool PlayState::tryShowAwesome(int e, int t) {
-    if (this->matchInARow == 2 && this->awesomeEffectTime != this->liveTime) {
+    /*
+     if (this->matchInARow == 2 && this->awesomeEffectTime != this->liveTime) {
         this->awesomeEffectTime = this->liveTime;
         var n = new ShowAwesomeEffect;
 
@@ -1031,26 +1059,28 @@ bool PlayState::tryShowAwesome(int e, int t) {
         this->score += 200; 
         return true;
     }
+    */
     return false;
 }
 
 bool PlayState::findMoves() {
     //try {
-        int e[3][2] = [
-                [2, -1],
-                [3, 0],
-                [2, 1]
-            ];
-        int t[3][2] = [
-                [-1, -1],
-                [-2, 0],
-                [-1, 1]
-            ];
-        int n[2][2] = [
-                [1, -1],
-                [1, 1]
-            ];
-        for (int r = 0; r < this->fieldHeight; r++){
+    int e[3][2] = {
+        {2, -1},
+        {3, 0},
+        {2, 1}
+        };
+    int t[3][2] = {
+            {-1, -1},
+            {-2, 0},
+            {-1, 1}
+            };
+    int n[2][2] = {
+        {1, -1},
+        {1, 1}
+        };
+    
+    for (int r = 0; r < this->fieldHeight; r++){
             for (int i = 0; i < this->fieldWidth - 1; i++){
                 if (this->field[i][r]->getColorID() == this->field[i + 1][r]->getColorID()) {
                     if (this->findPattern(i, r, this->field[i][r]->getColorID(), e, i + 2, r)) return true;
@@ -1065,32 +1095,32 @@ bool PlayState::findMoves() {
             }
         }
 
-        int s[3][2] = [
-                [-1, 2],
-                [0, 3],
-                [1, 2]
-            ];
-        int o[3][2] = [
-                [-1, -1],
-                [0, -2],
-                [1, -1]
-            ];
-        int u[2][2] = [
-                [-1, 1],
-                [1, 1]
-            ];
+    int s[3][2] = {
+        {-1, 2},
+        {0, 3},
+        {1, 2}
+                       };
+    int o[3][2] = {
+        {-1, -1},
+        {0, -2},
+        {1, -1}
+                       };
+    int u[2][2] = {
+        {-1, 1},
+        {1, 1}
+                       };
         for (int r = 0; r < this->fieldHeight - 1; r++){
             for (int i = 0; i < this->fieldWidth; i++){
                 if (this->field[i][r]->getColorID() == this->field[i][r + 1]->getColorID()) {
                     if (this->findPattern(i, r, this->field[i][r]->getColorID(), s, i, r + 2)) return true;
-                    if (this->findPattern(i, r, this->field[i][r]->getColorID(), o, i, r - 1)) return true
+                    if (this->findPattern(i, r, this->field[i][r]->getColorID(), o, i, r - 1)) return true;
                 }
             }
         }
 
         for (int r = 0; r < this->fieldHeight - 2; r++){
             for (int i = 0; i < this->fieldWidth; i++){
-                if (this->field[i][r]->getColorID() == this->field[i][r + 2]->getColorID() && this->findPattern(i, r, this->field[i][r]->getColorID(), u, i, r + 1)) return true;                
+                if (this->field[i][r]->getColorID() == this->field[i][r + 2]->getColorID() && this->findPattern(i, r, this->field[i][r]->getColorID(), 	u, i, r + 1)) return true;
             }
         }
     //} catch (a) {
@@ -1101,7 +1131,7 @@ bool PlayState::findMoves() {
     return false;
 }
 
-bool PlayState::findPattern(int e, int t, int n, int r, int i, int s) {
+bool PlayState::findPattern(int e, int t, int n, int r[][2], int i, int s) {
     if (n <= 0) {
         return false;
     }
@@ -1111,7 +1141,7 @@ bool PlayState::findPattern(int e, int t, int n, int r, int i, int s) {
     if (this->field[i][s] && this->field[i][s]->isHole()) {
         return false;
     }
-    for (int o = 0; o < r.length; o++) {
+    for (int o = 0; o < sizeof(r) / sizeof(r[0]); o++) {
         int u = this->getColorAt(e + r[o][0], t + r[o][1]);
         if (u <= 0) {
             continue;
@@ -1133,7 +1163,7 @@ void PlayState::setHintIndeces(int e, int t, int n, int r) {
 
 Chip* PlayState::getChipAt(int e, int t) {
     if(e < 0 || t < 0 || e >= this->fieldWidth || t >= this->fieldHeight || !this->field[e][t] || this->field[e][t]->isHole()){
-        return null;
+        return nullptr;
     }
     else {
         return this->field[e][t];
@@ -1141,7 +1171,7 @@ Chip* PlayState::getChipAt(int e, int t) {
 }
 
 int PlayState::getColorAt(int e, int t) {
-    if(e < 0 || t < 0 || e >= this->fieldWidth || t >= this->fieldHeight || !this->field[e][t] == null){
+    if(e < 0 || t < 0 || e >= this->fieldWidth || t >= this->fieldHeight || this->field[e][t] != nullptr){
         return -1;
     }
     else {
@@ -1157,6 +1187,7 @@ void PlayState::onShiftEnded() {
             e = Utils::RandomRangeInt(0, 2);
         }
         this->lastDropID = e;
+        /*
         switch (e) {
             case 0:
                 SoundManager.g_instance.play(SoundManager.SOUND_DROP_1);
@@ -1167,6 +1198,7 @@ void PlayState::onShiftEnded() {
             case 2:
                 SoundManager.g_instance.play(SoundManager.SOUND_DROP_3)
         }
+        */
     }
 }
 
@@ -1194,14 +1226,14 @@ void PlayState::configureYAlign() {
 void PlayState::runParticleEffect(int x, int y) {
     int n = 80;
     int r = Utils::RandomRangeInt(3, 4);
-    for (int i = 0; i < r; i++) {
+    /*for (int i = 0; i < r; i++) {
         var s = Utils::RadToGrad(Utils::RandomRange(0, 360));
         HeartParticle* o = new HeartParticle(Math.cos(s) * n, Math.sin(s) * n);
         this->addGameObject(o);
         this->addChild(o);
         o.x = x + Utils::RandomRange(-Constants::CELL_SIZE / 3, Constants::CELL_SIZE / 3);
         o.y = y + Utils::RandomRange(-Constants::CELL_SIZE / 3, Constants::CELL_SIZE / 3);
-    }
+    }*/
 }
 
 Sprite* PlayState::getImage(char* img){

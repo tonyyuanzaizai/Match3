@@ -10,6 +10,7 @@ USING_NS_CC;
 
 PlayState* PlayState::createPlayState(int curLevel, bool isTask) {
     PlayState* layer = PlayState::create();
+    PlayState::g_instance = layer;
     layer->initPlayState(curLevel, isTask);
     return layer;
 }
@@ -844,7 +845,8 @@ void PlayState::setInpunState(int e) {
                 for (int r = 0; r < 100; r++) {
                     Chip* i = this->field[Utils::RandomRangeInt(0, this->fieldWidth - 1)][Utils::RandomRangeInt(0, this->fieldHeight - 1)];
                     if (!i->isHole() && !i->isBonus() && !i->isStoneHeart()) {
-                        //i->convertToBonus([Chip::BONUS_BOMB, Chip::BONUS_4, Chip::BONUS_5][Utils::RandomRangeInt(0, 2)]);
+                        //int b[3] = {Chip::BONUS_BOMB, Chip::BONUS_4, Chip::BONUS_5};
+                        //i->convertToBonus(b[Utils::RandomRangeInt(0, 2)]);
                         break;
                     }
                 }

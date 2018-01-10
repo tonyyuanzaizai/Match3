@@ -1,4 +1,5 @@
 #include "SelectLevelState.h"
+#include "PlayState.h"
 #include "Constants.h"
 
 
@@ -92,6 +93,10 @@ bool SelectLevelState::init()
 void SelectLevelState::onLevelTouch(Ref* pSender)
 {
     //进入PlayState
+    auto scene = Scene::create();
+    auto layer = PlayState::createPlayState(1, false);
+    scene->addChild(layer);
+    Director::getInstance()->replaceScene(scene);
 }
 
 void SelectLevelState::onExitTouch(Ref* pSender)

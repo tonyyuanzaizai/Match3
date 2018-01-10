@@ -78,7 +78,7 @@ public:
     const static int INPUT_STATE_MATCHING = 5;// = 5;//"INPUT_STATE_MATCHING",
     const static int INPUT_STATE_WAIT_NEXT_ROUND = 6;// = 6;//"INPUT_STATE_WAIT_NEXT_ROUND",
     
-    PlayState* g_instance;
+    static PlayState* g_instance;
 
 // public 方法
 public:
@@ -135,6 +135,7 @@ public:
 };
 
 int PlayState::g_curLevel = -1;
+PlayState* PlayState::g_instance = nullptr;
 //int PlayState::GOAL_DIRT = 1;//"GOAL_DIRT",
 //int PlayState::GOAL_COUNT = 2;//"GOAL_COUNT"
 
